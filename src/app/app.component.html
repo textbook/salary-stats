@@ -1,3 +1,18 @@
-<h1>{{ title }}</h1>
+<header class="header">
+  <div class="container">
+    <h1 class="title">{{ title }}</h1>
+  </div>
+</header>
 
-<sst-person *ngFor="let person of people" [person]="person"></sst-person>
+<section class="section">
+  <div class="container">
+    <table class="table">
+      <thead>
+        <tr><th>Name</th></tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let person of people"><td class="name">{{ person.name }}</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>

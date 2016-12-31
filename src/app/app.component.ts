@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 
+import { Person } from '../lib/models';
+
 @Component({
   selector: 'sst-root',
   templateUrl: './app.component.html',
@@ -7,5 +9,5 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Salary Statistics';
-  people = [{ name: 'Alice' }, { name: 'Bob' }, { name: 'Chris' }];
+  people: Person[] = [{ name: 'Alice' }, { name: 'Bob' }, { name: 'Chris' }];
 }

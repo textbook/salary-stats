@@ -10,10 +10,10 @@ export class SalaryStatsPage {
   }
 
   getPeople() {
-    return element.all(by.css('sst-person'));
+    return element.all(by.css('tbody > tr'));
   }
 
   getNames() {
-    return element.all(by.css('sst-person .name')).map(el => el.getText());
+    return element.all(by.css('tbody > tr > td.name')).map(el => el.getText());
   }
 }

@@ -1,14 +1,13 @@
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 
 import { AppComponent } from './app.component';
-import { PersonComponent } from './person/person.component';
 
 describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [AppComponent, PersonComponent],
+      declarations: [AppComponent],
     }).compileComponents();
   }));
 
@@ -21,11 +20,11 @@ describe('AppComponent', () => {
     expect(fixture.nativeElement.querySelector('h1').textContent).toContain('Salary Statistics');
   });
 
-  it('should render people as person elements', () => {
+  it('should render people as table rows', () => {
     fixture.componentInstance.people = [{ name: 'Foo' }, { name: 'Bar' }];
 
     fixture.detectChanges();
 
-    expect(fixture.nativeElement.querySelectorAll('sst-person').length).toBe(2);
+    expect(fixture.nativeElement.querySelectorAll('tbody > tr').length).toBe(2);
   });
 });
