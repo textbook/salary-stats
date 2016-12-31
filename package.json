@@ -1,14 +1,14 @@
 {
   "name": "salary-stats",
-  "version": "0.0.0",
-  "license": "MIT",
+  "version": "0.0.1",
+  "license": "ISC",
   "angular-cli": {},
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "lint": "tslint \"src/**/*.ts\"",
     "test": "ng test",
-    "pree2e": "webdriver-manager update --standalone false --gecko false",
+    "pree2e": "webdriver-manager update --gecko false",
     "e2e": "protractor"
   },
   "private": true,
@@ -38,6 +38,8 @@
     "karma-chrome-launcher": "^2.0.0",
     "karma-cli": "^1.0.1",
     "karma-jasmine": "^1.0.2",
+    "karma-mocha-reporter": "^2.2.1",
+    "karma-phantomjs-launcher": "^1.0.2",
     "karma-remap-istanbul": "^0.2.1",
     "protractor": "~4.0.13",
     "ts-node": "1.2.1",
