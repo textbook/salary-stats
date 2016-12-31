@@ -1,14 +1,13 @@
 import { SalaryStatsPage } from './app.po';
 
 describe('salary-stats App', function() {
-  let page: SalaryStatsPage;
+  let page = new SalaryStatsPage();
 
   beforeEach(() => {
-    page = new SalaryStatsPage();
+    page.navigateTo();
   });
 
-  it('should display message saying app works', () => {
-    page.navigateTo();
-    expect(page.getParagraphText()).toEqual('app works!');
+  it('should display application title', () => {
+    expect(page.getTitleText()).toEqual('Salary Statistics');
   });
 });

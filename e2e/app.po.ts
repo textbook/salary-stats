@@ -5,7 +5,7 @@ export class SalaryStatsPage {
     return browser.get('/');
   }
 
-  getParagraphText() {
-    return element(by.css('app-root h1')).getText();
+  getTitleText() {
+    return element(by.css('sst-root h1')).getText();
   }
 }
