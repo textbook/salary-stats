@@ -10,4 +10,9 @@ describe('salary-stats App', function() {
   it('should display application title', () => {
     expect(page.getTitleText()).toEqual('Salary Statistics');
   });
+
+  it('should display three default people', () => {
+    expect(page.getPeople().count()).toBe(3);
+    expect(page.getNames()).toContain('Alice');
+  });
 });
