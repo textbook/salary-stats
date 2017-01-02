@@ -29,21 +29,9 @@ const SERIES_OPTIONS = {
 })
 export class AppComponent implements OnInit {
   displayWarning: boolean;
-  title = 'Salary Statistics';
-  people: Person[] = [
-    { name: 'Alice', salary: 12345, cohort: 'A' },
-    { name: 'Bob', salary: 12435, cohort: 'A' },
-    { name: 'Chris', salary: 12534, cohort: 'A' },
-    { name: 'Davina', salary: 12453, cohort: 'A' },
-    { name: 'Edsger', salary: 12543, cohort: 'A' },
-    { name: 'Fred', salary: 13245, cohort: 'B' },
-    { name: 'Geoff', salary: 13425, cohort: 'B' },
-    { name: 'Helen', salary: 13524, cohort: 'B' },
-    { name: 'Imogen', salary: 13452, cohort: 'B' },
-    { name: 'Jack', salary: 13542, cohort: 'B' },
-  ];
-  options: any;
   newPersonForm: FormGroup;
+  options: any;
+  people: Person[];
 
   constructor(private builder: FormBuilder) {
     this.newPersonForm = builder.group({
@@ -54,6 +42,18 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.people = [
+      { name: 'Alice', salary: 12345, cohort: 'A' },
+      { name: 'Bob', salary: 12435, cohort: 'A' },
+      { name: 'Chris', salary: 12534, cohort: 'A' },
+      { name: 'Davina', salary: 12453, cohort: 'A' },
+      { name: 'Edsger', salary: 12543, cohort: 'A' },
+      { name: 'Fred', salary: 13245, cohort: 'B' },
+      { name: 'Geoff', salary: 13425, cohort: 'B' },
+      { name: 'Helen', salary: 13524, cohort: 'B' },
+      { name: 'Imogen', salary: 13452, cohort: 'B' },
+      { name: 'Jack', salary: 13542, cohort: 'B' },
+    ];
     this.updateChart();
   }
 
@@ -89,6 +89,16 @@ export class AppComponent implements OnInit {
   }
 
   private _splitIntoCohorts(people: Person[]) {
+    let cohortMap = this._createCohortMap(people);
+    let cohorts = Object.keys(cohortMap);
+
+    return {
+      categories: cohorts,
+      data: Array.from(cohorts).map(key => cohortMap[key].sort()),
+    };
+  }
+
+  private _createCohortMap(people: Person[]): { [key: string]: number[] } {
     let cohorts = {};
     people.map(({ cohort, salary }) => {
       if (!cohorts.hasOwnProperty(cohort)) {
@@ -96,11 +106,7 @@ export class AppComponent implements OnInit {
       }
       cohorts[cohort].push(salary);
     });
-
-    return {
-      categories: Object.keys(cohorts),
-      data: Array.from(Object.keys(cohorts)).map(key => cohorts[key].sort()),
-    };
+    return cohorts;
   }
 
   private _anyCohortsShorterThanMinimumLength(cohorts: number[][]) {
