@@ -46,6 +46,11 @@ export class AppComponent implements OnInit {
     this.updateChart();
   }
 
+  deletePerson(index: number) {
+    this.people.splice(index, 1);
+    this.updateChart();
+  }
+
   updateChart() {
     let { categories, data } = this._splitIntoCohorts(this.people);
 
@@ -73,7 +78,7 @@ export class AppComponent implements OnInit {
 
   private _anyCohortsShorterThanMinimumLength(cohorts: number[][]) {
     let numberOfCohortsShorterThanMinimumLength = cohorts.reduce(
-      (total, cohort) => cohort.length < MINIMUM_COHORT_LENGTH ? 1 : 0,
+      (total, cohort) => total + (cohort.length < MINIMUM_COHORT_LENGTH ? 1 : 0),
       0
     );
     return numberOfCohortsShorterThanMinimumLength > 0;

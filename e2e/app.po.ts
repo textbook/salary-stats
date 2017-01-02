@@ -25,6 +25,10 @@ export class SalaryStatsPage {
     return this._getTextFromAllElements('tbody > tr:first-of-type > td');
   }
 
+  deleteFirstRow() {
+    return element.all(by.css('button.is-danger')).first().click();
+  }
+
   getChart() {
     return element(by.css('chart'));
   }
