@@ -250,6 +250,21 @@ describe('AppComponent', () => {
       expect(getSeries().data[1]).toEqual([salaryB]);
     });
 
+    it('should sort the salaries in each cohort', () => {
+      fixture.componentInstance.people = [
+        { name: 'A', cohort: 'A', salary: 5 },
+        { name: 'B', cohort: 'A', salary: 1 },
+        { name: 'C', cohort: 'A', salary: 3 },
+        { name: 'D', cohort: 'B', salary: 4 },
+        { name: 'E', cohort: 'B', salary: 2 },
+      ];
+
+      fixture.componentInstance.updateChart();
+
+      expect(getSeries().data[0]).toEqual([1, 3, 5]);
+      expect(getSeries().data[1]).toEqual([2, 4]);
+    });
+
     it('should show a warning if any cohort has fewer than five members', () => {
       fixture.componentInstance.people = [
         { name: 'Foo', cohort: 'A', salary: 1 },

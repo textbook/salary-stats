@@ -99,7 +99,7 @@ export class AppComponent implements OnInit {
 
     return {
       categories: Object.keys(cohorts),
-      data: Array.from(Object.keys(cohorts)).map(key => cohorts[key]),
+      data: Array.from(Object.keys(cohorts)).map(key => cohorts[key].sort()),
     };
   }
 
