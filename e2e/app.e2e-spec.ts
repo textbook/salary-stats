@@ -18,15 +18,18 @@ describe('salary-stats App', function() {
     });
   });
 
-  it('should display salary for each person', () => {
-    page.getSalaries().then(salaries => {
-      expect(salaries[0]).toBe('£12,345');
-    });
+  it('should display name, salary and cohort for each person', () => {
+    expect(page.getHeaders()).toEqual(['Name', 'Salary', 'Cohort']);
+    expect(page.getFirstRow()).toEqual(['Alice', '£12,345', 'A']);
   });
 
   describe('salary chart', () => {
     it('should be displayed', () => {
       expect(page.getChart().isPresent()).toBe(true, 'chart is not present');
+    });
+
+    it('should display a point for each cohort', () => {
+      expect(page.getChartPoints().count()).toBeGreaterThan(1);
     });
   });
 });

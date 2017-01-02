@@ -14,18 +14,26 @@ export class SalaryStatsPage {
   }
 
   getNames() {
-    return this._getAllText('tbody > tr > td.name');
+    return this._getTextFromAllElements('tbody > tr > td.name');
   }
 
-  getSalaries() {
-    return this._getAllText('tbody > tr > td.salary');
+  getHeaders() {
+    return this._getTextFromAllElements('thead > tr:first-of-type > th');
+  }
+
+  getFirstRow() {
+    return this._getTextFromAllElements('tbody > tr:first-of-type > td');
   }
 
   getChart() {
     return element(by.css('chart'));
   }
 
-  private _getAllText(selector: string) {
+  getChartPoints() {
+    return element.all(by.css('chart .highcharts-point'));
+  }
+
+  private _getTextFromAllElements(selector: string) {
     return element.all(by.css(selector)).map(el => el.getText());
   }
 }

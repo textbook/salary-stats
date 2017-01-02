@@ -11,12 +11,14 @@
         <tr>
           <th>Name</th>
           <th>Salary</th>
+          <th>Cohort</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let person of people">
           <td class="name">{{ person.name }}</td>
           <td class="salary">{{ person.salary | currency:'GBP':true:'1.0-0' }}</td>
+          <td class="cohort">{{ person.cohort }}</td>
         </tr>
       </tbody>
     </table>

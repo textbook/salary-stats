@@ -24,11 +24,34 @@ describe('AppComponent', () => {
   });
 
   it('should render people as table rows', () => {
-    fixture.componentInstance.people = [{ name: 'Foo', salary: 1 }, { name: 'Bar', salary: 1 }];
+    fixture.componentInstance.people = [
+      { name: 'Foo', salary: 1, cohort: 'A' },
+      { name: 'Bar', salary: 1, cohort: 'B' },
+    ];
 
     fixture.detectChanges();
 
     expect(fixture.nativeElement.querySelectorAll('tbody > tr').length).toBe(2);
+  });
+
+  it('should show name and salary and cohort', () => {
+    let name = 'Foo';
+    let salary = 5;
+    let cohort = 'A';
+    fixture.componentInstance.people = [{ name, salary, cohort }];
+
+    fixture.detectChanges();
+
+    let names = fixture.nativeElement.querySelectorAll('tbody td.name');
+    let salaries = fixture.nativeElement.querySelectorAll('tbody td.salary');
+    let cohorts = fixture.nativeElement.querySelectorAll('tbody td.cohort');
+
+    expect(names.length).toBe(1);
+    expect(names[0].textContent).toContain(name);
+    expect(salaries.length).toBe(1);
+    expect(salaries[0].textContent).toContain(salary.toString());
+    expect(cohorts.length).toBe(1);
+    expect(cohorts[0].textContent).toContain(cohort);
   });
 
   describe('updateChart method', () => {
@@ -45,20 +68,33 @@ describe('AppComponent', () => {
 
       fixture.componentInstance.updateChart();
 
-      expect(getSeries(0).data[0].length).toBe(0);
+      expect(getSeries().data.length).toBe(0);
     });
 
     it('should use salaries in the series', () => {
       let salary = 1234;
-      fixture.componentInstance.people = [{ name: 'Baz', salary }];
+      fixture.componentInstance.people = [{ name: 'Baz', cohort: 'A', salary }];
 
       fixture.componentInstance.updateChart();
 
-      expect(getSeries(0).data[0]).toEqual([salary]);
+      expect(getSeries().data[0]).toEqual([salary]);
     });
 
-    function getSeries(index: number) {
-      return fixture.componentInstance.options.series[index];
+    it('should display a series per cohort', () => {
+      let salaryA = 10, salaryB = 20;
+      fixture.componentInstance.people = [
+        { name: 'Foo', cohort: 'A', salary: salaryA },
+        { name: 'Bar', cohort: 'B', salary: salaryB },
+      ];
+
+      fixture.componentInstance.updateChart();
+
+      expect(getSeries().data[0]).toEqual([salaryA]);
+      expect(getSeries().data[1]).toEqual([salaryB]);
+    });
+
+    function getSeries() {
+      return fixture.componentInstance.options.series[0];
     }
   });
 });

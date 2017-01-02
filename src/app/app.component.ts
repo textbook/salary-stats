@@ -26,11 +26,16 @@ const SERIES_OPTIONS = {
 export class AppComponent implements OnInit {
   title = 'Salary Statistics';
   people: Person[] = [
-    { name: 'Alice', salary: 12345 },
-    { name: 'Bob', salary: 12435 },
-    { name: 'Chris', salary: 12534 },
-    { name: 'Davina', salary: 12453 },
-    { name: 'Edsger', salary: 12543 },
+    { name: 'Alice', salary: 12345, cohort: 'A' },
+    { name: 'Bob', salary: 12435, cohort: 'A' },
+    { name: 'Chris', salary: 12534, cohort: 'A' },
+    { name: 'Davina', salary: 12453, cohort: 'A' },
+    { name: 'Edsger', salary: 12543, cohort: 'A' },
+    { name: 'Fred', salary: 13245, cohort: 'B' },
+    { name: 'Geoff', salary: 13425, cohort: 'B' },
+    { name: 'Helen', salary: 13524, cohort: 'B' },
+    { name: 'Imogen', salary: 13452, cohort: 'B' },
+    { name: 'Jack', salary: 13542, cohort: 'B' },
   ];
   options: any;
 
@@ -39,10 +44,25 @@ export class AppComponent implements OnInit {
   }
 
   updateChart() {
-    let xAxis = { categories: ['A'], title: { text: 'Cohort' } };
-    let series = [Object.assign({}, SERIES_OPTIONS, {
-      data: [this.people.map(({ salary }) => salary)],
-    })];
+    let { categories, data } = this.splitIntoCohorts(this.people);
+
+    let xAxis = { categories, title: { text: 'Cohort' } };
+    let series = [Object.assign({}, SERIES_OPTIONS, { data })];
     this.options = Object.assign({}, BASE_OPTIONS, { series, xAxis });
+  }
+
+  private splitIntoCohorts(people: Person[]) {
+    let cohorts = {};
+    people.map(({ cohort, salary }) => {
+      if (!cohorts.hasOwnProperty(cohort)) {
+        cohorts[cohort] = [];
+      }
+      cohorts[cohort].push(salary);
+    });
+
+    return {
+      categories: Object.keys(cohorts),
+      data: Array.from(Object.keys(cohorts)).map(key => cohorts[key]),
+    };
   }
 }
