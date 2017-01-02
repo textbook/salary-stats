@@ -121,10 +121,13 @@ export class AppComponent implements OnInit {
   }
 
   private _overwriteFormIfEmpty(person: Person) {
-    let { name, salary, cohort } = this.newPersonForm.value;
-    if (name === EMPTY_FORM.name && salary === EMPTY_FORM.salary && cohort === EMPTY_FORM.cohort) {
-      this.newPersonForm.setValue(person);
+    let formData = this.newPersonForm.value;
+    for (let key of ['name', 'salary', 'cohort']) {
+      if (formData[key] !== EMPTY_FORM[key]) {
+        return;
+      }
     }
+    this.newPersonForm.setValue(person);
   }
 
   private _hasValidInput() {
