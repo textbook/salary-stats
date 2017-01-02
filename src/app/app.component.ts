@@ -12,14 +12,14 @@ const MINIMUM_COHORT_LENGTH = 5;
 
 const EMPTY_FORM = { name: '', salary: '', cohort: '' };
 
-const BASE_OPTIONS = {
+const BASE_CHART_OPTIONS = {
   chart: { type: 'boxplot' },
   legend: { enabled: false },
   title: { text: 'Salary Comparison' },
   yAxis: { title: { text: 'Salary (£)' } },
 };
 
-const SERIES_OPTIONS = {
+const BASE_SERIES_OPTIONS = {
   name: 'Salaries',
   tooltip: { headerFormat: '<strong>Cohort {point.key}</strong><br>' },
 };
@@ -82,13 +82,21 @@ export class AppComponent implements OnInit {
   }
 
   updateChart() {
-    let { categories, data } = this._splitIntoCohorts(this.people);
+    let options = this._createChartOptions(this.people);
+    this.options = options;
+    this.displayWarning = this._anyCohortsShorterThanMinimumLength(this._getCohortData(options));
+  }
 
-    this.displayWarning = this._anyCohortsShorterThanMinimumLength(data);
+  private _getCohortData(options) {
+    return options.series[0].data;
+  }
+
+  private _createChartOptions(people: Person[]) {
+    let { categories, data } = this._splitIntoCohorts(people);
 
     let xAxis = { categories, title: { text: 'Cohort' } };
-    let series = [Object.assign({}, SERIES_OPTIONS, { data })];
-    this.options = Object.assign({}, BASE_OPTIONS, { series, xAxis });
+    let series = [Object.assign({}, BASE_SERIES_OPTIONS, { data })];
+    return Object.assign({}, BASE_CHART_OPTIONS, { series, xAxis });
   }
 
   private _splitIntoCohorts(people: Person[]) {
