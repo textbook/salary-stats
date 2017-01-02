@@ -163,6 +163,25 @@ describe('AppComponent', () => {
 
       expect(fixture.componentInstance.updateChart).toHaveBeenCalled();
     });
+
+    it('should fill the form with the deleted data if empty', () => {
+      let index = 0;
+      let person = fixture.componentInstance.people[index];
+
+      fixture.componentInstance.deletePerson(index);
+
+      expect(fixture.componentInstance.newPersonForm.value).toEqual(person);
+    });
+
+    it('should not overwrite the form data if not empty', () => {
+      let form = fixture.componentInstance.newPersonForm;
+      let inputs = { name: 'Foo', salary: '', cohort: '' };
+      form.setValue(inputs);
+
+      fixture.componentInstance.deletePerson(0);
+
+      expect(form.value).toEqual(inputs);
+    });
   });
 
   describe('deleteAllPeople method', () => {

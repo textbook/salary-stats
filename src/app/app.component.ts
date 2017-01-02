@@ -10,6 +10,8 @@ import { Person } from '../lib/models';
 
 const MINIMUM_COHORT_LENGTH = 5;
 
+const EMPTY_FORM = { name: '', salary: '', cohort: '' };
+
 const BASE_OPTIONS = {
   chart: { type: 'boxplot' },
   legend: { enabled: false },
@@ -58,22 +60,23 @@ export class AppComponent implements OnInit {
   }
 
   addPerson() {
-    if (this.newPersonForm.valid) {
-      this.people.push(this.newPersonForm.value);
+    if (this._hasValidInput()) {
+      this._addPerson(this.newPersonForm.value);
+      this._clearInputData();
       this.updateChart();
-      this.newPersonForm.setValue({ name: '', salary: '', cohort: '' });
     }
   }
 
   deletePerson(index: number) {
-    this.people.splice(index, 1);
+    this._overwriteFormIfEmpty(this._getPerson(index));
+    this._deletePerson(index);
     this.updateChart();
   }
 
   deleteAllPeople() {
-    let deleteAll = confirm('Are you sure you want to delete all people? This cannot be undone.');
-    if (deleteAll) {
-      this.people.splice(0, this.people.length);
+    let message = 'Are you sure you want to delete all people? This cannot be undone.';
+    if (confirm(message)) {
+      this._deletePeople();
       this.updateChart();
     }
   }
@@ -98,6 +101,14 @@ export class AppComponent implements OnInit {
     };
   }
 
+  private _anyCohortsShorterThanMinimumLength(cohorts: number[][]) {
+    let numberOfCohortsShorterThanMinimumLength = cohorts.reduce(
+        (total, cohort) => total + (cohort.length < MINIMUM_COHORT_LENGTH ? 1 : 0),
+        0
+    );
+    return numberOfCohortsShorterThanMinimumLength > 0;
+  }
+
   private _createCohortMap(people: Person[]): { [key: string]: number[] } {
     let cohorts = {};
     people.map(({ cohort, salary }) => {
@@ -109,11 +120,34 @@ export class AppComponent implements OnInit {
     return cohorts;
   }
 
-  private _anyCohortsShorterThanMinimumLength(cohorts: number[][]) {
-    let numberOfCohortsShorterThanMinimumLength = cohorts.reduce(
-      (total, cohort) => total + (cohort.length < MINIMUM_COHORT_LENGTH ? 1 : 0),
-      0
-    );
-    return numberOfCohortsShorterThanMinimumLength > 0;
+  private _overwriteFormIfEmpty(person: Person) {
+    let { name, salary, cohort } = this.newPersonForm.value;
+    if (name === EMPTY_FORM.name && salary === EMPTY_FORM.salary && cohort === EMPTY_FORM.cohort) {
+      this.newPersonForm.setValue(person);
+    }
+  }
+
+  private _hasValidInput() {
+    return this.newPersonForm.valid;
+  }
+
+  private _clearInputData() {
+    this.newPersonForm.setValue(EMPTY_FORM);
+  }
+
+  private _getPerson(index: number): Person {
+    return this.people[index];
+  }
+
+  private _addPerson(person: any) {
+    this.people.push(person);
+  }
+
+  private _deletePerson(index: number) {
+    this.people.splice(index, 1);
+  }
+
+  private _deletePeople() {
+    this.people.splice(0, this.people.length);
   }
 }
