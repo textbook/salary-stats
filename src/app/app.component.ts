@@ -12,7 +12,8 @@ const MINIMUM_COHORT_LENGTH = 5;
 const BASE_OPTIONS = {
   chart: { type: 'boxplot' },
   legend: { enabled: false },
-  title: { text: 'Salaries' },
+  title: { text: 'Salary Comparison' },
+  yAxis: { title: { text: 'Salary (£)' } },
 };
 
 const SERIES_OPTIONS = {

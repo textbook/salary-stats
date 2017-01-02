@@ -79,8 +79,9 @@ describe('AppComponent', () => {
       fixture.componentInstance.updateChart();
 
       let options = fixture.componentInstance.options;
-      expect(options.title.text).toBe('Salaries');
+      expect(options.title.text).toBe('Salary Comparison');
       expect(options.chart.type).toBe('boxplot');
+      expect(options.yAxis.title.text).toBe('Salary (£)');
     });
 
     it('should update the series from the people', () => {
