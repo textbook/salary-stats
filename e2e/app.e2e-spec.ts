@@ -11,14 +11,17 @@ describe('salary-stats App', function() {
     expect(page.getTitleText()).toEqual('Salary Statistics');
   });
 
-  it('should display three default people', () => {
-    expect(page.getPeople().count()).toBe(3);
-    expect(page.getNames()).toContain('Alice');
+  it('should display default people', () => {
+    expect(page.getPeople().count()).toBeGreaterThan(0);
+    page.getNames().then(names => {
+      expect(names[0]).toBe('Alice');
+    });
   });
 
-  it('should display name and salary for each person', () => {
-    expect(page.getNames()).toEqual(['Alice', 'Bob', 'Chris']);
-    expect(page.getSalaries()).toEqual(['£12,345', '£12,435', '£12,534']);
+  it('should display salary for each person', () => {
+    page.getSalaries().then(salaries => {
+      expect(salaries[0]).toBe('£12,345');
+    });
   });
 
   describe('salary chart', () => {

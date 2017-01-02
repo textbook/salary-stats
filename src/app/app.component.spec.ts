@@ -37,7 +37,7 @@ describe('AppComponent', () => {
 
       let options = fixture.componentInstance.options;
       expect(options.title.text).toBe('Salaries');
-      expect(options.chart.type).toBe('column');
+      expect(options.chart.type).toBe('boxplot');
     });
 
     it('should update the series from the people', () => {
@@ -45,18 +45,20 @@ describe('AppComponent', () => {
 
       fixture.componentInstance.updateChart();
 
-      expect(fixture.componentInstance.options.series.length).toBe(0);
+      expect(getSeries(0).data[0].length).toBe(0);
     });
 
-    it('should use salaries and names in the series', () => {
-      let salary = 1234, name = 'Baz';
-      fixture.componentInstance.people = [{ name, salary }];
+    it('should use salaries in the series', () => {
+      let salary = 1234;
+      fixture.componentInstance.people = [{ name: 'Baz', salary }];
 
       fixture.componentInstance.updateChart();
 
-      let series = fixture.componentInstance.options.series[0];
-      expect(series.data).toEqual([salary]);
-      expect(series.name).toEqual(name);
+      expect(getSeries(0).data[0]).toEqual([salary]);
     });
+
+    function getSeries(index: number) {
+      return fixture.componentInstance.options.series[index];
+    }
   });
 });
