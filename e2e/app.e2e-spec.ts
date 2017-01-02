@@ -32,6 +32,15 @@ describe('salary-stats App', function() {
         expect(page.getFirstRow()).toEqual(['Bob', '£12,435', 'A', 'Delete']);
       });
     });
+
+    it('should allow people to be added', () => {
+      page.getPeople().count().then(initialCount => {
+        page.addNewRow('Keira', 14532, 'C');
+
+        expect(page.getPeople().count()).toBe(initialCount + 1);
+        expect(page.getLastRow()).toEqual(['Keira', '£14,532', 'C', 'Delete']);
+      });
+    });
   });
 
   describe('salary chart', () => {

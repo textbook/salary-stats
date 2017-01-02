@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 // Plug in highcharts-more
 import * as HighCharts from 'highcharts';
@@ -42,9 +43,26 @@ export class AppComponent implements OnInit {
     { name: 'Jack', salary: 13542, cohort: 'B' },
   ];
   options: any;
+  newPersonForm: FormGroup;
+
+  constructor(private builder: FormBuilder) {
+    this.newPersonForm = builder.group({
+      name: ['', Validators.required],
+      salary: ['', Validators.required],
+      cohort: ['', Validators.required],
+    });
+  }
 
   ngOnInit(): void {
     this.updateChart();
+  }
+
+  addPerson() {
+    if (this.newPersonForm.valid) {
+      this.people.push(this.newPersonForm.value);
+      this.updateChart();
+      this.newPersonForm.setValue({ name: '', salary: '', cohort: '' });
+    }
   }
 
   deletePerson(index: number) {

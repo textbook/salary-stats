@@ -25,6 +25,22 @@
           </td>
         </tr>
       </tbody>
+      <tfoot [formGroup]="newPersonForm">
+        <tr>
+          <td class="name control">
+            <input type="text" class="input" placeholder="Name" formControlName="name">
+          </td>
+          <td class="salary control">
+            <input type="number" class="input" placeholder="Salary" formControlName="salary">
+          </td>
+          <td class="cohort control">
+            <input type="text" class="input" placeholder="Cohort" formControlName="cohort">
+          </td>
+          <td class="has-text-right">
+            <button class="button is-success is-outlined is-small" (click)="addPerson()">Add</button>
+          </td>
+        </tr>
+      </tfoot>
     </table>
   </div>
 </section>

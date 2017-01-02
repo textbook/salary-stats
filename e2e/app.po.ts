@@ -25,6 +25,18 @@ export class SalaryStatsPage {
     return this._getTextFromAllElements('tbody > tr:first-of-type > td');
   }
 
+  getLastRow() {
+    return this._getTextFromAllElements('tbody > tr:last-of-type > td');
+  }
+
+  addNewRow(name: string, salary: number, cohort: string) {
+    element(by.css('tfoot > tr > td.name > input')).sendKeys(name);
+    element(by.css('tfoot > tr > td.salary > input')).sendKeys(salary.toString());
+    element(by.css('tfoot > tr > td.cohort > input')).sendKeys(cohort);
+
+    return element(by.css('button.is-success')).click();
+  }
+
   deleteFirstRow() {
     return element.all(by.css('button.is-danger')).first().click();
   }

@@ -1,4 +1,6 @@
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
+
 
 import { ChartModule } from 'angular2-highcharts';
 
@@ -10,7 +12,7 @@ describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [AppComponent],
-      imports: [ChartModule],
+      imports: [ChartModule, ReactiveFormsModule],
     }).compileComponents();
   }));
 
@@ -56,23 +58,101 @@ describe('AppComponent', () => {
     });
 
     it('should provide a delete button for each person', () => {
-      let updateChart = spyOn(fixture.componentInstance, 'updateChart');
-      fixture.componentInstance.people = [{ name: 'Foo', salary: 1, cohort: 'A' }];
-      fixture.detectChanges();
+      let deletePerson = spyOn(fixture.componentInstance, 'deletePerson');
 
       let deleteButtons = fixture.nativeElement.querySelectorAll('button.is-danger');
-      expect(deleteButtons.length).toBe(1);
+      expect(deleteButtons.length).toBe(fixture.componentInstance.people.length);
       expect(deleteButtons[0].textContent).toContain('Delete');
 
       deleteButtons[0].click();
-      fixture.detectChanges();
 
-      expect(fixture.componentInstance.people.length).toBe(0, 'people array not empty');
-      expect(fixture.nativeElement.querySelectorAll('tbody td').length).toBe(0, 'table rows shown');
-      expect(updateChart).toHaveBeenCalled();
+      expect(deletePerson).toHaveBeenCalled();
+    });
+
+    it('should provide inputs for a new person', () => {
+      let addPerson = spyOn(fixture.componentInstance, 'addPerson');
+      expect(fixture.nativeElement.querySelectorAll('tfoot td input').length).toBe(3);
+
+      fixture.nativeElement.querySelector('button.is-success').click();
+
+      expect(addPerson).toHaveBeenCalled();
     });
   });
 
+  describe('addPerson method', () => {
+    beforeEach(() => {
+      spyOn(fixture.componentInstance, 'updateChart');
+    });
+
+    describe('with valid inputs', () => {
+      let validPerson = { name: 'Foo', salary: 123, cohort: 'A' };
+
+      beforeEach(() => {
+        fixture.componentInstance.newPersonForm.setValue(validPerson);
+      });
+
+      it('should update the chart', () => {
+        fixture.componentInstance.addPerson();
+
+        expect(fixture.componentInstance.updateChart).toHaveBeenCalled();
+      });
+
+      it('should add the form values to the array', () => {
+        fixture.componentInstance.addPerson();
+
+        expect(fixture.componentInstance.people.pop()).toEqual(validPerson);
+      });
+
+      it('should clear the inputs', () => {
+        let form = fixture.componentInstance.newPersonForm;
+
+        fixture.componentInstance.addPerson();
+
+        expect(form.valid).toBe(false);
+        expect(form.value).toEqual({ name: '', salary: '', cohort: ''});
+      });
+    });
+
+    describe('with invalid inputs', () => {
+      let invalidPerson = { name: '', salary: 123, cohort: '' };
+
+      beforeEach(() => {
+        fixture.componentInstance.newPersonForm.setValue(invalidPerson);
+      });
+
+      it('should not do anything', () => {
+        let initialLength = fixture.componentInstance.people.length;
+        fixture.componentInstance.addPerson();
+
+        expect(fixture.componentInstance.people.length).toBe(initialLength);
+        expect(fixture.componentInstance.updateChart).not.toHaveBeenCalled();
+        expect(fixture.componentInstance.newPersonForm.value).toEqual(invalidPerson);
+      });
+    });
+  });
+
+  describe('deletePerson method', () => {
+    beforeEach(() => {
+      spyOn(fixture.componentInstance, 'updateChart');
+    });
+
+    it('should remove the person from the array', () => {
+      let people = fixture.componentInstance.people;
+      let initialLength = people.length;
+      let firstPersonName = people[0].name;
+
+      fixture.componentInstance.deletePerson(0);
+
+      expect(people.length).toBe(initialLength - 1);
+      expect(people[0].name).not.toEqual(firstPersonName);
+    });
+
+    it('should update the chart', () => {
+      fixture.componentInstance.deletePerson(0);
+
+      expect(fixture.componentInstance.updateChart).toHaveBeenCalled();
+    });
+  });
 
   describe('updateChart method', () => {
     it('should render appropriate chart options', () => {
