@@ -93,6 +93,23 @@ describe('AppComponent', () => {
       expect(getSeries().data[1]).toEqual([salaryB]);
     });
 
+    it('should show a warning if any cohort has fewer than five members', () => {
+      fixture.componentInstance.people = [
+        { name: 'Foo', cohort: 'A', salary: 1 },
+        { name: 'Foo', cohort: 'A', salary: 2 },
+        { name: 'Foo', cohort: 'A', salary: 3 },
+        { name: 'Foo', cohort: 'A', salary: 4 },
+        { name: 'Foo', cohort: 'A', salary: 5 },
+        { name: 'Bar', cohort: 'B', salary: 6 },
+      ];
+
+      fixture.componentInstance.updateChart();
+      fixture.detectChanges();
+
+      let expected = 'cohort must have more than five members';
+      expect(fixture.nativeElement.querySelector('.is-warning').textContent).toContain(expected);
+    });
+
     function getSeries() {
       return fixture.componentInstance.options.series[0];
     }

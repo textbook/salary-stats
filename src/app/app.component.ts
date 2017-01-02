@@ -7,6 +7,8 @@ HighChartsMore(HighCharts);
 
 import { Person } from '../lib/models';
 
+const MINIMUM_COHORT_LENGTH = 5;
+
 const BASE_OPTIONS = {
   chart: { type: 'boxplot' },
   legend: { enabled: false },
@@ -24,6 +26,7 @@ const SERIES_OPTIONS = {
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
+  displayWarning: boolean;
   title = 'Salary Statistics';
   people: Person[] = [
     { name: 'Alice', salary: 12345, cohort: 'A' },
@@ -44,14 +47,16 @@ export class AppComponent implements OnInit {
   }
 
   updateChart() {
-    let { categories, data } = this.splitIntoCohorts(this.people);
+    let { categories, data } = this._splitIntoCohorts(this.people);
+
+    this.displayWarning = this._anyCohortsShorterThanMinimumLength(data);
 
     let xAxis = { categories, title: { text: 'Cohort' } };
     let series = [Object.assign({}, SERIES_OPTIONS, { data })];
     this.options = Object.assign({}, BASE_OPTIONS, { series, xAxis });
   }
 
-  private splitIntoCohorts(people: Person[]) {
+  private _splitIntoCohorts(people: Person[]) {
     let cohorts = {};
     people.map(({ cohort, salary }) => {
       if (!cohorts.hasOwnProperty(cohort)) {
@@ -64,5 +69,13 @@ export class AppComponent implements OnInit {
       categories: Object.keys(cohorts),
       data: Array.from(Object.keys(cohorts)).map(key => cohorts[key]),
     };
+  }
+
+  private _anyCohortsShorterThanMinimumLength(cohorts: number[][]) {
+    let numberOfCohortsShorterThanMinimumLength = cohorts.reduce(
+      (total, cohort) => cohort.length < MINIMUM_COHORT_LENGTH ? 1 : 0,
+      0
+    );
+    return numberOfCohortsShorterThanMinimumLength > 0;
   }
 }
