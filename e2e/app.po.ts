@@ -14,6 +14,18 @@ export class SalaryStatsPage {
   }
 
   getNames() {
-    return element.all(by.css('tbody > tr > td.name')).map(el => el.getText());
+    return this._getAllText('tbody > tr > td.name');
+  }
+
+  getSalaries() {
+    return this._getAllText('tbody > tr > td.salary');
+  }
+
+  getChart() {
+    return element(by.css('chart'));
+  }
+
+  private _getAllText(selector: string) {
+    return element.all(by.css(selector)).map(el => el.getText());
   }
 }

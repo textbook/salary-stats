@@ -8,11 +8,23 @@
   <div class="container">
     <table class="table">
       <thead>
-        <tr><th>Name</th></tr>
+        <tr>
+          <th>Name</th>
+          <th>Salary</th>
+        </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let person of people"><td class="name">{{ person.name }}</td></tr>
+        <tr *ngFor="let person of people">
+          <td class="name">{{ person.name }}</td>
+          <td class="salary">{{ person.salary | currency:'GBP':true:'1.0-0' }}</td>
+        </tr>
       </tbody>
     </table>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <chart [options]="options"></chart>
   </div>
 </section>
