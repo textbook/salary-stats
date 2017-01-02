@@ -20,7 +20,7 @@ describe('salary-stats App', function() {
     });
 
     it('should display name, salary, cohort and a delete button for each person', () => {
-      expect(page.getHeaders()).toEqual(['Name', 'Salary', 'Cohort', '']);
+      expect(page.getHeaders()).toEqual(['Name', 'Salary', 'Cohort', 'Delete All']);
       expect(page.getFirstRow()).toEqual(['Alice', '£12,345', 'A', 'Delete']);
     });
 
@@ -31,6 +31,14 @@ describe('salary-stats App', function() {
         expect(page.getPeople().count()).toBe(initialCount - 1);
         expect(page.getFirstRow()).toEqual(['Bob', '£12,435', 'A', 'Delete']);
       });
+    });
+
+    it('should allow all people to be deleted', () => {
+      expect(page.getPeople().count()).toBeGreaterThan(0);
+
+      page.deleteAllRows();
+
+      expect(page.getPeople().count()).toBe(0);
     });
 
     it('should allow people to be added', () => {

@@ -38,7 +38,12 @@ export class SalaryStatsPage {
   }
 
   deleteFirstRow() {
-    return element.all(by.css('button.is-danger')).first().click();
+    return element.all(by.css('tbody button.is-danger')).first().click();
+  }
+
+  deleteAllRows() {
+    browser.executeScript('window.confirm = function() { return true; }');
+    return element(by.css('thead button.is-danger')).click();
   }
 
   getChart() {

@@ -70,6 +70,14 @@ export class AppComponent implements OnInit {
     this.updateChart();
   }
 
+  deleteAllPeople() {
+    let deleteAll = confirm('Are you sure you want to delete all people? This cannot be undone.');
+    if (deleteAll) {
+      this.people.splice(0, this.people.length);
+      this.updateChart();
+    }
+  }
+
   updateChart() {
     let { categories, data } = this._splitIntoCohorts(this.people);
 

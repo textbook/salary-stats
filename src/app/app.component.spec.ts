@@ -60,13 +60,24 @@ describe('AppComponent', () => {
     it('should provide a delete button for each person', () => {
       let deletePerson = spyOn(fixture.componentInstance, 'deletePerson');
 
-      let deleteButtons = fixture.nativeElement.querySelectorAll('button.is-danger');
+      let deleteButtons = fixture.nativeElement.querySelectorAll('tbody button.is-danger');
       expect(deleteButtons.length).toBe(fixture.componentInstance.people.length);
       expect(deleteButtons[0].textContent).toContain('Delete');
 
       deleteButtons[0].click();
 
       expect(deletePerson).toHaveBeenCalled();
+    });
+
+    it('should provide a delete all button for all people', () => {
+      let deleteAllPeople = spyOn(fixture.componentInstance, 'deleteAllPeople');
+
+      let deleteAllButton = fixture.nativeElement.querySelector('thead button.is-danger');
+      expect(deleteAllButton.textContent).toContain('Delete All');
+
+      deleteAllButton.click();
+
+      expect(deleteAllPeople).toHaveBeenCalled();
     });
 
     it('should provide inputs for a new person', () => {
@@ -151,6 +162,51 @@ describe('AppComponent', () => {
       fixture.componentInstance.deletePerson(0);
 
       expect(fixture.componentInstance.updateChart).toHaveBeenCalled();
+    });
+  });
+
+  describe('deleteAllPeople method', () => {
+    let confirm: jasmine.Spy;
+
+    beforeEach(() => {
+      confirm = spyOn(window, 'confirm');
+    });
+
+    it('should ask for confirmation', () => {
+      fixture.componentInstance.deleteAllPeople();
+
+      expect(confirm).toHaveBeenCalled();
+    });
+
+    describe('if user confirms', () => {
+      beforeEach(() => {
+        spyOn(fixture.componentInstance, 'updateChart');
+        confirm.and.returnValue(true);
+      });
+
+      it('should clear the array', () => {
+        fixture.componentInstance.deleteAllPeople();
+
+        expect(fixture.componentInstance.people.length).toBe(0);
+      });
+
+      it('should update the chart', () => {
+        fixture.componentInstance.deleteAllPeople();
+
+        expect(fixture.componentInstance.updateChart).toHaveBeenCalled();
+      });
+    });
+
+    describe('if user does not confirm', () => {
+      it('should do nothing', () => {
+        let people = fixture.componentInstance.people;
+        let initialLength = people.length;
+        confirm.and.returnValue(false);
+
+        fixture.componentInstance.deleteAllPeople();
+
+        expect(people.length).toBe(initialLength);
+      });
     });
   });
 
