@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-// Plug in highcharts-more
+// Plug in highcharts-more and set global config
 import * as HighCharts from 'highcharts';
 import * as HighChartsMore from 'highcharts/highcharts-more';
 HighChartsMore(HighCharts);
+HighCharts.setOptions({
+  lang: { thousandsSep: ',' }
+});
 
 import { Person, Statistics } from '../lib';
 
@@ -20,6 +23,12 @@ const BASE_CHART_OPTIONS = {
 const BASE_SERIES_OPTIONS = {
   name: 'Salaries',
   tooltip: { headerFormat: '<strong>Cohort {point.key}</strong><br>' },
+};
+
+const BASE_OUTLIER_OPTIONS = {
+  name: 'Outlier',
+  type: 'scatter',
+  tooltip: { pointFormat: 'Salary: £{point.y}' },
 };
 
 @Component({
@@ -86,24 +95,35 @@ export class AppComponent implements OnInit {
   }
 
   private _createChartOptions(people: Person[]) {
-    let { categories, data } = this._splitIntoCohorts(people);
+    let { categories, data, outliers } = this._splitIntoCohorts(people);
 
     let xAxis = { categories, title: { text: 'Cohort' } };
-    let series = [Object.assign({}, BASE_SERIES_OPTIONS, { data })];
+    let series = [
+        Object.assign({}, BASE_SERIES_OPTIONS, { data }),
+        Object.assign({}, BASE_OUTLIER_OPTIONS, { data: outliers }),
+    ];
     return Object.assign({}, BASE_CHART_OPTIONS, { series, xAxis });
   }
 
   private _splitIntoCohorts(people: Person[]) {
     let cohortMap = this._createCohortMap(people);
     let cohorts = Array.from(Object.keys(cohortMap));
+    let data = cohorts.map(key => Statistics.calculateBoxPlotData(cohortMap[key]));
 
     return {
       categories: cohorts,
-      data: cohorts.map(key => Statistics.generateBoxPlotData(cohortMap[key])),
+      data,
+      outliers: Statistics.identifyOutliers(people, data, cohorts),
     };
   }
 
   private _createCohortMap(people: Person[]): { [key: string]: number[] } {
+    let cohorts = this._generateInitialCohorts(people);
+    this._sortCohortValues(cohorts);
+    return cohorts;
+  }
+
+  private _generateInitialCohorts(people: Person[]): { [key: string]: number[] } {
     let cohorts = {};
     people.map(({ cohort, salary }) => {
       if (!cohorts.hasOwnProperty(cohort)) {
@@ -112,6 +132,12 @@ export class AppComponent implements OnInit {
       cohorts[cohort].push(salary);
     });
     return cohorts;
+  }
+
+  private _sortCohortValues(cohorts: { [p: string]: number[] }) {
+    for (let cohort of Object.keys(cohorts)) {
+      cohorts[cohort].sort();
+    }
   }
 
   private _overwriteFormIfEmpty(person: Person) {

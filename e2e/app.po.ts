@@ -50,8 +50,12 @@ export class SalaryStatsPage {
     return element(by.css('chart'));
   }
 
-  getChartPoints() {
-    return element.all(by.css('chart .highcharts-point'));
+  getCohortBoxPlots() {
+    return element.all(by.css('chart .highcharts-boxplot-series .highcharts-point'));
+  }
+
+  getOutlierPoints() {
+    return element.all(by.css('chart .highcharts-scatter-series .highcharts-point'));
   }
 
   private _getTextFromAllElements(selector: string) {

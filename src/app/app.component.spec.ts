@@ -287,13 +287,13 @@ describe('AppComponent', () => {
 
     it('should use salaries in the series', () => {
       let plotValues = [1, 2, 3, 4, 5];
-      spyOn(Statistics, 'generateBoxPlotData').and.returnValue(plotValues);
+      spyOn(Statistics, 'calculateBoxPlotData').and.returnValue(plotValues);
       let salary = 1234;
       fixture.componentInstance.people = [{ name: 'Baz', cohort: 'A', salary }];
 
       fixture.componentInstance.updateChart();
 
-      expect(Statistics.generateBoxPlotData).toHaveBeenCalledWith([salary]);
+      expect(Statistics.calculateBoxPlotData).toHaveBeenCalledWith([salary]);
       expect(getSeries().data[0]).toEqual(plotValues);
     });
 
@@ -308,8 +308,23 @@ describe('AppComponent', () => {
       expect(getSeries().data.length).toBe(2);
     });
 
-    function getSeries() {
-      return fixture.componentInstance.options.series[0];
+    it('should display outliers', () => {
+      fixture.componentInstance.people = [
+        { name: 'Foo', cohort: 'A', salary: 10 },
+        { name: 'Foo', cohort: 'A', salary: 10 },
+        { name: 'Foo', cohort: 'A', salary: 10 },
+        { name: 'Foo', cohort: 'A', salary: 10 },
+        { name: 'Foo', cohort: 'A', salary: 10 },
+        { name: 'Bar', cohort: 'A', salary: 100 },
+      ];
+
+      fixture.componentInstance.updateChart();
+
+      expect(getSeries(1).data.length).toBe(1);
+    });
+
+    function getSeries(index?: number) {
+      return fixture.componentInstance.options.series[index || 0];
     }
   });
 });

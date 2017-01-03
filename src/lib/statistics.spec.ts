@@ -1,26 +1,45 @@
+import { Person } from './models';
 const _ss = require('simple-statistics');
 
 import { Statistics } from './statistics';
 
 describe('Statistics', () => {
-  describe('generateBoxPlotData method', () => {
+  describe('calculateBoxPlotData method', () => {
+    let testSample = [1, 2, 3, 4, 5];
+
     beforeEach(() => {
-      spyOn(_ss, 'quantileSorted').and.returnValue(0);
+      spyOn(_ss, 'quantileSorted').and.callFake((sample, p) => Math.round(100 * p));
     });
 
-    it('should sort the values', () => {
-      Statistics.generateBoxPlotData([5, 2, 3, 1, 4]);
+    it('should get the median and quartiles from simple-statistics', () => {
+      Statistics.calculateBoxPlotData(testSample);
 
-      expect(_ss.quantileSorted).toHaveBeenCalledWith([1, 2, 3, 4, 5], 0);
+      expect(_ss.quantileSorted).toHaveBeenCalledWith(testSample, 0.25);
+      expect(_ss.quantileSorted).toHaveBeenCalledWith(testSample, 0.5);
+      expect(_ss.quantileSorted).toHaveBeenCalledWith(testSample, 0.75);
     });
 
-    it('should return the min, max, median and quartiles', () => {
-      _ss.quantileSorted.and.callFake((sample, p) => p);
+    it('should calculate the lower and upper bounds for outliers', () => {
+      expect(Statistics.calculateBoxPlotData(testSample))
+          .toEqual([-50, 25, 50, 75, 150]);
+    });
+  });
 
-      let result = Statistics.generateBoxPlotData([1, 2, 3, 4, 5]);
+  describe('identifyOutliers method', () => {
+    let cohorts = ['X', 'A'];
+    let boxPlotData = [[], [1, 2, 3, 4, 5]];
+    let people = [_generatePerson(0, 'A'), _generatePerson(3, 'A'), _generatePerson(6, 'A')];
 
-      expect(_ss.quantileSorted).toHaveBeenCalledWith([1, 2, 3, 4, 5], 0);
-      expect(result).toEqual([0, 0.25, 0.5, 0.75, 1]);
+    it('should return values outside the calculated bounds, indexed by cohort', () => {
+      let result = Statistics.identifyOutliers(people, boxPlotData, cohorts);
+
+      expect(result.length).toBe(2);
+      expect(result[0]).toEqual([1, 0]);
+      expect(result[1]).toEqual([1, 6]);
     });
   });
 });
+
+function _generatePerson(salary: number, cohort: string): Person {
+  return { name: 'Foo', salary, cohort };
+}

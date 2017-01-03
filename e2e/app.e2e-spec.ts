@@ -56,8 +56,12 @@ describe('salary-stats App', function() {
       expect(page.getChart().isPresent()).toBe(true, 'chart is not present');
     });
 
-    it('should display a point for each cohort', () => {
-      expect(page.getChartPoints().count()).toBeGreaterThan(1);
+    it('should display a box plot for each cohort', () => {
+      expect(page.getCohortBoxPlots().count()).toBeGreaterThan(1);
+    });
+
+    it('should display a point for each outlier', () => {
+      expect(page.getOutlierPoints().count()).toBeGreaterThan(0);
     });
   });
 });
