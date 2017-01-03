@@ -81,25 +81,38 @@ describe('AppComponent', () => {
     });
 
     it('should provide inputs for a new person', () => {
-      let addPerson = spyOn(fixture.componentInstance, 'addPerson');
+      let _addPerson = spyOn(fixture.componentInstance, '_addPerson');
+      let name = 'Keira', salary = 12345, cohort = 'C';
       expect(fixture.nativeElement.querySelectorAll('tfoot td input').length).toBe(3);
+
+      setInputValue('tfoot td.name input', name);
+      setInputValue('tfoot td.salary input', salary.toString());
+      setInputValue('tfoot td.cohort input', cohort);
 
       fixture.nativeElement.querySelector('button.is-success').click();
 
-      expect(addPerson).toHaveBeenCalled();
+      expect(_addPerson).toHaveBeenCalledWith({ name, salary, cohort });
     });
+
+    function setInputValue(selector: string, value: string) {
+      let el: HTMLInputElement = fixture.nativeElement.querySelector(selector);
+      el.value = value;
+      el.dispatchEvent(new Event('input'));
+    }
   });
 
   describe('addPerson method', () => {
+    let validInput = { name: 'Foo', salary: 123, cohort: 'A' };
+    let invalidInput = { name: '', salary: 123, cohort: '' };
+
     beforeEach(() => {
       spyOn(fixture.componentInstance, 'updateChart');
     });
 
     describe('with valid inputs', () => {
-      let validPerson = { name: 'Foo', salary: 123, cohort: 'A' };
 
       beforeEach(() => {
-        fixture.componentInstance.newPersonForm.setValue(validPerson);
+        fixture.componentInstance.newPersonForm.setValue(validInput);
       });
 
       it('should update the chart', () => {
@@ -111,7 +124,7 @@ describe('AppComponent', () => {
       it('should add the form values to the array', () => {
         fixture.componentInstance.addPerson();
 
-        expect(fixture.componentInstance.people.pop()).toEqual(validPerson);
+        expect(fixture.componentInstance.people.pop()).toEqual(validInput);
       });
 
       it('should clear the inputs', () => {
@@ -122,22 +135,47 @@ describe('AppComponent', () => {
         expect(form.valid).toBe(false);
         expect(form.value).toEqual({ name: '', salary: '', cohort: ''});
       });
+
+      it('should clear any highlighted inputs', () => {
+        let form = fixture.componentInstance.newPersonForm;
+        form.setValue(invalidInput);
+        fixture.componentInstance.addPerson();
+        fixture.detectChanges();
+
+        expect(fixture.nativeElement.querySelector('td.name input.is-danger'))
+            .not.toBeNull('name not highlighted');
+
+        form.setValue(validInput);
+        fixture.componentInstance.addPerson();
+        fixture.detectChanges();
+
+        expect(fixture.nativeElement.querySelector('td.name input.is-danger'))
+            .toBeNull('name still highlighted');
+      });
     });
 
     describe('with invalid inputs', () => {
-      let invalidPerson = { name: '', salary: 123, cohort: '' };
-
       beforeEach(() => {
-        fixture.componentInstance.newPersonForm.setValue(invalidPerson);
+        fixture.componentInstance.newPersonForm.setValue(invalidInput);
       });
 
-      it('should not do anything', () => {
+      it('should highlight invalid inputs', () => {
+        fixture.componentInstance.addPerson();
+        fixture.detectChanges();
+
+        expect(fixture.nativeElement.querySelector('td.name input.is-danger'))
+            .not.toBeNull('name not highlighted');
+        expect(fixture.nativeElement.querySelector('td.cohort input.is-danger'))
+            .not.toBeNull('cohort not highlighted');
+      });
+
+      it('should not update the array, chart or inputs', () => {
         let initialLength = fixture.componentInstance.people.length;
         fixture.componentInstance.addPerson();
 
         expect(fixture.componentInstance.people.length).toBe(initialLength);
         expect(fixture.componentInstance.updateChart).not.toHaveBeenCalled();
-        expect(fixture.componentInstance.newPersonForm.value).toEqual(invalidPerson);
+        expect(fixture.componentInstance.newPersonForm.value).toEqual(invalidInput);
       });
     });
   });

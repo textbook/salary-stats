@@ -32,6 +32,8 @@ export class AppComponent implements OnInit {
   options: any;
   people: Person[];
 
+  private formSubmitted: boolean;
+
   constructor(private builder: FormBuilder) {
     this.newPersonForm = builder.group({
       name: ['', Validators.required],
@@ -57,6 +59,7 @@ export class AppComponent implements OnInit {
   }
 
   addPerson() {
+    this.formSubmitted = true;
     if (this._hasValidInput()) {
       this._addPerson(this.newPersonForm.value);
       this._clearInputData();
@@ -118,7 +121,7 @@ export class AppComponent implements OnInit {
         return;
       }
     }
-    this.newPersonForm.setValue(person);
+    this._resetForm(person);
   }
 
   private _hasValidInput() {
@@ -126,7 +129,12 @@ export class AppComponent implements OnInit {
   }
 
   private _clearInputData() {
-    this.newPersonForm.setValue(EMPTY_FORM);
+    this._resetForm(EMPTY_FORM);
+  }
+
+  private _resetForm(person: any) {
+    this.formSubmitted = false;
+    this.newPersonForm.setValue(person);
   }
 
   private _getPerson(index: number): Person {

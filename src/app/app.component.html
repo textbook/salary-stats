@@ -30,13 +30,16 @@
       <tfoot [formGroup]="newPersonForm">
         <tr>
           <td class="name control">
-            <input type="text" class="input" placeholder="Name" formControlName="name">
+            <input type="text" class="input" placeholder="Name" formControlName="name"
+                [ngClass]="{ 'is-danger': formSubmitted && newPersonForm.controls['name'].invalid }">
           </td>
           <td class="salary control">
-            <input type="number" class="input" placeholder="Salary" formControlName="salary">
+            <input type="number" class="input" placeholder="Salary" formControlName="salary"
+                [ngClass]="{ 'is-danger': formSubmitted && newPersonForm.controls['salary'].invalid }">
           </td>
           <td class="cohort control">
-            <input type="text" class="input" placeholder="Cohort" formControlName="cohort">
+            <input type="text" class="input" placeholder="Cohort" formControlName="cohort"
+                [ngClass]="{ 'is-danger': formSubmitted && newPersonForm.controls['cohort'].invalid }">
           </td>
           <td class="has-text-right">
             <button class="button is-success is-outlined is-small" (click)="addPerson()">Add</button>
