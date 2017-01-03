@@ -1,10 +1,10 @@
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 
-
 import { ChartModule } from 'angular2-highcharts';
 
 import { AppComponent } from './app.component';
+import { Statistics } from '../lib';
 
 describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
@@ -248,74 +248,26 @@ describe('AppComponent', () => {
     });
 
     it('should use salaries in the series', () => {
+      let plotValues = [1, 2, 3, 4, 5];
+      spyOn(Statistics, 'generateBoxPlotData').and.returnValue(plotValues);
       let salary = 1234;
       fixture.componentInstance.people = [{ name: 'Baz', cohort: 'A', salary }];
 
       fixture.componentInstance.updateChart();
 
-      expect(getSeries().data[0]).toEqual([salary]);
+      expect(Statistics.generateBoxPlotData).toHaveBeenCalledWith([salary]);
+      expect(getSeries().data[0]).toEqual(plotValues);
     });
 
     it('should display a series per cohort', () => {
-      let salaryA = 10, salaryB = 20;
       fixture.componentInstance.people = [
-        { name: 'Foo', cohort: 'A', salary: salaryA },
-        { name: 'Bar', cohort: 'B', salary: salaryB },
+        { name: 'Foo', cohort: 'A', salary: 10 },
+        { name: 'Bar', cohort: 'B', salary: 20 },
       ];
 
       fixture.componentInstance.updateChart();
 
-      expect(getSeries().data[0]).toEqual([salaryA]);
-      expect(getSeries().data[1]).toEqual([salaryB]);
-    });
-
-    it('should sort the salaries in each cohort', () => {
-      fixture.componentInstance.people = [
-        { name: 'A', cohort: 'A', salary: 5 },
-        { name: 'B', cohort: 'A', salary: 1 },
-        { name: 'C', cohort: 'A', salary: 3 },
-        { name: 'D', cohort: 'B', salary: 4 },
-        { name: 'E', cohort: 'B', salary: 2 },
-      ];
-
-      fixture.componentInstance.updateChart();
-
-      expect(getSeries().data[0]).toEqual([1, 3, 5]);
-      expect(getSeries().data[1]).toEqual([2, 4]);
-    });
-
-    it('should show a warning if any cohort has fewer than five members', () => {
-      fixture.componentInstance.people = [
-        { name: 'Foo', cohort: 'A', salary: 1 },
-        { name: 'Foo', cohort: 'A', salary: 2 },
-        { name: 'Foo', cohort: 'A', salary: 3 },
-        { name: 'Foo', cohort: 'A', salary: 4 },
-        { name: 'Foo', cohort: 'A', salary: 5 },
-        { name: 'Bar', cohort: 'B', salary: 6 },
-      ];
-
-      fixture.componentInstance.updateChart();
-      fixture.detectChanges();
-
-      let expected = 'cohort must have more than five members';
-      expect(fixture.nativeElement.querySelector('.is-warning').textContent).toContain(expected);
-    });
-
-    it('should show a warning if first cohort has fewer than five members', () => {
-      fixture.componentInstance.people = [
-        { name: 'Foo', cohort: 'A', salary: 1 },
-        { name: 'Bar', cohort: 'B', salary: 2 },
-        { name: 'Bar', cohort: 'B', salary: 3 },
-        { name: 'Bar', cohort: 'B', salary: 4 },
-        { name: 'Bar', cohort: 'B', salary: 5 },
-        { name: 'Bar', cohort: 'B', salary: 6 },
-      ];
-
-      fixture.componentInstance.updateChart();
-      fixture.detectChanges();
-
-      let expected = 'cohort must have more than five members';
-      expect(fixture.nativeElement.querySelector('.is-warning').textContent).toContain(expected);
+      expect(getSeries().data.length).toBe(2);
     });
 
     function getSeries() {

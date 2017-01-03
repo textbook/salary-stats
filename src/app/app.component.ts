@@ -6,9 +6,7 @@ import * as HighCharts from 'highcharts';
 import * as HighChartsMore from 'highcharts/highcharts-more';
 HighChartsMore(HighCharts);
 
-import { Person } from '../lib/models';
-
-const MINIMUM_COHORT_LENGTH = 5;
+import { Person, Statistics } from '../lib';
 
 const EMPTY_FORM = { name: '', salary: '', cohort: '' };
 
@@ -30,7 +28,6 @@ const BASE_SERIES_OPTIONS = {
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  displayWarning: boolean;
   newPersonForm: FormGroup;
   options: any;
   people: Person[];
@@ -82,13 +79,7 @@ export class AppComponent implements OnInit {
   }
 
   updateChart() {
-    let options = this._createChartOptions(this.people);
-    this.options = options;
-    this.displayWarning = this._anyCohortsShorterThanMinimumLength(this._getCohortData(options));
-  }
-
-  private _getCohortData(options) {
-    return options.series[0].data;
+    this.options = this._createChartOptions(this.people);
   }
 
   private _createChartOptions(people: Person[]) {
@@ -101,20 +92,12 @@ export class AppComponent implements OnInit {
 
   private _splitIntoCohorts(people: Person[]) {
     let cohortMap = this._createCohortMap(people);
-    let cohorts = Object.keys(cohortMap);
+    let cohorts = Array.from(Object.keys(cohortMap));
 
     return {
       categories: cohorts,
-      data: Array.from(cohorts).map(key => cohortMap[key].sort()),
+      data: cohorts.map(key => Statistics.generateBoxPlotData(cohortMap[key])),
     };
-  }
-
-  private _anyCohortsShorterThanMinimumLength(cohorts: number[][]) {
-    let numberOfCohortsShorterThanMinimumLength = cohorts.reduce(
-        (total, cohort) => total + (cohort.length < MINIMUM_COHORT_LENGTH ? 1 : 0),
-        0
-    );
-    return numberOfCohortsShorterThanMinimumLength > 0;
   }
 
   private _createCohortMap(people: Person[]): { [key: string]: number[] } {
