@@ -13,21 +13,12 @@ import { Person, Statistics } from '../lib';
 
 const EMPTY_FORM = { name: '', salary: '', cohort: '' };
 
-const BASE_CHART_OPTIONS = {
+const BASE_BOX_PLOT_OPTIONS = {
   chart: { type: 'boxplot' },
   legend: { enabled: false },
   title: { text: 'Salary Comparison' },
+  tooltip: { formatter: formatChartPoint },
   yAxis: { title: { text: 'Salary (£)' } },
-};
-
-const BASE_SERIES_OPTIONS = {
-  name: 'Salaries',
-  tooltip: { headerFormat: '<strong>Cohort {point.key}</strong><br>' },
-};
-
-const BASE_OUTLIER_OPTIONS = {
-  type: 'scatter',
-  tooltip: { pointFormat: 'Salary: £{point.y}', headerFormat: '<strong>{point.key}</strong><br>' },
 };
 
 @Component({
@@ -101,11 +92,9 @@ export class AppComponent implements OnInit {
     let { categories, data, outliers } = this._splitIntoCohorts(people);
 
     let xAxis = { categories, title: { text: 'Cohort' } };
-    let series = [
-        Object.assign({}, BASE_SERIES_OPTIONS, { data }),
-        Object.assign({}, BASE_OUTLIER_OPTIONS, { data: outliers }),
-    ];
-    return Object.assign({}, BASE_CHART_OPTIONS, { series, xAxis });
+    let series = [{ data }, { type: 'scatter', data: outliers }];
+
+    return Object.assign({}, BASE_BOX_PLOT_OPTIONS, { series, xAxis });
   }
 
   private _splitIntoCohorts(people: Person[]) {
@@ -181,4 +170,29 @@ export class AppComponent implements OnInit {
   private _deletePeople() {
     this.people.splice(0, this.people.length);
   }
+}
+
+export function formatChartPoint() {
+  if (this.point.options.hasOwnProperty('median')) {
+    return _formatBoxPlotPoint.call(this);
+  }
+  return _formatOutlierPoint.call(this);
+}
+
+function _formatBoxPlotPoint() {
+  let { low, q1, median, q3, high } = this.point.options;
+  let cohort = this.key;
+
+  return `<strong>Cohort ${cohort}</strong><br>
+          Upper fence: £${high}<br>
+          Upper quartile: £${q3}<br>
+          Median: £${median}<br>
+          Lower quartile: £${q1}<br>
+          Lower fence: £${low}`;
+}
+
+function _formatOutlierPoint() {
+  let { y, name } = this.point.options;
+  return `<strong>${name}</strong><br>
+          Salary: £${y}`;
 }

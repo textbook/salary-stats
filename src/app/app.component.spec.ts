@@ -3,7 +3,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { ChartModule } from 'angular2-highcharts';
 
-import { AppComponent } from './app.component';
+import { AppComponent, formatChartPoint } from './app.component';
 import { Statistics } from '../lib';
 
 describe('AppComponent', () => {
@@ -342,5 +342,25 @@ describe('AppComponent', () => {
     function getSeries(index: number) {
       return fixture.componentInstance.options.series[index];
     }
+  });
+
+  describe('formatChartPoint function', () => {
+    it('should return name and y value for outlier points', () => {
+      let context = { point: { options: { y: 123, name: 'Foo' } } };
+
+      let result = formatChartPoint.bind(context)();
+
+      expect(result).toContain('<strong>Foo</strong>');
+      expect(result).toContain('Salary: £123');
+    });
+
+    it('should return descriptive values for boxplot points', () => {
+      let context = { key: 'A', point: { options: { median: 123 } } };
+
+      let result = formatChartPoint.bind(context)();
+
+      expect(result).toContain('<strong>Cohort A</strong>');
+      expect(result).toContain('Median: £123');
+    });
   });
 });
