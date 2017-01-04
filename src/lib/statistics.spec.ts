@@ -1,4 +1,3 @@
-import { Person } from './models';
 const _ss = require('simple-statistics');
 
 import { Statistics } from './statistics';
@@ -26,20 +25,23 @@ describe('Statistics', () => {
   });
 
   describe('identifyOutliers method', () => {
-    let cohorts = ['X', 'A'];
-    let boxPlotData = [[], [1, 2, 3, 4, 5]];
-    let people = [_generatePerson(0, 'A'), _generatePerson(3, 'A'), _generatePerson(6, 'A')];
-
     it('should return values outside the calculated bounds, indexed by cohort', () => {
+      let cohorts = ['X', 'A', 'B'];
+      let boxPlotData = [[], [1, 2, 3, 4, 5], [3, 5, 7, 9, 11]];
+      let people = [
+        { name: 'Foo', salary: 0, cohort: 'A' },
+        { name: '', salary: 3, cohort: 'A' },
+        { name: 'Bar', salary: 6, cohort: 'A' },
+        { name: '', salary: 6, cohort: 'B' },
+        { name: 'Baz', salary: 15, cohort: 'B' },
+      ];
       let result = Statistics.identifyOutliers(people, boxPlotData, cohorts);
 
-      expect(result.length).toBe(2);
+      expect(result.length).toBe(3);
       expect(result[0]).toEqual({ x: 1, y: 0, name: 'Foo' });
-      expect(result[1]).toEqual({ x: 1, y: 6, name: 'Foo' });
+      expect(result[1]).toEqual({ x: 1, y: 6, name: 'Bar' });
+      expect(result[2]).toEqual({ x: 2, y: 15, name: 'Baz' });
     });
   });
 });
 
-function _generatePerson(salary: number, cohort: string): Person {
-  return { name: 'Foo', salary, cohort };
-}
