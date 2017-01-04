@@ -26,9 +26,8 @@ const BASE_SERIES_OPTIONS = {
 };
 
 const BASE_OUTLIER_OPTIONS = {
-  name: 'Outlier',
   type: 'scatter',
-  tooltip: { pointFormat: 'Salary: £{point.y}' },
+  tooltip: { pointFormat: 'Salary: £{point.y}', headerFormat: '<strong>{point.key}</strong><br>' },
 };
 
 @Component({

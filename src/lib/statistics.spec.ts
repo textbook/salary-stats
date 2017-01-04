@@ -34,8 +34,8 @@ describe('Statistics', () => {
       let result = Statistics.identifyOutliers(people, boxPlotData, cohorts);
 
       expect(result.length).toBe(2);
-      expect(result[0]).toEqual([1, 0]);
-      expect(result[1]).toEqual([1, 6]);
+      expect(result[0]).toEqual({ x: 1, y: 0, name: 'Foo' });
+      expect(result[1]).toEqual({ x: 1, y: 6, name: 'Foo' });
     });
   });
 });

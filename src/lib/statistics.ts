@@ -19,12 +19,12 @@ export class Statistics {
   static identifyOutliers(people: Person[], boxPlotData: number[][], cohorts: string[]): number[][] {
       let outliers = [];
 
-      for (let { salary, cohort } of people) {
+      for (let { salary, cohort, name } of people) {
         let index = cohorts.indexOf(cohort);
         let [lowerBound, , , , upperBound] = boxPlotData[index];
 
         if (salary < lowerBound || salary > upperBound) {
-          outliers.push([index, salary]);
+          outliers.push({ x: index, y: salary, name });
         }
       }
 
