@@ -282,7 +282,7 @@ describe('AppComponent', () => {
 
       fixture.componentInstance.updateChart();
 
-      expect(getSeries().data.length).toBe(0);
+      expect(getSeries(0).data.length).toBe(0);
     });
 
     it('should use salaries in the series', () => {
@@ -294,7 +294,7 @@ describe('AppComponent', () => {
       fixture.componentInstance.updateChart();
 
       expect(Statistics.calculateBoxPlotData).toHaveBeenCalledWith([salary]);
-      expect(getSeries().data[0]).toEqual(plotValues);
+      expect(getSeries(0).data[0]).toEqual(plotValues);
     });
 
     it('should display a series per cohort', () => {
@@ -305,7 +305,7 @@ describe('AppComponent', () => {
 
       fixture.componentInstance.updateChart();
 
-      expect(getSeries().data.length).toBe(2);
+      expect(getSeries(0).data.length).toBe(2);
     });
 
     it('should display outliers', () => {
@@ -323,8 +323,8 @@ describe('AppComponent', () => {
       expect(getSeries(1).data.length).toBe(1);
     });
 
-    function getSeries(index?: number) {
-      return fixture.componentInstance.options.series[index || 0];
+    function getSeries(index: number) {
+      return fixture.componentInstance.options.series[index];
     }
   });
 });
