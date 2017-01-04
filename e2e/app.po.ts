@@ -29,12 +29,23 @@ export class SalaryStatsPage {
     return this._getTextFromAllElements('tbody > tr:last-of-type > td');
   }
 
+  getCurrentInputs() {
+    return element.all(by.css('tfoot input')).map(el => el.getAttribute('value'));
+  }
+
   addNewRow(name: string, salary: number, cohort: string) {
+    this.enterRow(name, salary, cohort);
+    return element(by.css('tfoot button.is-success')).click();
+  }
+
+  clearInputs() {
+    return element(by.css('tfoot button.is-warning')).click();
+  }
+
+  enterRow(name: string, salary: number, cohort: string) {
     element(by.css('tfoot > tr > td.name > input')).sendKeys(name);
     element(by.css('tfoot > tr > td.salary > input')).sendKeys(salary.toString());
     element(by.css('tfoot > tr > td.cohort > input')).sendKeys(cohort);
-
-    return element(by.css('button.is-success')).click();
   }
 
   deleteFirstRow() {

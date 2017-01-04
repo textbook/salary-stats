@@ -42,7 +42,8 @@
                 [ngClass]="{ 'is-danger': formSubmitted && newPersonForm.controls['cohort'].invalid }">
           </td>
           <td class="has-text-right">
-            <button class="button is-success is-outlined is-small" (click)="addPerson()">Add</button>
+            <button class="button is-success is-small" (click)="addPerson()">Add</button>
+            <button class="button is-warning is-small" (click)="clearInputs()">Clear</button>
           </td>
         </tr>
       </tfoot>

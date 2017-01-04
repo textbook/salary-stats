@@ -89,9 +89,25 @@ describe('AppComponent', () => {
       setInputValue('tfoot td.salary input', salary.toString());
       setInputValue('tfoot td.cohort input', cohort);
 
-      fixture.nativeElement.querySelector('button.is-success').click();
+      fixture.nativeElement.querySelector('tfoot button.is-success').click();
 
       expect(_addPerson).toHaveBeenCalledWith({ name, salary, cohort });
+    });
+
+    it('should provide a button to clear inputs', () => {
+      let name = 'Keira', salary = 12345, cohort = 'C';
+      let form = fixture.componentInstance.newPersonForm;
+
+      setInputValue('tfoot td.name input', name);
+      setInputValue('tfoot td.salary input', salary.toString());
+      setInputValue('tfoot td.cohort input', cohort);
+
+      expect(form.value).toEqual({ name, salary, cohort });
+
+      fixture.nativeElement.querySelector('tfoot button.is-warning').click();
+      fixture.detectChanges();
+
+      expect(form.value).toEqual({ name: '', salary: '', cohort: '' });
     });
 
     function setInputValue(selector: string, value: string) {

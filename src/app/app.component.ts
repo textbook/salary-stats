@@ -89,6 +89,10 @@ export class AppComponent implements OnInit {
     }
   }
 
+  clearInputs() {
+    this._clearInputData();
+  }
+
   updateChart() {
     this.options = this._createChartOptions(this.people);
   }
