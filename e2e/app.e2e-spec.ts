@@ -8,7 +8,7 @@ describe('salary-stats App', function() {
   });
 
   it('should display application title', () => {
-    expect(page.getTitleText()).toEqual('Salary Statistics');
+    expect(page.getTitleText()).toEqual('Salary statistics');
   });
 
   describe('person table', () => {

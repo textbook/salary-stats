@@ -22,7 +22,7 @@ describe('AppComponent', () => {
   });
 
   it('should render title in a h1 tag', () => {
-    expect(fixture.nativeElement.querySelector('h1').textContent).toContain('Salary Statistics');
+    expect(fixture.nativeElement.querySelector('h1').textContent).toContain('Salary statistics');
   });
 
   describe('person table', () => {
