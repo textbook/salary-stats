@@ -51,7 +51,7 @@ export class AppComponent {
     this.formSubmitted = true;
     if (this._hasValidInput()) {
       this.service.addPerson(this.newPersonForm.value);
-      this._clearInputData();
+      this.clearInputs();
     }
   }
 
@@ -68,7 +68,7 @@ export class AppComponent {
   }
 
   clearInputs() {
-    this._clearInputData();
+    this._resetForm(EMPTY_FORM);
   }
 
   createChartOptions(people: Person[]) {
@@ -117,20 +117,14 @@ export class AppComponent {
 
   private _overwriteFormIfEmpty(person: Person) {
     let formData = this.newPersonForm.value;
-    for (let key of ['name', 'salary', 'cohort']) {
-      if (formData[key] !== EMPTY_FORM[key]) {
-        return;
-      }
+    let keys = Object.keys(person);
+    if (keys.filter(key => formData[key] === EMPTY_FORM[key]).length === keys.length) {
+      this._resetForm(person);
     }
-    this._resetForm(person);
   }
 
   private _hasValidInput() {
     return this.newPersonForm.valid;
-  }
-
-  private _clearInputData() {
-    this._resetForm(EMPTY_FORM);
   }
 
   private _resetForm(person: any) {

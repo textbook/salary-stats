@@ -34,7 +34,6 @@ export class PersonService {
     this.personSubject.next(this.people.concat([newPerson]));
   }
 
-
   deletePersonAtIndex(index: number) {
     this.personSubject.next(this.people.filter((_, currentIndex) => currentIndex !== index));
   }
