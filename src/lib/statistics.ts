@@ -7,7 +7,8 @@ const QUARTILES = [0.25, 0.5, 0.75];
 
 export class Statistics {
   static calculateBoxPlotData(sample: number[]): number[] {
-    let [lowerQuartile, median, upperQuartile] = QUARTILES.map(p => _ss.quantileSorted(sample, p));
+    let [lowerQuartile, median, upperQuartile] = QUARTILES
+        .map(p => Math.round(_ss.quantileSorted(sample, p)));
     let interQuartileRange = upperQuartile - lowerQuartile;
 
     let lowerInnerFence = Math.round(lowerQuartile - (interQuartileRange * FENCE_FACTOR));

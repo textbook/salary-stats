@@ -22,6 +22,13 @@ describe('Statistics', () => {
       expect(Statistics.calculateBoxPlotData(testSample))
           .toEqual([-50, 25, 50, 75, 150]);
     });
+
+    it('should round the values calculated by simple-statistics', () => {
+      _ss.quantileSorted.and.returnValue(1.23);
+
+      expect(Statistics.calculateBoxPlotData(testSample))
+          .toEqual([1, 1, 1, 1, 1]);
+    });
   });
 
   describe('identifyOutliers method', () => {
