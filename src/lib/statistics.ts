@@ -16,18 +16,13 @@ export class Statistics {
     return [lowerInnerFence, lowerQuartile, median, upperQuartile, upperInnerFence];
   }
 
-  static identifyOutliers(people: Person[], boxPlotData: number[][], cohorts: string[]): number[][] {
-      let outliers = [];
-
-      for (let { salary, cohort, name } of people) {
-        let index = cohorts.indexOf(cohort);
-        let [lowerBound, , , , upperBound] = boxPlotData[index];
-
-        if (salary < lowerBound || salary > upperBound) {
-          outliers.push({ x: index, y: salary, name });
-        }
-      }
-
-      return outliers;
+  static identifyOutliers(people: Person[], boxPlotData: number[][], cohorts: string[]): any[] {
+      return people
+          .filter(({ salary, cohort }) => {
+            let index = cohorts.indexOf(cohort);
+            let [lowerBound, , , , upperBound] = boxPlotData[index];
+            return salary < lowerBound || salary > upperBound;
+          })
+          .map(({ salary, cohort, name }) => ({ x: cohorts.indexOf(cohort), y: salary, name }));
   }
 }
