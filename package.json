@@ -24,7 +24,7 @@
     "@angular/platform-browser-dynamic": "^2.3.1",
     "@angular/router": "^3.3.1",
     "angular2-highcharts": "^0.4.1",
-    "bulma": "^0.2.3",
+    "bulma": "^0.3.0",
     "core-js": "^2.4.1",
     "intl": "^1.2.5",
     "rxjs": "^5.0.1",
