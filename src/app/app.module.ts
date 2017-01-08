@@ -6,6 +6,7 @@ import { HttpModule } from '@angular/http';
 import { ChartModule } from 'angular2-highcharts';
 
 import { AppComponent } from './app.component';
+import { PersonService } from './person.service';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,7 @@ import { AppComponent } from './app.component';
     ReactiveFormsModule,
     HttpModule
   ],
-  providers: [],
+  providers: [PersonService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

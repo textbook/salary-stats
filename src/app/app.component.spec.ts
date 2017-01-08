@@ -5,19 +5,23 @@ import { ChartModule } from 'angular2-highcharts';
 
 import { AppComponent, formatChartPoint } from './app.component';
 import { Statistics } from '../lib';
+import { PersonService } from './person.service';
 
 describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
+  let service: PersonService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [AppComponent],
       imports: [ChartModule, ReactiveFormsModule],
+      providers: [PersonService],
     }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AppComponent);
+    service = TestBed.get(PersonService);
     fixture.detectChanges();
   });
 
@@ -81,7 +85,7 @@ describe('AppComponent', () => {
     });
 
     it('should provide inputs for a new person', () => {
-      let _addPerson = spyOn(fixture.componentInstance, '_addPerson');
+      let addPerson = spyOn(service, 'addPerson').and.callThrough();
       let name = 'Keira', salary = 12345, cohort = 'C';
       expect(fixture.nativeElement.querySelectorAll('tfoot td input').length).toBe(3);
 
@@ -91,7 +95,7 @@ describe('AppComponent', () => {
 
       fixture.nativeElement.querySelector('tfoot button.is-success').click();
 
-      expect(_addPerson).toHaveBeenCalledWith({ name, salary, cohort });
+      expect(addPerson).toHaveBeenCalledWith({ name, salary, cohort });
     });
 
     it('should provide a button to clear inputs', () => {
@@ -121,20 +125,9 @@ describe('AppComponent', () => {
     let validInput = { name: 'Foo', salary: 123, cohort: 'A' };
     let invalidInput = { name: '', salary: 123, cohort: '' };
 
-    beforeEach(() => {
-      spyOn(fixture.componentInstance, 'updateChart');
-    });
-
     describe('with valid inputs', () => {
-
       beforeEach(() => {
         fixture.componentInstance.newPersonForm.setValue(validInput);
-      });
-
-      it('should update the chart', () => {
-        fixture.componentInstance.addPerson();
-
-        expect(fixture.componentInstance.updateChart).toHaveBeenCalled();
       });
 
       it('should add the form values to the array', () => {
@@ -190,32 +183,22 @@ describe('AppComponent', () => {
         fixture.componentInstance.addPerson();
 
         expect(fixture.componentInstance.people.length).toBe(initialLength);
-        expect(fixture.componentInstance.updateChart).not.toHaveBeenCalled();
         expect(fixture.componentInstance.newPersonForm.value).toEqual(invalidInput);
       });
     });
   });
 
   describe('deletePerson method', () => {
-    beforeEach(() => {
-      spyOn(fixture.componentInstance, 'updateChart');
-    });
-
     it('should remove the person from the array', () => {
-      let people = fixture.componentInstance.people;
-      let initialLength = people.length;
-      let firstPersonName = people[0].name;
+      let oldPeople = fixture.componentInstance.people;
+      let initialLength = oldPeople.length;
+      let firstPersonName = oldPeople[0].name;
 
       fixture.componentInstance.deletePerson(0);
 
-      expect(people.length).toBe(initialLength - 1);
-      expect(people[0].name).not.toEqual(firstPersonName);
-    });
-
-    it('should update the chart', () => {
-      fixture.componentInstance.deletePerson(0);
-
-      expect(fixture.componentInstance.updateChart).toHaveBeenCalled();
+      let newPeople = fixture.componentInstance.people;
+      expect(newPeople.length).toBe(initialLength - 1);
+      expect(newPeople[0].name).not.toEqual(firstPersonName);
     });
 
     it('should fill the form with the deleted data if empty', () => {
@@ -252,26 +235,16 @@ describe('AppComponent', () => {
     });
 
     describe('if user confirms', () => {
-      beforeEach(() => {
-        spyOn(fixture.componentInstance, 'updateChart');
-        confirm.and.returnValue(true);
-      });
-
       it('should clear the array', () => {
+        confirm.and.returnValue(true);
         fixture.componentInstance.deleteAllPeople();
 
         expect(fixture.componentInstance.people.length).toBe(0);
       });
-
-      it('should update the chart', () => {
-        fixture.componentInstance.deleteAllPeople();
-
-        expect(fixture.componentInstance.updateChart).toHaveBeenCalled();
-      });
     });
 
     describe('if user does not confirm', () => {
-      it('should do nothing', () => {
+      it('should not clear the array', () => {
         let people = fixture.componentInstance.people;
         let initialLength = people.length;
         confirm.and.returnValue(false);
@@ -283,65 +256,46 @@ describe('AppComponent', () => {
     });
   });
 
-  describe('updateChart method', () => {
-    it('should render appropriate chart options', () => {
-      fixture.componentInstance.updateChart();
-
-      let options = fixture.componentInstance.options;
+  describe('createChartOptions method', () => {
+    it('should provide appropriate chart options', () => {
+      let options = fixture.componentInstance.createChartOptions([]);
       expect(options.title.text).toBe('Salary Comparison');
       expect(options.chart.type).toBe('boxplot');
       expect(options.yAxis.title.text).toBe('Salary (£)');
     });
 
-    it('should update the series from the people', () => {
-      fixture.componentInstance.people = [];
-
-      fixture.componentInstance.updateChart();
-
-      expect(getSeries(0).data.length).toBe(0);
-    });
-
-    it('should use salaries in the series', () => {
+    it('should use salaries in the points', () => {
       let plotValues = [1, 2, 3, 4, 5];
       spyOn(Statistics, 'calculateBoxPlotData').and.returnValue(plotValues);
       let salary = 1234;
-      fixture.componentInstance.people = [{ name: 'Baz', cohort: 'A', salary }];
 
-      fixture.componentInstance.updateChart();
+      let options = fixture.componentInstance.createChartOptions([{ name: 'Baz', cohort: 'A', salary }]);
 
       expect(Statistics.calculateBoxPlotData).toHaveBeenCalledWith([salary]);
-      expect(getSeries(0).data[0]).toEqual(plotValues);
+      expect(options.series[0].data[0]).toEqual(plotValues);
     });
 
-    it('should display a series per cohort', () => {
-      fixture.componentInstance.people = [
+    it('should provide a point per cohort', () => {
+      let options = fixture.componentInstance.createChartOptions([
         { name: 'Foo', cohort: 'A', salary: 10 },
         { name: 'Bar', cohort: 'B', salary: 20 },
-      ];
+      ]);
 
-      fixture.componentInstance.updateChart();
-
-      expect(getSeries(0).data.length).toBe(2);
+      expect(options.series[0].data.length).toBe(2);
     });
 
-    it('should display outliers', () => {
-      fixture.componentInstance.people = [
+    it('should provide an outliers series', () => {
+      let options = fixture.componentInstance.createChartOptions([
         { name: 'Foo', cohort: 'A', salary: 10 },
         { name: 'Foo', cohort: 'A', salary: 10 },
         { name: 'Foo', cohort: 'A', salary: 10 },
         { name: 'Foo', cohort: 'A', salary: 10 },
         { name: 'Foo', cohort: 'A', salary: 10 },
         { name: 'Bar', cohort: 'A', salary: 100 },
-      ];
+      ]);
 
-      fixture.componentInstance.updateChart();
-
-      expect(getSeries(1).data.length).toBe(1);
+      expect(options.series[1].data.length).toBe(1);
     });
-
-    function getSeries(index: number) {
-      return fixture.componentInstance.options.series[index];
-    }
   });
 
   describe('formatChartPoint function', () => {
