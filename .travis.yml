@@ -20,6 +20,7 @@ script:
 
 after_success:
   - npm run coveralls
+  - npm run codacy
 
 before_deploy:
   - ng build --prod
