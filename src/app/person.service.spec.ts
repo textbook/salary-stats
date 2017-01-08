@@ -38,11 +38,13 @@ describe('PersonService', () => {
     });
   });
 
-  it('should allow a single person to be deleted by index', done => {
-    service.deletePersonAtIndex(2);
+  it('should allow a single person to be deleted', done => {
+    let name = 'Davina';
+    service.deletePerson({ name, salary: 12453, cohort: 'A' });
 
     service.people$.subscribe((people: Person[]) => {
       expect(people.length).toBe(9);
+      expect(people.filter(person => person.name === name).length).toBe(0);
       done();
     });
   });

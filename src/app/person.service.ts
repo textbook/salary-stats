@@ -34,11 +34,18 @@ export class PersonService {
     this.personSubject.next(this.people.concat([newPerson]));
   }
 
-  deletePersonAtIndex(index: number) {
-    this.personSubject.next(this.people.filter((_, currentIndex) => currentIndex !== index));
+  deletePerson(personToDelete: Person) {
+    this.personSubject.next(this.people.filter((person) => {
+      return this.areDifferentPeople(person, personToDelete);
+    }));
   }
 
   deleteAllPeople() {
     this.personSubject.next([]);
+  }
+
+  private areDifferentPeople(person: Person, oldPerson: Person): boolean {
+    let keys = Object.keys(person);
+    return keys.filter(key => person[key] === oldPerson[key]).length !== keys.length;
   }
 }

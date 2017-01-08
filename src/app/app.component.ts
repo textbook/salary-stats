@@ -55,9 +55,9 @@ export class AppComponent {
     }
   }
 
-  deletePerson(index: number) {
-    this._overwriteFormIfEmpty(this._getPerson(index));
-    this.service.deletePersonAtIndex(index);
+  deletePerson(person: Person) {
+    this._overwriteFormIfEmpty(person);
+    this.service.deletePerson(person);
   }
 
   deleteAllPeople() {
@@ -130,10 +130,6 @@ export class AppComponent {
   private _resetForm(person: any) {
     this.formSubmitted = false;
     this.newPersonForm.setValue(person);
-  }
-
-  private _getPerson(index: number): Person {
-    return this.people[index];
   }
 }
 

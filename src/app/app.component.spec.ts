@@ -191,23 +191,22 @@ describe('AppComponent', () => {
   describe('deletePerson method', () => {
     it('should remove the person from the array', () => {
       let oldPeople = fixture.componentInstance.people;
-      let initialLength = oldPeople.length;
-      let firstPersonName = oldPeople[0].name;
+      let oldFirstPerson = oldPeople[0];
 
-      fixture.componentInstance.deletePerson(0);
+      fixture.componentInstance.deletePerson(oldFirstPerson);
 
       let newPeople = fixture.componentInstance.people;
-      expect(newPeople.length).toBe(initialLength - 1);
-      expect(newPeople[0].name).not.toEqual(firstPersonName);
+      expect(newPeople.length).toBe(oldPeople.length - 1);
+      expect(newPeople[0].name).not.toEqual(oldFirstPerson.name);
     });
 
     it('should fill the form with the deleted data if empty', () => {
-      let index = 0;
-      let person = fixture.componentInstance.people[index];
+      let oldPeople = fixture.componentInstance.people;
+      let oldFirstPerson = oldPeople[0];
 
-      fixture.componentInstance.deletePerson(index);
+      fixture.componentInstance.deletePerson(oldFirstPerson);
 
-      expect(fixture.componentInstance.newPersonForm.value).toEqual(person);
+      expect(fixture.componentInstance.newPersonForm.value).toEqual(oldFirstPerson);
     });
 
     it('should not overwrite the form data if not empty', () => {
@@ -215,7 +214,7 @@ describe('AppComponent', () => {
       let inputs = { name: 'Foo', salary: '', cohort: '' };
       form.setValue(inputs);
 
-      fixture.componentInstance.deletePerson(0);
+      fixture.componentInstance.deletePerson(fixture.componentInstance.people[0]);
 
       expect(form.value).toEqual(inputs);
     });
