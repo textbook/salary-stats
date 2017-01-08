@@ -1,31 +1,20 @@
-# SalaryStats
+# Salary Statistics
 
-This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.0.0-beta.24.
+Analyse and compare salaries by cohort.
 
-## Development server
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+[![Build Status][1]][2]
+[![Coverage Status][3]][4]
+[![Dependencies][5]][6]
+[![License][7]][8]
+[![Codacy Grade][9]][10]
 
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive/pipe/service/class/module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-Before running the tests make sure you are serving the app via `ng serve`.
-
-## Deploying to Github Pages
-
-Run `ng github-pages:deploy` to deploy to Github Pages.
-
-## Further help
-
-To get more help on the `angular-cli` use `ng help` or go check out the [Angular-CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+  [1]: https://travis-ci.org/textbook/salary-stats.svg?branch=master
+  [2]: https://travis-ci.org/textbook/salary-stats
+  [3]: https://coveralls.io/repos/github/textbook/salary-stats/badge.svg?branch=master
+  [4]: https://coveralls.io/github/textbook/salary-stats?branch=master
+  [5]: https://david-dm.org/textbook/salary-stats/status.svg
+  [6]: https://david-dm.org/textbook/salary-stats
+  [7]: https://img.shields.io/badge/license-ISC-blue.svg
+  [8]: https://github.com/textbook/salary-stats/blob/master/LICENSE
+  [9]: https://api.codacy.com/project/badge/Grade/ec6f1694d6c04b0e82645375719422f2
+  [10]: https://www.codacy.com/app/j-r-sharpe-github/salary-stats?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=textbook/salary-stats&amp;utm_campaign=Badge_Grade
