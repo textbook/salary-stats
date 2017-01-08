@@ -300,21 +300,27 @@ describe('AppComponent', () => {
 
   describe('formatChartPoint function', () => {
     it('should return name and y value for outlier points', () => {
-      let context = { point: { options: { y: 123, name: 'Foo' } } };
+      let context = { point: { options: { y: 1234, name: 'Foo' } } };
 
       let result = formatChartPoint.bind(context)();
 
       expect(result).toContain('<strong>Foo</strong>');
-      expect(result).toContain('Salary: £123');
+      expect(result).toContain('Salary: £1,234');
     });
 
     it('should return descriptive values for boxplot points', () => {
-      let context = { key: 'A', point: { options: { median: 123 } } };
+      let context = { key: 'A', point: { options: {
+        low: 123,
+        q1: 123,
+        median: 1234,
+        q3: 123,
+        high: 123,
+      } } };
 
       let result = formatChartPoint.bind(context)();
 
       expect(result).toContain('<strong>Cohort A</strong>');
-      expect(result).toContain('Median: £123');
+      expect(result).toContain('Median: £1,234');
     });
   });
 });

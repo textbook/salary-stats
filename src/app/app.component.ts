@@ -155,15 +155,15 @@ function _formatBoxPlotPoint() {
   let cohort = this.key;
 
   return `<strong>Cohort ${cohort}</strong><br>
-          Upper fence: £${high}<br>
-          Upper quartile: £${q3}<br>
-          Median: £${median}<br>
-          Lower quartile: £${q1}<br>
-          Lower fence: £${low}`;
+          Upper fence: £${high.toLocaleString()}<br>
+          Upper quartile: £${q3.toLocaleString()}<br>
+          Median: £${median.toLocaleString()}<br>
+          Lower quartile: £${q1.toLocaleString()}<br>
+          Lower fence: £${low.toLocaleString()}`;
 }
 
 function _formatOutlierPoint() {
   let { y, name } = this.point.options;
   return `<strong>${name}</strong><br>
-          Salary: £${y}`;
+          Salary: £${y.toLocaleString()}`;
 }
