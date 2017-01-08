@@ -1,5 +1,7 @@
 # SalaryStats
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/ec6f1694d6c04b0e82645375719422f2)](https://www.codacy.com/app/j-r-sharpe-github/salary-stats?utm_source=github.com&utm_medium=referral&utm_content=textbook/salary-stats&utm_campaign=badger)
+
 This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.0.0-beta.24.
 
 ## Development server
