@@ -24,7 +24,7 @@ describe('salary-stats App', function() {
       expect(page.getFirstRow()).toEqual(['Alice', '£12,345', 'A', 'Delete']);
     });
 
-    it('should allow people to be deleted', () => {
+    it('should allow a person to be deleted', () => {
       page.getPeople().count().then(initialCount => {
         page.deleteFirstRow();
 
@@ -41,7 +41,7 @@ describe('salary-stats App', function() {
       expect(page.getPeople().count()).toBe(0);
     });
 
-    it('should allow people to be added', () => {
+    it('should allow a person to be added', () => {
       page.getPeople().count().then(initialCount => {
         page.addNewRow('Keira', 14532, 'C');
 
@@ -51,7 +51,7 @@ describe('salary-stats App', function() {
       });
     });
 
-    it('should allow entries to be cleared', () => {
+    it('should allow inputs to be cleared', () => {
       page.enterRow('Keira', 14532, 'C');
       expect(page.getCurrentInputs()).toEqual(['Keira', '14532', 'C']);
 
