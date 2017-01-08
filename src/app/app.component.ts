@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Observable } from 'rxjs';
@@ -27,6 +27,8 @@ const BASE_BOX_PLOT_OPTIONS = {
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+  @ViewChild('nameInput') nameInput;
+
   newPersonForm: FormGroup;
   people: Person[];
 
@@ -130,6 +132,7 @@ export class AppComponent {
   private _resetForm(person: any) {
     this.formSubmitted = false;
     this.newPersonForm.setValue(person);
+    this.nameInput.nativeElement.focus();
   }
 }
 

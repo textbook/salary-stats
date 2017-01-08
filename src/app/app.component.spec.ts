@@ -161,6 +161,15 @@ describe('AppComponent', () => {
         expect(fixture.nativeElement.querySelector('td.name input.is-danger'))
             .toBeNull('name still highlighted');
       });
+
+      it('should focus the name input', () => {
+        let element: HTMLInputElement = fixture.nativeElement.querySelector('tfoot td.name input');
+        spyOn(element, 'focus');
+
+        fixture.componentInstance.addPerson();
+
+        expect(element.focus).toHaveBeenCalled();
+      });
     });
 
     describe('with invalid inputs', () => {

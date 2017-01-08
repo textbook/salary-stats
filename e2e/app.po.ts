@@ -5,6 +5,10 @@ export class SalaryStatsPage {
     return browser.get('/');
   }
 
+  getActiveElement() {
+    return browser.driver.switchTo().activeElement();
+  }
+
   getTitleText() {
     return element(by.css('sst-root h1')).getText();
   }
@@ -42,8 +46,12 @@ export class SalaryStatsPage {
     return element(by.css('tfoot button.is-warning')).click();
   }
 
+  getNameInput() {
+    return element(by.css('tfoot > tr > td.name > input'));
+  }
+
   enterRow(name: string, salary: number, cohort: string) {
-    element(by.css('tfoot > tr > td.name > input')).sendKeys(name);
+    this.getNameInput().sendKeys(name);
     element(by.css('tfoot > tr > td.salary > input')).sendKeys(salary.toString());
     element(by.css('tfoot > tr > td.cohort > input')).sendKeys(cohort);
   }

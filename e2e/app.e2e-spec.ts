@@ -47,6 +47,7 @@ describe('salary-stats App', function() {
 
         expect(page.getPeople().count()).toBe(initialCount + 1);
         expect(page.getLastRow()).toEqual(['Keira', '£14,532', 'C', 'Delete']);
+        expect(page.getNameInput().getId()).toBe(page.getActiveElement().getId());
       });
     });
 
