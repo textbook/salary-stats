@@ -1,4 +1,4 @@
-import { browser, element, by } from 'protractor';
+import { browser, element, by, protractor } from 'protractor';
 
 export class SalaryStatsPage {
   navigateTo() {
@@ -40,6 +40,11 @@ export class SalaryStatsPage {
   addNewRow(name: string, salary: number, cohort: string) {
     this.enterRow(name, salary, cohort);
     return element(by.css('tfoot button.is-success')).click();
+  }
+
+  addNewRowFromKeyboard(name: string, salary: number, cohort: string) {
+    this.enterRow(name, salary, cohort);
+    return element(by.css('tfoot td.cohort input')).sendKeys(protractor.Key.ENTER);
   }
 
   clearInputs() {

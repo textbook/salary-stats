@@ -1,5 +1,6 @@
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
+import { By } from '@angular/platform-browser';
 
 import { ChartModule } from 'angular2-highcharts';
 
@@ -94,6 +95,21 @@ describe('AppComponent', () => {
       setInputValue('tfoot td.cohort input', cohort);
 
       fixture.nativeElement.querySelector('tfoot button.is-success').click();
+
+      expect(addPerson).toHaveBeenCalledWith({ name, salary, cohort });
+    });
+
+    it('should allow a person to be added by hitting enter', () => {
+      let addPerson = spyOn(service, 'addPerson').and.callThrough();
+      let name = 'Keira', salary = 12345, cohort = 'C';
+
+      setInputValue('tfoot td.name input', name);
+      setInputValue('tfoot td.salary input', salary.toString());
+      setInputValue('tfoot td.cohort input', cohort);
+
+      fixture.debugElement
+          .query(By.css('tfoot td.cohort input'))
+          .triggerEventHandler('keyup.enter', null);
 
       expect(addPerson).toHaveBeenCalledWith({ name, salary, cohort });
     });

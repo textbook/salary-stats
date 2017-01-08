@@ -51,6 +51,16 @@ describe('salary-stats App', function() {
       });
     });
 
+    it('should allow a person to be added from the keyboard', () => {
+      page.getPeople().count().then(initialCount => {
+        page.addNewRowFromKeyboard('Keira', 14532, 'C');
+
+        expect(page.getPeople().count()).toBe(initialCount + 1);
+        expect(page.getLastRow()).toEqual(['Keira', '£14,532', 'C', 'Delete']);
+        expect(page.getNameInput().getId()).toBe(page.getActiveElement().getId());
+      });
+    });
+
     it('should allow inputs to be cleared', () => {
       page.enterRow('Keira', 14532, 'C');
       expect(page.getCurrentInputs()).toEqual(['Keira', '14532', 'C']);
