@@ -20,12 +20,8 @@ describe('TableComponent', () => {
   ];
 
   beforeEach(async(() => {
-    mockService = {
-      people$: peopleSubject.asObservable(),
-      addPerson: jasmine.createSpy('addPerson'),
-      deletePerson: jasmine.createSpy('deletePerson'),
-      deleteAllPeople: jasmine.createSpy('deleteAllPeople'),
-    };
+    mockService = jasmine.createSpyObj('PersonService', ['addPerson', 'deletePerson', 'deleteAllPeople']);
+    mockService.people$ = peopleSubject.asObservable();
 
     TestBed.configureTestingModule({
       declarations: [ TableComponent ],
