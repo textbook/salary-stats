@@ -158,7 +158,7 @@ describe('AppComponent', () => {
         fixture.componentInstance.addPerson();
 
         expect(form.valid).toBe(false);
-        expect(form.value).toEqual({ name: '', salary: '', cohort: ''});
+        expect(form.value).toEqual({ name: '', salary: '', cohort: '' });
       });
 
       it('should clear any highlighted inputs', () => {
@@ -293,7 +293,11 @@ describe('AppComponent', () => {
       spyOn(Statistics, 'calculateBoxPlotData').and.returnValue(plotValues);
       let salary = 1234;
 
-      let options = fixture.componentInstance.createChartOptions([{ name: 'Baz', cohort: 'A', salary }]);
+      let options = fixture.componentInstance.createChartOptions([{
+        name: 'Baz',
+        cohort: 'A',
+        salary
+      }]);
 
       expect(Statistics.calculateBoxPlotData).toHaveBeenCalledWith([salary]);
       expect(options.series[0].data[0]).toEqual(plotValues);
@@ -333,13 +337,18 @@ describe('AppComponent', () => {
     });
 
     it('should return descriptive values for boxplot points', () => {
-      let context = { key: 'A', point: { options: {
-        low: 123,
-        q1: 123,
-        median: 1234,
-        q3: 123,
-        high: 123,
-      } } };
+      let context = {
+        key: 'A',
+        point: {
+          options: {
+            low: 123,
+            q1: 123,
+            median: 1234,
+            q3: 123,
+            high: 123,
+          }
+        }
+      };
 
       let result = formatChartPoint.bind(context)();
 

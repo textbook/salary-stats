@@ -51,14 +51,14 @@ export class AppComponent {
 
   addPerson() {
     this.formSubmitted = true;
-    if (this._hasValidInput()) {
+    if (this.hasValidInput()) {
       this.service.addPerson(this.newPersonForm.value);
       this.clearInputs();
     }
   }
 
   deletePerson(person: Person) {
-    this._overwriteFormIfEmpty(person);
+    this.overwriteFormIfEmpty(person);
     this.service.deletePerson(person);
   }
 
@@ -70,11 +70,11 @@ export class AppComponent {
   }
 
   clearInputs() {
-    this._resetForm(EMPTY_FORM);
+    this.resetForm(EMPTY_FORM);
   }
 
   createChartOptions(people: Person[]) {
-    let { categories, data, outliers } = this._splitIntoCohorts(people);
+    let { categories, data, outliers } = this.splitIntoCohorts(people);
 
     let xAxis = { categories, title: { text: 'Cohort' } };
     let series = [{ data }, { type: 'scatter', data: outliers }];
@@ -82,8 +82,8 @@ export class AppComponent {
     return Object.assign({}, BASE_BOX_PLOT_OPTIONS, { series, xAxis });
   }
 
-  private _splitIntoCohorts(people: Person[]) {
-    let cohortMap = this._createCohortMap(people);
+  private splitIntoCohorts(people: Person[]) {
+    let cohortMap = this.createCohortMap(people);
     let cohorts = Array.from(Object.keys(cohortMap));
     let data = cohorts.map(key => Statistics.calculateBoxPlotData(cohortMap[key]));
 
@@ -94,13 +94,13 @@ export class AppComponent {
     };
   }
 
-  private _createCohortMap(people: Person[]): { [key: string]: number[] } {
-    let cohorts = this._generateInitialCohorts(people);
-    this._sortCohortValues(cohorts);
+  private createCohortMap(people: Person[]): { [key: string]: number[] } {
+    let cohorts = this.generateInitialCohorts(people);
+    this.sortCohortValues(cohorts);
     return cohorts;
   }
 
-  private _generateInitialCohorts(people: Person[]): { [key: string]: number[] } {
+  private generateInitialCohorts(people: Person[]): { [key: string]: number[] } {
     let cohorts = {};
     people.map(({ cohort, salary }) => {
       if (!cohorts.hasOwnProperty(cohort)) {
@@ -111,25 +111,25 @@ export class AppComponent {
     return cohorts;
   }
 
-  private _sortCohortValues(cohorts: { [p: string]: number[] }) {
+  private sortCohortValues(cohorts: { [p: string]: number[] }) {
     for (let cohort of Object.keys(cohorts)) {
       cohorts[cohort].sort();
     }
   }
 
-  private _overwriteFormIfEmpty(person: Person) {
+  private overwriteFormIfEmpty(person: Person) {
     let formData = this.newPersonForm.value;
     let keys = Object.keys(person);
     if (keys.filter(key => formData[key] === EMPTY_FORM[key]).length === keys.length) {
-      this._resetForm(person);
+      this.resetForm(person);
     }
   }
 
-  private _hasValidInput() {
+  private hasValidInput() {
     return this.newPersonForm.valid;
   }
 
-  private _resetForm(person: any) {
+  private resetForm(person: any) {
     this.formSubmitted = false;
     this.newPersonForm.setValue(person);
     this.nameInput.nativeElement.focus();
@@ -138,12 +138,12 @@ export class AppComponent {
 
 export function formatChartPoint() {
   if (this.point.options.hasOwnProperty('median')) {
-    return _formatBoxPlotPoint.call(this);
+    return formatBoxPlotPoint.call(this);
   }
-  return _formatOutlierPoint.call(this);
+  return formatOutlierPoint.call(this);
 }
 
-function _formatBoxPlotPoint() {
+function formatBoxPlotPoint() {
   let { low, q1, median, q3, high } = this.point.options;
   let cohort = this.key;
 
@@ -155,7 +155,7 @@ function _formatBoxPlotPoint() {
           Lower fence: £${low.toLocaleString()}`;
 }
 
-function _formatOutlierPoint() {
+function formatOutlierPoint() {
   let { y, name } = this.point.options;
   return `<strong>${name}</strong><br>
           Salary: £${y.toLocaleString()}`;

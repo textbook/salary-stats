@@ -15,8 +15,8 @@ import { PersonService } from './person.service';
   imports: [
     BrowserModule,
     ChartModule,
+    HttpModule,
     ReactiveFormsModule,
-    HttpModule
   ],
   providers: [PersonService],
   bootstrap: [AppComponent]
