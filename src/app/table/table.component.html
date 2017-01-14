@@ -1,0 +1,50 @@
+<section class="section">
+  <div class="container">
+    <table class="table">
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>Salary</th>
+        <th>Cohort</th>
+        <th class="has-text-right">
+          <button class="button is-danger is-outlined is-small" (click)="deleteAllPeople()">Delete All</button>
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let person of service.people$ | async">
+        <td class="name">{{ person.name }}</td>
+        <td class="salary">{{ person.salary | currency:'GBP':true:'1.0-0' }}</td>
+        <td class="cohort">{{ person.cohort }}</td>
+        <td class="has-text-right">
+          <button class="button is-danger is-outlined is-small"
+              (click)="deletePerson(person)">Delete</button>
+        </td>
+      </tr>
+      </tbody>
+      <tfoot [formGroup]="newPersonForm">
+      <tr>
+        <td class="name control">
+          <input #nameInput type="text" class="input" placeholder="Name" formControlName="name"
+              (keyup.enter)="addPerson()"
+              [ngClass]="{ 'is-danger': formSubmitted && newPersonForm.controls['name'].invalid }">
+        </td>
+        <td class="salary control">
+          <input type="number" class="input" placeholder="Salary" formControlName="salary"
+              (keyup.enter)="addPerson()"
+              [ngClass]="{ 'is-danger': formSubmitted && newPersonForm.controls['salary'].invalid }">
+        </td>
+        <td class="cohort control">
+          <input type="text" class="input" placeholder="Cohort" formControlName="cohort"
+              (keyup.enter)="addPerson()"
+              [ngClass]="{ 'is-danger': formSubmitted && newPersonForm.controls['cohort'].invalid }">
+        </td>
+        <td class="has-text-right">
+          <button class="button is-success is-small" (click)="addPerson()">Add</button>
+          <button class="button is-warning is-small" (click)="clearInputs()">Clear</button>
+        </td>
+      </tr>
+      </tfoot>
+    </table>
+  </div>
+</section>
