@@ -18,19 +18,19 @@ export class SalaryStatsPage {
   }
 
   getNames() {
-    return this._getTextFromAllElements('tbody > tr > td.name');
+    return this.getTextFromAllElements('tbody > tr > td.name');
   }
 
   getHeaders() {
-    return this._getTextFromAllElements('thead > tr:first-of-type > th');
+    return this.getTextFromAllElements('thead > tr:first-of-type > th');
   }
 
   getFirstRow() {
-    return this._getTextFromAllElements('tbody > tr:first-of-type > td');
+    return this.getTextFromAllElements('tbody > tr:first-of-type > td');
   }
 
   getLastRow() {
-    return this._getTextFromAllElements('tbody > tr:last-of-type > td');
+    return this.getTextFromAllElements('tbody > tr:last-of-type > td');
   }
 
   getCurrentInputs() {
@@ -39,7 +39,7 @@ export class SalaryStatsPage {
 
   addNewRow(name: string, salary: number, cohort: string) {
     this.enterRow(name, salary, cohort);
-    return element(by.css('tfoot button.is-success')).click();
+    return element(by.buttonText('Add')).click();
   }
 
   addNewRowFromKeyboard(name: string, salary: number, cohort: string) {
@@ -48,7 +48,7 @@ export class SalaryStatsPage {
   }
 
   clearInputs() {
-    return element(by.css('tfoot button.is-warning')).click();
+    return element(by.buttonText('Clear')).click();
   }
 
   getNameInput() {
@@ -62,12 +62,12 @@ export class SalaryStatsPage {
   }
 
   deleteFirstRow() {
-    return element.all(by.css('tbody button.is-danger')).first().click();
+    return element.all(by.buttonText('Delete')).first().click();
   }
 
   deleteAllRows() {
-    browser.executeScript('window.confirm = function() { return true; }');
-    return element(by.css('thead button.is-danger')).click();
+    this.alwaysConfirm();
+    return element(by.buttonText('Delete All')).click();
   }
 
   getChart() {
@@ -82,7 +82,11 @@ export class SalaryStatsPage {
     return element.all(by.css('chart .highcharts-scatter-series .highcharts-point'));
   }
 
-  private _getTextFromAllElements(selector: string) {
+  private getTextFromAllElements(selector: string) {
     return element.all(by.css(selector)).map(el => el.getText());
+  }
+
+  private alwaysConfirm() {
+    browser.executeScript('window.confirm = function() { return true; }');
   }
 }
