@@ -26,7 +26,7 @@ describe('PersonService', () => {
     let salary = 123;
     let cohort = 'Q';
 
-    service.addPerson({ name, salary, cohort });
+    service.addPerson(new Person(name, salary, cohort));
 
     service.people$.subscribe((people: Person[]) => {
       expect(people.length).toBe(11);
@@ -40,7 +40,7 @@ describe('PersonService', () => {
 
   it('should allow a single person to be deleted', done => {
     let name = 'Davina';
-    service.deletePerson({ name, salary: 12453, cohort: 'A' });
+    service.deletePerson(new Person(name, 12453, 'A'));
 
     service.people$.subscribe((people: Person[]) => {
       expect(people.length).toBe(9);
@@ -54,6 +54,18 @@ describe('PersonService', () => {
 
     service.people$.subscribe((people: Person[]) => {
       expect(people.length).toBe(0);
+      done();
+    });
+  });
+
+  it('should allow all people to be replaced', done => {
+    service.replaceAllPeople([
+      new Person('Quentin', 456, 'A'),
+      new Person('Rachel', 890, 'A'),
+    ]);
+
+    service.people$.subscribe((people: Person[]) => {
+      expect(people.length).toBe(2);
       done();
     });
   });

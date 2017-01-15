@@ -1,0 +1,15 @@
+<section class="section">
+  <h3 class="title is-3">Bulk upload</h3>
+  <p>You can upload multiple people at once by pasting CSV data into the box below and clicking
+      <strong>Upload</strong>. Each row must be in the format <code>name,salary,cohort</code>.
+      Note that this will replace all existing data, so anyone already in the table will be removed.
+  </p>
+  <br>
+  <p class="control">
+    <textarea #bulkUpload name="bulkUpload" id="bulkUpload" class="textarea"
+        cols="30" rows="10" placeholder="Enter CSV data"></textarea>
+  </p>
+  <p class="control">
+    <button class="button is-success" (click)="upload()">Upload</button>
+  </p>
+</section>

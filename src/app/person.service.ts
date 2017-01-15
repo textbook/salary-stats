@@ -5,16 +5,16 @@ import { Observable, ReplaySubject } from 'rxjs';
 import { Person } from '../lib/models';
 
 const DEFAULT_PEOPLE = [
-  { name: 'Alice', salary: 12345, cohort: 'A' },
-  { name: 'Bob', salary: 12435, cohort: 'A' },
-  { name: 'Chris', salary: 12534, cohort: 'A' },
-  { name: 'Davina', salary: 12453, cohort: 'A' },
-  { name: 'Edsger', salary: 12543, cohort: 'A' },
-  { name: 'Fred', salary: 13245, cohort: 'B' },
-  { name: 'Geoff', salary: 13425, cohort: 'B' },
-  { name: 'Helen', salary: 13524, cohort: 'B' },
-  { name: 'Imogen', salary: 13452, cohort: 'B' },
-  { name: 'Jack', salary: 13542, cohort: 'B' },
+  new Person('Alice', 12345, 'A'),
+  new Person('Bob', 12435, 'A'),
+  new Person('Chris', 12534, 'A'),
+  new Person('Davina', 12453, 'A'),
+  new Person('Edsger', 12543, 'A'),
+  new Person('Fred', 13245, 'B'),
+  new Person('Geoff', 13425, 'B'),
+  new Person('Helen', 13524, 'B'),
+  new Person('Imogen', 13452, 'B'),
+  new Person('Jack', 13542, 'B'),
 ];
 
 @Injectable()
@@ -35,17 +35,14 @@ export class PersonService {
   }
 
   deletePerson(personToDelete: Person) {
-    this.personSubject.next(this.people.filter((person) => {
-      return this.areDifferentPeople(person, personToDelete);
-    }));
+    this.personSubject.next(this.people.filter((person) => !person.equals(personToDelete)));
   }
 
   deleteAllPeople() {
-    this.personSubject.next([]);
+    this.replaceAllPeople([]);
   }
 
-  private areDifferentPeople(person: Person, oldPerson: Person): boolean {
-    let keys = Object.keys(person);
-    return keys.filter(key => person[key] === oldPerson[key]).length !== keys.length;
+  replaceAllPeople(newPeople: Person[]) {
+    this.personSubject.next(newPeople);
   }
 }

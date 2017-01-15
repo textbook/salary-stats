@@ -4,6 +4,7 @@ import { BoxPlotComponent, formatChartPoint } from './box-plot.component';
 import { Statistics } from '../../lib/statistics';
 import { PersonService } from '../person.service';
 import { SharedModule } from '../shared/shared.module';
+import { Person } from '../../lib/models';
 
 describe('BoxPlotComponent', () => {
   let component: BoxPlotComponent;
@@ -40,11 +41,9 @@ describe('BoxPlotComponent', () => {
       spyOn(Statistics, 'calculateBoxPlotData').and.returnValue(plotValues);
       let salary = 1234;
 
-      let options = component.createChartOptions([{
-        name: 'Baz',
-        cohort: 'A',
-        salary
-      }]);
+      let options = component.createChartOptions([
+        new Person('Baz', salary, 'A'),
+      ]);
 
       expect(Statistics.calculateBoxPlotData).toHaveBeenCalledWith([salary]);
       expect(options.series[0].data[0]).toEqual(plotValues);
@@ -52,8 +51,8 @@ describe('BoxPlotComponent', () => {
 
     it('should provide a point per cohort', () => {
       let options = component.createChartOptions([
-        { name: 'Foo', cohort: 'A', salary: 10 },
-        { name: 'Bar', cohort: 'B', salary: 20 },
+        new Person('Foo', 10, 'A'),
+        new Person('Bar', 20, 'B'),
       ]);
 
       expect(options.series[0].data.length).toBe(2);
@@ -61,12 +60,12 @@ describe('BoxPlotComponent', () => {
 
     it('should provide an outliers series', () => {
       let options = component.createChartOptions([
-        { name: 'Foo', cohort: 'A', salary: 10 },
-        { name: 'Foo', cohort: 'A', salary: 10 },
-        { name: 'Foo', cohort: 'A', salary: 10 },
-        { name: 'Foo', cohort: 'A', salary: 10 },
-        { name: 'Foo', cohort: 'A', salary: 10 },
-        { name: 'Bar', cohort: 'A', salary: 100 },
+        new Person('Foo', 10, 'A'),
+        new Person('Foo', 10, 'A'),
+        new Person('Foo', 10, 'A'),
+        new Person('Foo', 10, 'A'),
+        new Person('Foo', 10, 'A'),
+        new Person('Bar', 100, 'A'),
       ]);
 
       expect(options.series[1].data.length).toBe(1);

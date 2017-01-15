@@ -84,4 +84,14 @@ describe('salary-stats App', function() {
       expect(page.getOutlierPoints().count()).toBeGreaterThan(0);
     });
   });
+
+  describe('bulk upload', () => {
+    it('should allow the user to replace everyone at once', () => {
+      page.bulkUploadPeople('Alex,123,A', 'Bea,234,B');
+
+      expect(page.getPeople().count()).toBe(2);
+      expect(page.getFirstRow()).toEqual(['Alex', '£123', 'A', 'Delete']);
+      expect(page.getCurrentInputs()).toEqual(['', '', '']);
+    });
+  });
 });

@@ -8,11 +8,13 @@ import { BoxPlotComponent } from './box-plot/box-plot.component';
 import { PersonService } from './person.service';
 import { SharedModule } from './shared/shared.module';
 import { TableComponent } from './table/table.component';
+import { BulkUploadComponent } from './bulk-upload/bulk-upload.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     BoxPlotComponent,
+    BulkUploadComponent,
     TableComponent,
   ],
   imports: [

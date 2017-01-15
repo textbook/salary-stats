@@ -14,10 +14,7 @@ describe('TableComponent', () => {
   let mockService: any;
   let peopleSubject = new ReplaySubject<Person[]>(1);
 
-  let people = [
-    { name: 'Foo', salary: 1, cohort: 'A' },
-    { name: 'Bar', salary: 1, cohort: 'B' },
-  ];
+  let people = [new Person('Foo', 1, 'A'), new Person('Bar', 1, 'B')];
 
   beforeEach(async(() => {
     mockService = jasmine.createSpyObj('PersonService', ['addPerson', 'deletePerson', 'deleteAllPeople']);
@@ -90,7 +87,7 @@ describe('TableComponent', () => {
 
       fixture.nativeElement.querySelector('tfoot button.is-success').click();
 
-      expect(mockService.addPerson).toHaveBeenCalledWith({ name, salary, cohort });
+      expect(mockService.addPerson).toHaveBeenCalledWith(new Person(name, salary, cohort));
     });
 
     it('should allow a person to be added by hitting enter', () => {
@@ -104,7 +101,7 @@ describe('TableComponent', () => {
           .query(By.css('tfoot td.cohort input'))
           .triggerEventHandler('keyup.enter', null);
 
-      expect(mockService.addPerson).toHaveBeenCalledWith({ name, salary, cohort });
+      expect(mockService.addPerson).toHaveBeenCalledWith(new Person(name, salary, cohort));
     });
 
     it('should provide a button to clear inputs', () => {
@@ -140,9 +137,11 @@ describe('TableComponent', () => {
       });
 
       it('should call the service', () => {
+        let { name, salary, cohort } = validInput;
+
         fixture.componentInstance.addPerson();
 
-        expect(mockService.addPerson).toHaveBeenCalledWith(validInput);
+        expect(mockService.addPerson).toHaveBeenCalledWith(new Person(name, salary, cohort));
       });
 
       it('should clear the inputs', () => {
@@ -207,7 +206,7 @@ describe('TableComponent', () => {
 
   describe('deletePerson method', () => {
     it('should call the service', () => {
-      let person = { name: 'Hello', cohort: 'World', salary: 123 };
+      let person = new Person('Hello', 123, 'World');
 
       fixture.componentInstance.deletePerson(person);
 
@@ -219,7 +218,8 @@ describe('TableComponent', () => {
 
       fixture.componentInstance.deletePerson(oldFirstPerson);
 
-      expect(fixture.componentInstance.newPersonForm.value).toEqual(oldFirstPerson);
+      let { name, salary, cohort } = fixture.componentInstance.newPersonForm.value;
+      expect(new Person(name, salary, cohort)).toEqual(oldFirstPerson);
     });
 
     it('should not overwrite the form data if not empty', () => {
@@ -232,11 +232,11 @@ describe('TableComponent', () => {
       expect(form.value).toEqual(inputs);
     });
 
-    function getFirstPerson() {
+    function getFirstPerson(): Person {
       let name = fixture.nativeElement.querySelector('tbody tr td.name').textContent;
       let salary = Number.parseInt(fixture.nativeElement.querySelector('tbody tr td.salary').textContent);
       let cohort = fixture.nativeElement.querySelector('tbody tr td.cohort').textContent;
-      return { name, salary, cohort };
+      return new Person(name, salary, cohort);
     }
   });
 

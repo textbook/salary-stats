@@ -70,6 +70,15 @@ export class SalaryStatsPage {
     return element(by.buttonText('Delete All')).click();
   }
 
+  bulkUploadPeople(...people: string[]) {
+    this.alwaysConfirm();
+    let uploadBox = element(by.id('bulkUpload'));
+    people.forEach(person => {
+      uploadBox.sendKeys(person, protractor.Key.ENTER);
+    });
+    return element(by.buttonText('Upload')).click();
+  }
+
   getChart() {
     return element(by.css('chart'));
   }

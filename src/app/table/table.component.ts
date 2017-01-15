@@ -29,7 +29,7 @@ export class TableComponent {
   addPerson() {
     this.formSubmitted = true;
     if (this.hasValidInput()) {
-      this.service.addPerson(this.newPersonForm.value);
+      this.service.addPerson(this.getPersonFromForm());
       this.clearInputs();
     }
   }
@@ -49,9 +49,14 @@ export class TableComponent {
     this.resetForm(EMPTY_FORM);
   }
 
+  private getPersonFromForm(): Person {
+    let { name, salary, cohort } = this.newPersonForm.value;
+    return new Person(name, salary, cohort);
+  }
+
   private overwriteFormIfEmpty(person: Person) {
     let formData = this.newPersonForm.value;
-    let keys = Object.keys(person);
+    let keys = Object.keys(formData);
     if (keys.filter(key => formData[key] === EMPTY_FORM[key]).length === keys.length) {
       this.resetForm(person);
     }
