@@ -1,5 +1,6 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { ChartModule } from 'angular2-highcharts';
 
@@ -13,8 +14,11 @@ HighCharts.setOptions({ lang: { thousandsSep: ',' } });
   imports: [
     ChartModule,
     CommonModule,
+    ReactiveFormsModule,
   ],
-  declarations: [],
-  exports: [ChartModule]
+  exports: [
+    ChartModule,
+    ReactiveFormsModule,
+  ]
 })
 export class SharedModule { }

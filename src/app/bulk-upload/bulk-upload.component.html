@@ -5,11 +5,12 @@
       Note that this will replace all existing data, so anyone already in the table will be removed.
   </p>
   <br>
-  <p class="control">
-    <textarea #bulkUpload name="bulkUpload" id="bulkUpload" class="textarea"
+  <p class="control" [formGroup]="bulkDataForm">
+    <textarea formControlName="data" name="bulkUpload" id="bulkUpload" class="textarea"
         cols="30" rows="10" placeholder="Enter CSV data"></textarea>
   </p>
   <p class="control">
-    <button class="button is-success" (click)="upload()">Upload</button>
+    <button class="button is-success" (click)="upload()"
+        [disabled]="!bulkDataForm.valid">Upload</button>
   </p>
 </section>

@@ -1,8 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BulkUploadComponent } from './bulk-upload.component';
-import { PersonService } from '../person.service';
 import { Person } from '../../lib/models';
+import { PersonService } from '../person.service';
+import { SharedModule } from '../shared/shared.module';
 
 describe('BulkUploadComponent', () => {
   let component: BulkUploadComponent;
@@ -14,6 +15,7 @@ describe('BulkUploadComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [BulkUploadComponent],
+      imports: [SharedModule],
       providers: [{ provide: PersonService, useValue: mockService }],
     }).compileComponents();
   }));
@@ -24,29 +26,51 @@ describe('BulkUploadComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should call the service with bulk upload data if confirmed', () => {
-    let text = 'Charlie,123,C';
-    spyOn(window, 'confirm').and.returnValue(true);
-    fixture.nativeElement.querySelector('#bulkUpload').value = text;
+  it('should invoke the upload method when the submit button is clicked', () => {
+    spyOn(component, 'upload');
+    component.bulkDataForm.setValue({ data: 'Charlie,123,C' });
+    fixture.detectChanges();
 
-    fixture.nativeElement.querySelector('.is-success').click();
+    fixture.nativeElement.querySelector('button.is-success').click();
 
-    expect(confirm).toHaveBeenCalled();
-    expect(mockService.replaceAllPeople).toHaveBeenCalledWith([
-      new Person('Charlie', 123, 'C')
-    ]);
+    expect(component.upload).toHaveBeenCalled();
   });
 
-  it('should not call the service with bulk upload data if not confirmed', () => {
-    let text = 'Charlie,123,C';
-    spyOn(window, 'confirm').and.returnValue(false);
-    fixture.nativeElement.querySelector('#bulkUpload').value = text;
+  describe('upload method', () => {
+    it('should call the service with bulk upload data if confirmed', () => {
+      spyOn(window, 'confirm').and.returnValue(true);
+      component.bulkDataForm.setValue({ data: 'Charlie,123,C' });
 
-    fixture.nativeElement.querySelector('.is-success').click();
+      component.upload();
 
-    expect(confirm).toHaveBeenCalled();
-    expect(mockService.replaceAllPeople).not.toHaveBeenCalled();
+      expect(window.confirm).toHaveBeenCalled();
+      expect(mockService.replaceAllPeople).toHaveBeenCalledWith([
+        new Person('Charlie', 123, 'C')
+      ]);
+    });
+
+    it('should not call the service with bulk upload data if not confirmed', () => {
+      spyOn(window, 'confirm').and.returnValue(false);
+      component.bulkDataForm.setValue({ data: 'Charlie,123,C' });
+
+      component.upload();
+
+      expect(window.confirm).toHaveBeenCalled();
+      expect(mockService.replaceAllPeople).not.toHaveBeenCalled();
+    });
+
+    it('should not allow an empty form to be submitted', () => {
+      spyOn(window, 'confirm').and.returnValue(false);
+      component.bulkDataForm.setValue({ data: '' });
+
+      component.upload();
+
+      expect(window.confirm).not.toHaveBeenCalled();
+      expect(fixture.nativeElement.querySelector('.is-success:disabled'))
+          .not.toBeNull('no disabled success buttons found');
+    });
   });
+
 
   describe('parseBulkData method', () => {
     it('should convert each line to a person', () => {

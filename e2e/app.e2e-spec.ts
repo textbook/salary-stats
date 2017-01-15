@@ -93,5 +93,11 @@ describe('salary-stats App', function() {
       expect(page.getFirstRow()).toEqual(['Alex', '£123', 'A', 'Delete']);
       expect(page.getCurrentInputs()).toEqual(['', '', '']);
     });
+
+    it('should not allow the user to submit empty bulk data', () => {
+      page.bulkUploadPeople();
+
+      expect(page.getPeople().count()).toBeGreaterThan(0);
+    });
   });
 });
