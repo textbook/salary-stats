@@ -1,25 +1,28 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 
 import { PersonService } from '../person.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Person } from '../../lib/models';
 
 const EMPTY_FORM = { name: '', salary: '', cohort: '' };
+const MESSAGE = 'Are you sure you want to delete all people? This cannot be undone.';
 
 @Component({
   selector: 'sst-table',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss']
 })
-export class TableComponent {
+export class TableComponent implements OnInit {
   @ViewChild('nameInput') nameInput;
 
   newPersonForm: FormGroup;
 
   private formSubmitted: boolean;
 
-  constructor(private builder: FormBuilder, protected service: PersonService) {
-    this.newPersonForm = builder.group({
+  constructor(private builder: FormBuilder, protected service: PersonService) { }
+
+  ngOnInit(): void {
+    this.newPersonForm = this.builder.group({
       name: ['', Validators.required],
       salary: ['', Validators.required],
       cohort: ['', Validators.required],
@@ -40,7 +43,7 @@ export class TableComponent {
   }
 
   deleteAllPeople() {
-    if (confirm('Are you sure you want to delete all people? This cannot be undone.')) {
+    if (confirm(MESSAGE)) {
       this.service.deleteAllPeople();
     }
   }
