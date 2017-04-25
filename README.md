@@ -35,7 +35,7 @@ This project is currently not available via NPM, so you will need to [clone the
 repository][11]. It uses the [Angular CLI][12], so start off by running:
 
 ```bash
-npm install -g angular-cli
+npm install -g @angular/cli
 cd [repo directory]
 npm install
 ```
