@@ -1,3 +1,4 @@
+declare const require: any;
 const _ss = require('simple-statistics');
 
 import { Person } from './models';
