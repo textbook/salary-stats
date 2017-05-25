@@ -85,6 +85,23 @@ describe('salary-stats App', function() {
     });
   });
 
+  describe('cohort comparison', () => {
+    it('should be displayed', () => {
+      expect(page.getCohortComparison().isPresent()).toBe(true, 'cohort comparison is not present');
+    });
+
+    it('should display each cohort pair', () => {
+      page.addNewRow('Keira', 14532, 'C');
+
+      expect(page.getCohortComparisonPairs()).toEqual(['A to B', 'A to C', 'B to C']);
+    });
+
+    it('should display the p value and statistical significance', () => {
+      expect(page.getCohortComparisonPValues()).toEqual(['P: 0.0135']);
+      expect(page.getCohortComparisonAnalysis()).toEqual(['Different salary distribution']);
+    });
+  });
+
   describe('bulk upload', () => {
     it('should allow the user to replace everyone at once', () => {
       page.bulkUploadPeople('Alex,123,A', 'Bea,234,B');

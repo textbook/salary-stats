@@ -1,0 +1,17 @@
+<div class="section">
+  <div class="container">
+    <h3 class="title">Cohort Comparison</h3>
+    <div class="list-wrapper">
+      <ol>
+        <li *ngFor="let pair of pairComparisons$ | async">
+          <h4 class="pair-title">{{ pair.title }}</h4>
+          <ul>
+            <li class="pair-p-value">P: {{ pair.p }}</li>
+            <li *ngIf="pair.sameDistribution" class="pair-analysis">Same salary distribution</li>
+            <li *ngIf="!pair.sameDistribution" class="pair-analysis">Different salary distribution</li>
+          </ul>
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>

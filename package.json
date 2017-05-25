@@ -27,6 +27,7 @@
     "bulma": "^0.4.0",
     "core-js": "^2.4.1",
     "intl": "^1.2.5",
+    "jerzy": "^0.2.1",
     "rxjs": "^5.1.0",
     "simple-statistics": "^4.0.0",
     "zone.js": "^0.8.4"

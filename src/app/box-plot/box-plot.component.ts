@@ -3,8 +3,10 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { Person } from '../../lib/models';
-import { Statistics } from '../../lib/statistics';
 import { PersonService } from '../person.service';
+import { CohortService } from '../cohort.service';
+
+import { Statistics } from '../../lib/statistics';
 
 const BASE_BOX_PLOT_OPTIONS = {
   chart: { type: 'boxplot' },
@@ -23,14 +25,14 @@ export class BoxPlotComponent implements OnInit {
 
   boxPlotOptions$: Observable<any>;
 
-  constructor(private service: PersonService) { }
+  constructor(private personService: PersonService, private cohortService: CohortService) { }
 
   ngOnInit() {
-    this.boxPlotOptions$ = this.service.people$.map(people => this.createChartOptions(people));
+    this.boxPlotOptions$ = this.personService.people$.map(people => this.createChartOptions(people));
   }
 
   createChartOptions(people: Person[]): any {
-    let { categories, data, outliers } = this.splitIntoCohorts(people);
+    let { categories, data, outliers } = this.calculateCohortStatistics(people);
 
     let xAxis = { categories, title: { text: 'Cohort' } };
     let series = [{ data }, { type: 'scatter', data: outliers }];
@@ -38,8 +40,8 @@ export class BoxPlotComponent implements OnInit {
     return Object.assign({}, BASE_BOX_PLOT_OPTIONS, { series, xAxis });
   }
 
-  private splitIntoCohorts(people: Person[]) {
-    let cohortMap = this.createCohortMap(people);
+  calculateCohortStatistics(people: Person[]) {
+    let cohortMap = this.cohortService.map(people);
     let cohorts = Array.from(Object.keys(cohortMap));
     let data = cohorts.map(key => Statistics.calculateBoxPlotData(cohortMap[key]));
 
@@ -48,29 +50,6 @@ export class BoxPlotComponent implements OnInit {
       data,
       outliers: Statistics.identifyOutliers(people, data, cohorts),
     };
-  }
-
-  private createCohortMap(people: Person[]): { [key: string]: number[] } {
-    let cohorts = this.generateInitialCohorts(people);
-    this.sortCohortValues(cohorts);
-    return cohorts;
-  }
-
-  private generateInitialCohorts(people: Person[]): { [key: string]: number[] } {
-    let cohorts = {};
-    people.map(({ cohort, salary }) => {
-      if (!cohorts.hasOwnProperty(cohort)) {
-        cohorts[cohort] = [];
-      }
-      cohorts[cohort].push(salary);
-    });
-    return cohorts;
-  }
-
-  private sortCohortValues(cohorts: { [p: string]: number[] }) {
-    for (let cohort of Object.keys(cohorts)) {
-      cohorts[cohort].sort();
-    }
   }
 }
 

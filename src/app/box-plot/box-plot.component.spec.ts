@@ -3,6 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { BoxPlotComponent, formatChartPoint } from './box-plot.component';
 import { Statistics } from '../../lib/statistics';
 import { PersonService } from '../person.service';
+import { CohortService } from '../cohort.service';
 import { SharedModule } from '../shared/shared.module';
 import { Person } from '../../lib/models';
 
@@ -14,7 +15,7 @@ describe('BoxPlotComponent', () => {
     TestBed.configureTestingModule({
       declarations: [BoxPlotComponent],
       imports: [SharedModule],
-      providers: [PersonService],
+      providers: [PersonService, CohortService],
     }).compileComponents();
   }));
 
