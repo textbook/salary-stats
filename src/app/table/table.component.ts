@@ -1,5 +1,7 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 
+import { Observable } from 'rxjs';
+
 import { PersonService } from '../person.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Person } from '../../lib/models';
@@ -15,13 +17,15 @@ const MESSAGE = 'Are you sure you want to delete all people? This cannot be undo
 export class TableComponent implements OnInit {
   @ViewChild('nameInput') nameInput;
 
+  formSubmitted: boolean;
   newPersonForm: FormGroup;
+  people$: Observable<Person[]>;
 
-  private formSubmitted: boolean;
-
-  constructor(private builder: FormBuilder, protected service: PersonService) { }
+  constructor(private builder: FormBuilder, private service: PersonService) { }
 
   ngOnInit(): void {
+    this.people$ = this.service.people$;
+
     this.newPersonForm = this.builder.group({
       name: ['', Validators.required],
       salary: ['', Validators.required],
