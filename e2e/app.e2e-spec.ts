@@ -97,8 +97,7 @@ describe('salary-stats App', function() {
     });
 
     it('should display the p value and statistical significance', () => {
-      expect(page.getCohortComparisonPValues()).toEqual(['P: 0.0135']);
-      expect(page.getCohortComparisonAnalysis()).toEqual(['Different salary distribution']);
+      expect(page.getCohortComparisonAnalysis()).toEqual(['The difference between these cohorts is statistically significant since P: 0.0135 < 0.05.']);
     });
   });
 

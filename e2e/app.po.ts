@@ -99,10 +99,6 @@ export class SalaryStatsPage {
     return this.getTextFromAllElements('sst-cohort-comparison .pair-title');
   }
 
-  getCohortComparisonPValues() {
-    return this.getTextFromAllElements('sst-cohort-comparison .pair-p-value');
-  }
-
   getCohortComparisonAnalysis() {
     return this.getTextFromAllElements('sst-cohort-comparison .pair-analysis');
   }
