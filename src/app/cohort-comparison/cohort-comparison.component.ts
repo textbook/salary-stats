@@ -25,7 +25,7 @@ export class CohortComparisonComponent implements OnInit {
     let cohortPairs = this.pairs(Object.keys(cohorts));
     return cohortPairs.map(pair => {
       let pairComparison = {p: null, sameDistribution: false, title: pair.join(' to ')};
-      let comparisonStats = Statistics.compareSamples(cohorts[pair[0]], cohorts[pair[1]])
+      let comparisonStats = Statistics.compareSamples(cohorts[pair[0]], cohorts[pair[1]]);
 
       pairComparison.p = Math.round(comparisonStats.pValue * 10000) / 10000;
       pairComparison.sameDistribution = comparisonStats.sameDistribution;
