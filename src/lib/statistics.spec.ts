@@ -51,5 +51,21 @@ describe('Statistics', () => {
       expect(result[2]).toEqual({ x: 2, y: 15, name: 'Baz' });
     });
   });
+
+  describe('compareSamples method', () => {
+    it('returns a p-value and whether the samples are significantly different', () => {
+      let sampleA = [50, 25, 10, 4, 3, 2, 1];
+
+      let aComparedToA = Statistics.compareSamples(sampleA, sampleA.concat(2));
+      expect(aComparedToA.pValue).toBeCloseTo(0.99999, 4);
+      expect(aComparedToA.sameDistribution).toBe(true);
+
+      let sampleB = [100, 45, 35, 25, 100, 50, 65, 30];
+
+      let aComparedToB = Statistics.compareSamples(sampleA, sampleB);
+      expect(aComparedToB.pValue).toBeCloseTo(0.03654, 4);
+      expect(aComparedToB.sameDistribution).toBe(false);
+    });
+  });
 });
 

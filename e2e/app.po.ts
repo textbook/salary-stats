@@ -91,6 +91,18 @@ export class SalaryStatsPage {
     return element.all(by.css('chart .highcharts-scatter-series .highcharts-point'));
   }
 
+  getCohortComparison() {
+    return element.all(by.css('sst-cohort-comparison'));
+  }
+
+  getCohortComparisonPairs() {
+    return this.getTextFromAllElements('sst-cohort-comparison .pair-title');
+  }
+
+  getCohortComparisonAnalysis() {
+    return this.getTextFromAllElements('sst-cohort-comparison .pair-analysis');
+  }
+
   private getTextFromAllElements(selector: string) {
     return element.all(by.css(selector)).map(el => el.getText());
   }
