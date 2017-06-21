@@ -10,13 +10,11 @@ install:
 
 before_script:
   - ng -v
-  - ng serve &
-  - sleep 30
 
 script:
   - ng lint
   - ng test --no-watch --code-coverage
-  - npm run e2e
+  - npm run autoe2e
 
 after_success:
   - npm run coveralls

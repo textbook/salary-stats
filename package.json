@@ -11,6 +11,8 @@
     "codacy": "cat ./coverage/coverage.lcov | ./node_modules/.bin/codacy-coverage -p .",
     "test": "ng test",
     "pree2e": "webdriver-manager update --gecko false",
+    "autoe2e": "concurrently -k -s first -p name -n \"ngs,e2e\" \"ng serve\" \"npm run safee2e\"",
+    "safee2e": "wait-on -t 60000 -l http-get://localhost:4200 && npm run e2e",
     "e2e": "protractor"
   },
   "private": true,
@@ -38,6 +40,7 @@
     "@types/jasmine": "2.5.38",
     "@types/node": "~6.0.60",
     "codelyzer": "~2.0.0",
+    "concurrently": "^3.4.0",
     "jasmine-core": "~2.5.2",
     "jasmine-spec-reporter": "~3.2.0",
     "karma": "~1.4.1",
@@ -51,6 +54,7 @@
     "protractor": "~5.1.0",
     "ts-node": "~2.0.0",
     "tslint": "~4.5.0",
-    "typescript": "~2.2.0"
+    "typescript": "~2.2.0",
+    "wait-on": "^2.0.2"
   }
 }
