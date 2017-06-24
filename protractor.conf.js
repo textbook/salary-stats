@@ -3,6 +3,7 @@
 
 /*global jasmine */
 var SpecReporter = require('jasmine-spec-reporter').SpecReporter;
+var testPort = parseInt(process.env.PORT || '4200', 10);
 
 exports.config = {
   allScriptsTimeout: 11000,
@@ -16,7 +17,7 @@ exports.config = {
     }
   },
   directConnect: true,
-  baseUrl: 'http://localhost:4200/',
+  baseUrl: 'http://localhost:' + testPort + '/',
   framework: 'jasmine',
   jasmineNodeOpts: {
     showColors: true,
