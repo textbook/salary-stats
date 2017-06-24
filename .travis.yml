@@ -21,7 +21,7 @@ before_script:
 
 script:
   - ng lint
-  - ng test --no-watch --code-coverage
+  - npm run test-cover
   - npm run autoe2e
 
 after_success:
