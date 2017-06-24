@@ -54,8 +54,8 @@ available:
    changes (add `--no-watch` to run only once)
  - `ng e2e` - run the Protractor end-to-end tests
 
-Both sets of tests are configured to run using the PhantomJS browser, so you
-won't see anything pop up on your screen.
+Both sets of tests are configured to run using the Chrome browser headlessly,
+so you won't see anything pop up on your screen.
 
   [1]: https://travis-ci.org/textbook/salary-stats.svg?branch=master
   [2]: https://travis-ci.org/textbook/salary-stats
