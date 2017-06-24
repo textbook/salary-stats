@@ -1,6 +1,7 @@
 declare const require: any;
 const _ss = require('simple-statistics');
 
+import { Person } from './models';
 import { Statistics } from './statistics';
 
 describe('Statistics', () => {
@@ -36,12 +37,12 @@ describe('Statistics', () => {
     it('should return values outside the calculated bounds, indexed by cohort', () => {
       let cohorts = ['X', 'A', 'B'];
       let boxPlotData = [[], [1, 2, 3, 4, 5], [3, 5, 7, 9, 11]];
-      let people = [
-        { name: 'Foo', salary: 0, cohort: 'A' },
-        { name: '', salary: 3, cohort: 'A' },
-        { name: 'Bar', salary: 6, cohort: 'A' },
-        { name: '', salary: 6, cohort: 'B' },
-        { name: 'Baz', salary: 15, cohort: 'B' },
+      let people: Person[] = [
+        new Person('Foo', 0, 'A'),
+        new Person('', 3, 'A'),
+        new Person('Bar', 6, 'A'),
+        new Person('', 6, 'B'),
+        new Person('Baz', 15, 'B'),
       ];
       let result = Statistics.identifyOutliers(people, boxPlotData, cohorts);
 
