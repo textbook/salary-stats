@@ -1,10 +1,10 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { Observable } from 'rxjs';
 
+import { Person } from '@lib/models';
 import { PersonService } from '../person.service';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Person } from '../../lib/models';
 
 const EMPTY_FORM = { name: '', salary: '', cohort: '' };
 const MESSAGE = 'Are you sure you want to delete all people? This cannot be undone.';

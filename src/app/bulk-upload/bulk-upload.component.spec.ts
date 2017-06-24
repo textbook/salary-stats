@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BulkUploadComponent } from './bulk-upload.component';
-import { Person } from '../../lib/models';
+import { Person } from '@lib/models';
 import { PersonService } from '../person.service';
 import { SharedModule } from '../shared/shared.module';
 

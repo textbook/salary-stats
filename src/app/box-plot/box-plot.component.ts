@@ -2,11 +2,10 @@ import { Component, OnInit } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
-import { Person } from '../../lib/models';
+import { Person } from '@lib/models';
 import { PersonService } from '../person.service';
 import { CohortService } from '../cohort.service';
-
-import { Statistics } from '../../lib/statistics';
+import { Statistics } from '@lib/statistics';
 
 const BASE_BOX_PLOT_OPTIONS = {
   chart: { type: 'boxplot' },

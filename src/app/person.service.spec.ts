@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { PersonService } from './person.service';
-import { Person } from '../lib/models';
+import { Person } from '@lib/models';
 
 describe('PersonService', () => {
   let service: PersonService;

@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+
+import { Observable } from 'rxjs/Observable';
+
 import { PersonService } from '../person.service';
 import { CohortService } from '../cohort.service';
-import { Person } from '../../lib/models';
-import { Observable } from 'rxjs/Observable';
-import { Statistics } from '../../lib/statistics';
-
+import { Person } from '@lib/models';
+import { Statistics } from '@lib/statistics';
 
 @Component({
   selector: 'sst-cohort-comparison',

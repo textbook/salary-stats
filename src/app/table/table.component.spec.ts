@@ -5,7 +5,7 @@ import { By } from '@angular/platform-browser';
 import { ReplaySubject } from 'rxjs';
 
 import { TableComponent } from './table.component';
-import { Person } from '../../lib/models';
+import { Person } from '@lib/models';
 import { PersonService } from '../person.service';
 
 describe('TableComponent', () => {

@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CohortComparisonComponent } from './cohort-comparison.component';
 import { CohortService } from '../cohort.service';
 import { PersonService } from '../person.service';
-import { Person } from '../../lib/models';
+import { Person } from '@lib/models';
 
 describe('CohortComparisonComponent', () => {
   let fixture: ComponentFixture<CohortComparisonComponent>;

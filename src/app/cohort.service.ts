@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Person } from '../lib/models';
+
+import { Person } from '@lib/models';
 
 @Injectable()
 export class CohortService {

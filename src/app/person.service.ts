@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { Observable, ReplaySubject } from 'rxjs';
 
-import { Person } from '../lib/models';
+import { Person } from '@lib/models';
 
 const DEFAULT_PEOPLE = [
   new Person('Alice', 12345, 'A'),

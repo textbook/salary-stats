@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { PersonService } from '../person.service';
-import { Person } from '../../lib/models';
+import { Person } from '@lib/models';
 
 const MESSAGE = 'Are you sure you want to upload people? This cannot be undone.';
 
