@@ -18,7 +18,7 @@ example by job title or year of starting.
 
 You can delete a single person at a time or everyone at once. In the former
 case, if the inputs are empty when you choose to delete a person, they are
-filled in with that person's details. This makes it harder to accidently lose
+filled in with that person's details. This makes it harder to accidentally lose
 data and means you can easily "edit" someone by deleting them, modifying the
 inputs and submitting them again. In the latter case a warning appears asking
 for confirmation, as this cannot be undone.
@@ -52,7 +52,7 @@ available:
  - `ng lint` - run TSLint on the `*.ts` files in `src/`
  - `ng test` - run the Karma unit tests, and re-run every time something
    changes (add `--no-watch` to run only once)
- - `ng e2e` - run the Protractor end-to-end tests
+ - `npm run autoe2e` - run the Protractor end-to-end tests
 
 Both sets of tests are configured to run using the Chrome browser headlessly,
 so you won't see anything pop up on your screen.

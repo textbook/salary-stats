@@ -1,5 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { Observable } from 'rxjs/Observable';
+
 import { CohortComparisonComponent } from './cohort-comparison.component';
 import { CohortService } from '../cohort.service';
 import { PersonService } from '../person.service';
@@ -9,12 +11,19 @@ describe('CohortComparisonComponent', () => {
   let fixture: ComponentFixture<CohortComparisonComponent>;
   let component: CohortComparisonComponent;
   let commonPeople: Person[];
+  let personServiceSpy: PersonService;
 
   beforeEach(async(() => {
+    personServiceSpy = jasmine.createSpyObj('PersonServiceSpy', ['addPerson']);
+    personServiceSpy.people$ = Observable.of([]);
+
     TestBed.configureTestingModule({
       declarations: [CohortComparisonComponent],
       imports: [],
-      providers: [PersonService, CohortService],
+      providers: [
+        { provide: PersonService, useValue: personServiceSpy },
+        CohortService,
+      ],
     }).compileComponents();
   }));
 

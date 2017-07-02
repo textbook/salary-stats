@@ -1,72 +1,83 @@
 import { TestBed } from '@angular/core/testing';
+import {
+  BaseRequestOptions, ConnectionBackend, Http, RequestMethod,
+  RequestOptions, ResponseOptions, Response,
+} from '@angular/http';
+import { MockBackend, MockConnection } from '@angular/http/testing';
 
 import { PersonService } from './person.service';
 import { Person } from '@lib/models';
 
 describe('PersonService', () => {
   let service: PersonService;
+  let backend: MockBackend;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [PersonService]
+      providers: [
+        { provide: ConnectionBackend, useClass: MockBackend },
+        { provide: RequestOptions, useClass: BaseRequestOptions },
+        Http,
+        PersonService,
+      ]
     });
 
     service = TestBed.get(PersonService);
+    backend = TestBed.get(ConnectionBackend);
   });
 
-  it('should provide a default set of people', done => {
-    service.people$.subscribe((people: Person[]) => {
-      expect(people.length).toBe(10);
+  it('should get the people from the API', done => {
+    backend.connections.subscribe((connection: MockConnection) => {
+      expect(connection.request.url).toMatch(/\/people$/);
+      expect(connection.request.method).toBe(RequestMethod.Get, 'expected GET request');
+      done();
+    });
+
+    service.fetch();
+  });
+
+  it('should expose the people as an observable', done => {
+    let people = [{ name: 'Alice', salary: 12345, cohort: 'A' }];
+
+    backend.connections.subscribe((connection: MockConnection) => {
+      connection.mockRespond(new Response(new ResponseOptions({
+        status: 200,
+        body: { data: people },
+      })));
+    });
+
+    service.fetch();
+
+    service.people$.subscribe(received => {
+      expect(received).toEqual([new Person(people[0].name, people[0].salary, people[0].cohort)]);
       done();
     });
   });
 
-  it('should allow a new person to be added', done => {
+  it('should post a new person to the API', done => {
     let name = 'Lynn';
     let salary = 123;
     let cohort = 'Q';
 
+    backend.connections.subscribe((connection: MockConnection) => {
+      expect(connection.request.url).toMatch(/\/people$/);
+      expect(connection.request.method).toBe(RequestMethod.Post, 'expected POST request');
+      expect(connection.request.json()).toEqual({ name, salary, cohort });
+      done();
+    });
+
     service.addPerson(new Person(name, salary, cohort));
-
-    service.people$.subscribe((people: Person[]) => {
-      expect(people.length).toBe(11);
-      let lastPerson = people.pop();
-      expect(lastPerson.name).toBe(name);
-      expect(lastPerson.salary).toBe(salary);
-      expect(lastPerson.cohort).toBe(cohort);
-      done();
-    });
   });
 
-  it('should allow a single person to be deleted', done => {
+  it('should delete a single person from the API', done => {
     let name = 'Davina';
-    service.deletePerson(new Person(name, 12453, 'A'));
 
-    service.people$.subscribe((people: Person[]) => {
-      expect(people.length).toBe(9);
-      expect(people.filter(person => person.name === name).length).toBe(0);
+    backend.connections.subscribe((connection: MockConnection) => {
+      expect(connection.request.url).toMatch(/\/people\/4$/);
+      expect(connection.request.method).toBe(RequestMethod.Delete, 'expected DELETE request');
       done();
     });
-  });
 
-  it('should allow all people to be deleted', done => {
-    service.deleteAllPeople();
-
-    service.people$.subscribe((people: Person[]) => {
-      expect(people.length).toBe(0);
-      done();
-    });
-  });
-
-  it('should allow all people to be replaced', done => {
-    service.replaceAllPeople([
-      new Person('Quentin', 456, 'A'),
-      new Person('Rachel', 890, 'A'),
-    ]);
-
-    service.people$.subscribe((people: Person[]) => {
-      expect(people.length).toBe(2);
-      done();
-    });
+    service.deletePerson(new Person(name, 12453, 'A', 4));
   });
 });

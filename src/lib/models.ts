@@ -1,4 +1,5 @@
 export class Person {
+  id?: number;
   name: string;
   salary: number;
   cohort: string;
@@ -13,10 +14,11 @@ export class Person {
     return new Person(name, salary, cohort || '');
   }
 
-  constructor(name: string, salary: number, cohort: string) {
+  constructor(name: string, salary: number, cohort: string, id?: number) {
     this.name = name;
     this.salary = salary;
     this.cohort = cohort;
+    this.id = id;
   }
 
   equals(other: Person): boolean {

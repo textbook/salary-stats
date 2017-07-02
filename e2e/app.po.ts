@@ -13,8 +13,8 @@ export class SalaryStatsPage {
     return element(by.css('sst-root h1')).getText();
   }
 
-  getPeople() {
-    return element.all(by.css('tbody > tr'));
+  getRowCount() {
+    return element.all(by.css('tbody > tr')).count();
   }
 
   getNames() {

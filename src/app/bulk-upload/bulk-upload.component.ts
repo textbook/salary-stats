@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
+import { Observable } from 'rxjs/Observable';
+
 import { PersonService } from '../person.service';
 import { Person } from '@lib/models';
 
@@ -23,22 +25,27 @@ export class BulkUploadComponent implements OnInit {
   }
 
   upload() {
-    if (this.hasValidData() && confirm(MESSAGE)) {
-      this.replaceAll();
+    if (this.hasValidData && confirm(MESSAGE)) {
+      this.bulkAdd(this.parseBulkData());
     }
   }
 
-  parseBulkData(bulkData: string): Person[] {
-    return this.getRows(bulkData).map(row => Person.fromString(row));
-  }
-
-  private hasValidData(): boolean {
+  private get hasValidData(): boolean {
     return this.bulkDataForm.valid;
   }
 
-  private replaceAll() {
-    let people = this.parseBulkData(this.bulkDataForm.value.data);
-    this.service.replaceAllPeople(people);
+  private bulkAdd(people: Person[]) {
+    Observable
+        .forkJoin(...people.map(person => this.service.addPerson(person)))
+        .subscribe(() => {
+          this.service.fetch();
+        });
+  }
+
+  private parseBulkData(): Person[] {
+    return this
+        .getRows(this.bulkDataForm.value.data)
+        .map(row => Person.fromString(row));
   }
 
   private getRows(lines: string): string[] {

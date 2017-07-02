@@ -1,5 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { Observable } from 'rxjs/Observable';
+
 import { BoxPlotComponent, formatChartPoint } from './box-plot.component';
 import { Statistics } from '@lib/statistics';
 import { PersonService } from '../person.service';
@@ -10,12 +12,19 @@ import { Person } from '@lib/models';
 describe('BoxPlotComponent', () => {
   let component: BoxPlotComponent;
   let fixture: ComponentFixture<BoxPlotComponent>;
+  let personServiceSpy: PersonService;
 
   beforeEach(async(() => {
+    personServiceSpy = jasmine.createSpyObj('PersonServiceSpy', ['addPerson']);
+    personServiceSpy.people$ = Observable.of([]);
+
     TestBed.configureTestingModule({
       declarations: [BoxPlotComponent],
       imports: [SharedModule],
-      providers: [PersonService, CohortService],
+      providers: [
+        { provide: PersonService, useValue: personServiceSpy },
+        CohortService,
+      ],
     }).compileComponents();
   }));
 

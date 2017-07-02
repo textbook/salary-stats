@@ -1,5 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import Spy = jasmine.Spy;
+import { Observable } from 'rxjs/Observable';
+
 import { BulkUploadComponent } from './bulk-upload.component';
 import { Person } from '@lib/models';
 import { PersonService } from '../person.service';
@@ -8,15 +11,16 @@ import { SharedModule } from '../shared/shared.module';
 describe('BulkUploadComponent', () => {
   let component: BulkUploadComponent;
   let fixture: ComponentFixture<BulkUploadComponent>;
-  let mockService: any;
+  let personServiceSpy: PersonService;
 
   beforeEach(async(() => {
-    mockService = jasmine.createSpyObj('PersonService', ['replaceAllPeople']);
+    personServiceSpy = jasmine.createSpyObj('PersonService', ['addPerson']);
+    (personServiceSpy.addPerson as Spy).and.returnValue(Observable.empty());
 
     TestBed.configureTestingModule({
       declarations: [BulkUploadComponent],
       imports: [SharedModule],
-      providers: [{ provide: PersonService, useValue: mockService }],
+      providers: [{ provide: PersonService, useValue: personServiceSpy }],
     }).compileComponents();
   }));
 
@@ -44,9 +48,7 @@ describe('BulkUploadComponent', () => {
       component.upload();
 
       expect(window.confirm).toHaveBeenCalled();
-      expect(mockService.replaceAllPeople).toHaveBeenCalledWith([
-        new Person('Charlie', 123, 'C')
-      ]);
+      expect(personServiceSpy.addPerson).toHaveBeenCalledWith(new Person('Charlie', 123, 'C'));
     });
 
     it('should not call the service with bulk upload data if not confirmed', () => {
@@ -56,7 +58,7 @@ describe('BulkUploadComponent', () => {
       component.upload();
 
       expect(window.confirm).toHaveBeenCalled();
-      expect(mockService.replaceAllPeople).not.toHaveBeenCalled();
+      expect(personServiceSpy.addPerson).not.toHaveBeenCalled();
     });
 
     it('should not allow an empty form to be submitted', () => {
@@ -68,23 +70,6 @@ describe('BulkUploadComponent', () => {
       expect(window.confirm).not.toHaveBeenCalled();
       expect(fixture.nativeElement.querySelector('.is-success:disabled'))
           .not.toBeNull('no disabled success buttons found');
-    });
-  });
-
-
-  describe('parseBulkData method', () => {
-    it('should convert each line to a person', () => {
-      let people = component.parseBulkData('David,987,D');
-
-      expect(people.length).toBe(1);
-      expect(people[0].name).toBe('David');
-    });
-
-    it('should handle trailing lines', () => {
-      let people = component.parseBulkData('Edwina,654,E\n');
-
-      expect(people.length).toBe(1);
-      expect(people[0].name).toBe('Edwina');
     });
   });
 });

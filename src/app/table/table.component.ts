@@ -36,19 +36,27 @@ export class TableComponent implements OnInit {
   addPerson() {
     this.formSubmitted = true;
     if (this.hasValidInput()) {
-      this.service.addPerson(this.getPersonFromForm());
-      this.clearInputs();
+      this.service.addPerson(this.getPersonFromForm()).subscribe(() => {
+        this.service.fetch();
+        this.clearInputs();
+      });
     }
   }
 
   deletePerson(person: Person) {
     this.overwriteFormIfEmpty(person);
-    this.service.deletePerson(person);
+    this.service
+        .deletePerson(person)
+        .subscribe(() => {
+          this.service.fetch();
+        });
   }
 
   deleteAllPeople() {
     if (confirm(MESSAGE)) {
-      this.service.deleteAllPeople();
+      this.people$
+          .flatMap(people => Observable.forkJoin(...people.map(person => this.service.deletePerson(person))))
+          .subscribe(() => this.service.fetch());
     }
   }
 
@@ -75,7 +83,7 @@ export class TableComponent implements OnInit {
 
   private resetForm(person: any) {
     this.formSubmitted = false;
-    this.newPersonForm.setValue(person);
+    this.newPersonForm.setValue({ name: person.name, salary: person.salary, cohort: person.cohort });
     this.nameInput.nativeElement.focus();
   }
 }

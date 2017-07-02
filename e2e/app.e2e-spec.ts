@@ -13,7 +13,7 @@ describe('salary-stats App', function() {
 
   describe('person table', () => {
     it('should display default people', () => {
-      expect(page.getPeople().count()).toBeGreaterThan(0);
+      expect(page.getRowCount()).toBeGreaterThan(0);
       page.getNames().then(names => {
         expect(names[0]).toBe('Alice');
       });
@@ -25,37 +25,37 @@ describe('salary-stats App', function() {
     });
 
     it('should allow a person to be deleted', () => {
-      page.getPeople().count().then(initialCount => {
+      page.getRowCount().then(initialCount => {
         page.deleteFirstRow();
 
-        expect(page.getPeople().count()).toBe(initialCount - 1);
+        expect(page.getRowCount()).toBe(initialCount - 1);
         expect(page.getFirstRow()).toEqual(['Bob', '£12,435', 'A', 'Delete']);
       });
     });
 
     it('should allow all people to be deleted', () => {
-      expect(page.getPeople().count()).toBeGreaterThan(0);
+      expect(page.getRowCount()).toBeGreaterThan(0);
 
       page.deleteAllRows();
 
-      expect(page.getPeople().count()).toBe(0);
+      expect(page.getRowCount()).toBe(0);
     });
 
     it('should allow a person to be added', () => {
-      page.getPeople().count().then(initialCount => {
+      page.getRowCount().then(initialCount => {
         page.addNewRow('Keira', 14532, 'C');
 
-        expect(page.getPeople().count()).toBe(initialCount + 1);
+        expect(page.getRowCount()).toBe(initialCount + 1);
         expect(page.getLastRow()).toEqual(['Keira', '£14,532', 'C', 'Delete']);
         expect(page.getNameInput().getId()).toBe(page.getActiveElement().getId());
       });
     });
 
     it('should allow a person to be added from the keyboard', () => {
-      page.getPeople().count().then(initialCount => {
+      page.getRowCount().then(initialCount => {
         page.addNewRowFromKeyboard('Keira', 14532, 'C');
 
-        expect(page.getPeople().count()).toBe(initialCount + 1);
+        expect(page.getRowCount()).toBe(initialCount + 1);
         expect(page.getLastRow()).toEqual(['Keira', '£14,532', 'C', 'Delete']);
         expect(page.getNameInput().getId()).toBe(page.getActiveElement().getId());
       });
@@ -103,18 +103,18 @@ describe('salary-stats App', function() {
   });
 
   describe('bulk upload', () => {
-    it('should allow the user to replace everyone at once', () => {
+    it('should allow the user to add multiple people', () => {
       page.bulkUploadPeople('Alex,123,A', 'Bea,234,B');
 
-      expect(page.getPeople().count()).toBe(2);
-      expect(page.getFirstRow()).toEqual(['Alex', '£123', 'A', 'Delete']);
+      expect(page.getRowCount()).toBe(12);
+      expect(page.getLastRow()).toEqual(['Bea', '£234', 'B', 'Delete']);
       expect(page.getCurrentInputs()).toEqual(['', '', '']);
     });
 
     it('should not allow the user to submit empty bulk data', () => {
       page.bulkUploadPeople();
 
-      expect(page.getPeople().count()).toBeGreaterThan(0);
+      expect(page.getRowCount()).toBeGreaterThan(0);
     });
   });
 });

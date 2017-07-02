@@ -2,7 +2,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
-import { ReplaySubject } from 'rxjs';
+import Spy = jasmine.Spy;
+import { Observable, ReplaySubject } from 'rxjs';
 
 import { TableComponent } from './table.component';
 import { Person } from '@lib/models';
@@ -11,19 +12,21 @@ import { PersonService } from '../person.service';
 describe('TableComponent', () => {
   let component: TableComponent;
   let fixture: ComponentFixture<TableComponent>;
-  let mockService: any;
+  let personServiceSpy: PersonService;
   let peopleSubject = new ReplaySubject<Person[]>(1);
 
-  let people = [new Person('Foo', 1, 'A'), new Person('Bar', 1, 'B')];
+  let people = [new Person('Foo', 1, 'A', 1), new Person('Bar', 1, 'B', 2)];
 
   beforeEach(async(() => {
-    mockService = jasmine.createSpyObj('PersonService', ['addPerson', 'deletePerson', 'deleteAllPeople']);
-    mockService.people$ = peopleSubject.asObservable();
+    personServiceSpy = jasmine.createSpyObj('PersonService', ['addPerson', 'deletePerson', 'fetch']);
+    (personServiceSpy.deletePerson as Spy).and.returnValue(Observable.of(null));
+    (personServiceSpy.addPerson as Spy).and.returnValue(Observable.of(null));
+    personServiceSpy.people$ = peopleSubject.asObservable();
 
     TestBed.configureTestingModule({
       declarations: [ TableComponent ],
       imports: [ReactiveFormsModule],
-      providers: [{ provide: PersonService, useValue: mockService }]
+      providers: [{ provide: PersonService, useValue: personServiceSpy }]
     })
     .compileComponents();
   }));
@@ -55,26 +58,38 @@ describe('TableComponent', () => {
     });
 
     it('should provide a delete button for each person', () => {
-      let deletePerson = spyOn(fixture.componentInstance, 'deletePerson');
-
       let deleteButtons = fixture.nativeElement.querySelectorAll('tbody button.is-danger');
       expect(deleteButtons.length).toBe(people.length);
       expect(deleteButtons[0].textContent).toContain('Delete');
 
       deleteButtons[0].click();
 
-      expect(deletePerson).toHaveBeenCalled();
+      expect(personServiceSpy.deletePerson).toHaveBeenCalled();
+      expect(personServiceSpy.fetch).toHaveBeenCalled();
     });
 
     it('should provide a delete all button for all people', () => {
-      let deleteAllPeople = spyOn(fixture.componentInstance, 'deleteAllPeople');
-
       let deleteAllButton = fixture.nativeElement.querySelector('thead button.is-danger');
       expect(deleteAllButton.textContent).toContain('Delete All');
+      spyOn(window, 'confirm').and.returnValue(true);
 
       deleteAllButton.click();
 
-      expect(deleteAllPeople).toHaveBeenCalled();
+      expect(confirm).toHaveBeenCalled();
+      expect(personServiceSpy.deletePerson).toHaveBeenCalledTimes(2);
+      expect(personServiceSpy.fetch).toHaveBeenCalled();
+    });
+
+    it('should allow the user to cancel deleting all', () => {
+      let deleteAllButton = fixture.nativeElement.querySelector('thead button.is-danger');
+      expect(deleteAllButton.textContent).toContain('Delete All');
+      spyOn(window, 'confirm').and.returnValue(false);
+
+      deleteAllButton.click();
+
+      expect(confirm).toHaveBeenCalled();
+      expect(personServiceSpy.deletePerson).not.toHaveBeenCalled();
+      expect(personServiceSpy.fetch).not.toHaveBeenCalled();
     });
 
     it('should provide inputs for a new person', () => {
@@ -87,7 +102,8 @@ describe('TableComponent', () => {
 
       fixture.nativeElement.querySelector('tfoot button.is-success').click();
 
-      expect(mockService.addPerson).toHaveBeenCalledWith(new Person(name, salary, cohort));
+      expect(personServiceSpy.addPerson).toHaveBeenCalledWith(new Person(name, salary, cohort));
+      expect(personServiceSpy.fetch).toHaveBeenCalled();
     });
 
     it('should allow a person to be added by hitting enter', () => {
@@ -101,7 +117,8 @@ describe('TableComponent', () => {
           .query(By.css('tfoot td.cohort input'))
           .triggerEventHandler('keyup.enter', null);
 
-      expect(mockService.addPerson).toHaveBeenCalledWith(new Person(name, salary, cohort));
+      expect(personServiceSpy.addPerson).toHaveBeenCalledWith(new Person(name, salary, cohort));
+      expect(personServiceSpy.fetch).toHaveBeenCalled();
     });
 
     it('should provide a button to clear inputs', () => {
@@ -141,7 +158,7 @@ describe('TableComponent', () => {
 
         fixture.componentInstance.addPerson();
 
-        expect(mockService.addPerson).toHaveBeenCalledWith(new Person(name, salary, cohort));
+        expect(personServiceSpy.addPerson).toHaveBeenCalledWith(new Person(name, salary, cohort));
       });
 
       it('should clear the inputs', () => {
@@ -198,21 +215,13 @@ describe('TableComponent', () => {
       it('should not call the service or update the inputs', () => {
         fixture.componentInstance.addPerson();
 
-        expect(mockService.addPerson).not.toHaveBeenCalled();
+        expect(personServiceSpy.addPerson).not.toHaveBeenCalled();
         expect(fixture.componentInstance.newPersonForm.value).toEqual(invalidInput);
       });
     });
   });
 
   describe('deletePerson method', () => {
-    it('should call the service', () => {
-      let person = new Person('Hello', 123, 'World');
-
-      fixture.componentInstance.deletePerson(person);
-
-      expect(mockService.deletePerson).toHaveBeenCalledWith(person);
-    });
-
     it('should fill the form with the deleted data if empty', () => {
       let oldFirstPerson = getFirstPerson();
 
@@ -238,39 +247,5 @@ describe('TableComponent', () => {
       let cohort = fixture.nativeElement.querySelector('tbody tr td.cohort').textContent;
       return new Person(name, salary, cohort);
     }
-  });
-
-  describe('deleteAllPeople method', () => {
-    let confirm: jasmine.Spy;
-
-    beforeEach(() => {
-      confirm = spyOn(window, 'confirm');
-    });
-
-    it('should ask for confirmation', () => {
-      fixture.componentInstance.deleteAllPeople();
-
-      expect(confirm).toHaveBeenCalled();
-    });
-
-    describe('if user confirms', () => {
-      it('should call the service', () => {
-        confirm.and.returnValue(true);
-
-        fixture.componentInstance.deleteAllPeople();
-
-        expect(mockService.deleteAllPeople).toHaveBeenCalled();
-      });
-    });
-
-    describe('if user does not confirm', () => {
-      it('should not call the service', () => {
-        confirm.and.returnValue(false);
-
-        fixture.componentInstance.deleteAllPeople();
-
-        expect(mockService.deleteAllPeople).not.toHaveBeenCalled();
-      });
-    });
   });
 });
