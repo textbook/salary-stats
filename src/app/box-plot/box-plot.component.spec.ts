@@ -5,7 +5,6 @@ import { Observable } from 'rxjs/Observable';
 import { BoxPlotComponent, formatChartPoint } from './box-plot.component';
 import { Statistics } from '@lib/statistics';
 import { PersonService } from '../person.service';
-import { CohortService } from '../cohort.service';
 import { SharedModule } from '../shared/shared.module';
 import { Person } from '@lib/models';
 
@@ -17,13 +16,13 @@ describe('BoxPlotComponent', () => {
   beforeEach(async(() => {
     personServiceSpy = jasmine.createSpyObj('PersonServiceSpy', ['addPerson']);
     personServiceSpy.people$ = Observable.of([]);
+    personServiceSpy.cohorts$ = Observable.of({});
 
     TestBed.configureTestingModule({
       declarations: [BoxPlotComponent],
       imports: [SharedModule],
       providers: [
         { provide: PersonService, useValue: personServiceSpy },
-        CohortService,
       ],
     }).compileComponents();
   }));
@@ -40,7 +39,7 @@ describe('BoxPlotComponent', () => {
 
   describe('createChartOptions method', () => {
     it('should provide appropriate chart options', () => {
-      let options = component.createChartOptions([]);
+      let options = component.createChartOptions([], {});
       expect(options.title.text).toBe('Salary Comparison');
       expect(options.chart.type).toBe('boxplot');
       expect(options.yAxis.title.text).toBe('Salary (£)');
@@ -51,32 +50,36 @@ describe('BoxPlotComponent', () => {
       spyOn(Statistics, 'calculateBoxPlotData').and.returnValue(plotValues);
       let salary = 1234;
 
-      let options = component.createChartOptions([
-        new Person('Baz', salary, 'A'),
-      ]);
+      let options = component.createChartOptions(
+          [new Person('Baz', salary, 'A')],
+          { 'A': [salary] }
+      );
 
       expect(Statistics.calculateBoxPlotData).toHaveBeenCalledWith([salary]);
       expect(options.series[0].data[0]).toEqual(plotValues);
     });
 
     it('should provide a point per cohort', () => {
-      let options = component.createChartOptions([
-        new Person('Foo', 10, 'A'),
-        new Person('Bar', 20, 'B'),
-      ]);
+      let options = component.createChartOptions(
+        [new Person('Foo', 10, 'A'), new Person('Bar', 20, 'B')],
+        { 'A': [10], 'B': [20] }
+      );
 
       expect(options.series[0].data.length).toBe(2);
     });
 
     it('should provide an outliers series', () => {
-      let options = component.createChartOptions([
-        new Person('Foo', 10, 'A'),
-        new Person('Foo', 10, 'A'),
-        new Person('Foo', 10, 'A'),
-        new Person('Foo', 10, 'A'),
-        new Person('Foo', 10, 'A'),
-        new Person('Bar', 100, 'A'),
-      ]);
+      let options = component.createChartOptions(
+          [
+            new Person('Foo', 10, 'A'),
+            new Person('Foo', 10, 'A'),
+            new Person('Foo', 10, 'A'),
+            new Person('Foo', 10, 'A'),
+            new Person('Foo', 10, 'A'),
+            new Person('Bar', 100, 'A'),
+          ],
+          { 'A' : [10, 10, 10, 10, 10, 100] }
+      );
 
       expect(options.series[1].data.length).toBe(1);
     });

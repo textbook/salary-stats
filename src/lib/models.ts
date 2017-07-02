@@ -26,3 +26,5 @@ export class Person {
     return keys.filter(key => this[key] === other[key]).length === keys.length;
   }
 }
+
+export type CohortMap = { [name: string]: number[] };

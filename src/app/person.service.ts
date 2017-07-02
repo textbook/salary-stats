@@ -3,17 +3,19 @@ import { Http } from '@angular/http';
 
 import { Observable, ReplaySubject } from 'rxjs';
 
-import { Person } from '@lib/models';
+import { Person, CohortMap } from '@lib/models';
 
 @Injectable()
 export class PersonService {
   people$: Observable<Person[]>;
+  cohorts$: Observable<CohortMap>;
 
   private personSubject = new ReplaySubject<Person[]>(1);
   private personRoute = '/app/people';
 
   constructor(private http: Http) {
     this.people$ = this.personSubject.asObservable();
+    this.cohorts$ = this.people$.map(people => this.createCohorts(people));
   }
 
 
@@ -37,5 +39,28 @@ export class PersonService {
 
   private deserialise(people: any[]): Person[] {
     return people.map(person => new Person(person.name, person.salary, person.cohort, person.id));
+  }
+
+  private createCohorts(people: Person[]): CohortMap {
+    let cohorts = this.generateInitialCohorts(people);
+    this.sortCohortValues(cohorts);
+    return cohorts;
+  }
+
+  private generateInitialCohorts(people: Person[]): CohortMap {
+    let cohorts = {};
+    people.map(({ cohort, salary }) => {
+      if (!cohorts.hasOwnProperty(cohort)) {
+        cohorts[cohort] = [];
+      }
+      cohorts[cohort].push(salary);
+    });
+    return cohorts;
+  }
+
+  private sortCohortValues(cohorts: CohortMap) {
+    for (let cohort of Object.keys(cohorts)) {
+      cohorts[cohort].sort();
+    }
   }
 }

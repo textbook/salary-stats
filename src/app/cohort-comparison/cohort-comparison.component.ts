@@ -3,8 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { PersonService } from '../person.service';
-import { CohortService } from '../cohort.service';
-import { Person } from '@lib/models';
+import { CohortMap, Person } from '@lib/models';
 import { Statistics } from '@lib/statistics';
 
 @Component({
@@ -15,14 +14,14 @@ import { Statistics } from '@lib/statistics';
 export class CohortComparisonComponent implements OnInit {
   pairComparisons$: Observable<any>;
 
-  constructor(private personService: PersonService, private cohortService: CohortService) {}
+  constructor(private personService: PersonService) { }
 
   ngOnInit() {
-    this.pairComparisons$ = this.personService.people$.map(people => this.createPairComparisons(people));
+    this.pairComparisons$ = this.personService.cohorts$
+        .map(cohorts => this.createPairComparisons(cohorts));
   }
 
-  createPairComparisons(people: Person[]) {
-    let cohorts = this.cohortService.map(people);
+  private createPairComparisons(cohorts: CohortMap) {
     let cohortPairs = this.pairs(Object.keys(cohorts));
     return cohortPairs.map(pair => {
       let pairComparison = {p: null, sameDistribution: false, title: pair.join(' to ')};

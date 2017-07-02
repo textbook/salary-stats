@@ -1,28 +1,27 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Observable } from 'rxjs/Observable';
+import { ReplaySubject, Subject } from 'rxjs';
 
 import { CohortComparisonComponent } from './cohort-comparison.component';
-import { CohortService } from '../cohort.service';
 import { PersonService } from '../person.service';
-import { Person } from '@lib/models';
+import { CohortMap } from '@lib/models';
 
 describe('CohortComparisonComponent', () => {
   let fixture: ComponentFixture<CohortComparisonComponent>;
   let component: CohortComparisonComponent;
-  let commonPeople: Person[];
   let personServiceSpy: PersonService;
+  let cohortSubject: Subject<CohortMap>;
 
   beforeEach(async(() => {
+    cohortSubject = new ReplaySubject<CohortMap>(1);
     personServiceSpy = jasmine.createSpyObj('PersonServiceSpy', ['addPerson']);
-    personServiceSpy.people$ = Observable.of([]);
+    personServiceSpy.cohorts$ = cohortSubject.asObservable();
 
     TestBed.configureTestingModule({
       declarations: [CohortComparisonComponent],
       imports: [],
       providers: [
         { provide: PersonService, useValue: personServiceSpy },
-        CohortService,
       ],
     }).compileComponents();
   }));
@@ -31,68 +30,66 @@ describe('CohortComparisonComponent', () => {
     fixture = TestBed.createComponent(CohortComparisonComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-
-    commonPeople = [
-      new Person('Anna', 300, 'A'),
-      new Person('Adelbert', 275, 'A'),
-      new Person('Bert', 200, 'B'),
-      new Person('Celine', 230, 'C'),
-    ];
   });
 
   describe('comparisons', () => {
-    it('creates titles for cohort pairs', () => {
-      let people = commonPeople.concat(new Person('Damien', 240, 'D'));
+    it('creates titles for cohort pairs', done => {
+      cohortSubject.next({
+        'A': [275, 300],
+        'B': [200],
+        'C': [230],
+        'D': [240],
+      });
 
-      let comparisonPairs = component.createPairComparisons(people);
-
-      expect(comparisonPairs.map(p => p.title)).toEqual([
-        'A to B', 'A to C', 'A to D',
-        'B to C', 'B to D',
-        'C to D'
-      ]);
+      component.pairComparisons$.subscribe(comparisonPairs => {
+        expect(comparisonPairs.map(p => p.title)).toEqual([
+          'A to B', 'A to C', 'A to D',
+          'B to C', 'B to D',
+          'C to D'
+        ]);
+        done();
+      });
     });
 
-    it('creates no pairs for only one person', () => {
-      let comparisonPairs = component.createPairComparisons([new Person('Han Solo', 10, 'H')]);
+    it('creates no pairs for only one cohort', done => {
+      cohortSubject.next({ 'H': [10] });
 
-      expect(comparisonPairs).toEqual([]);
+      component.pairComparisons$.subscribe(comparisonPairs => {
+        expect(comparisonPairs).toEqual([]);
+        done();
+      });
     });
 
-    it('creates p values for cohort pairs', () => {
-      let people = commonPeople.concat(
-        new Person('Ada', 220, 'A'),
-        new Person('Bert', 220, 'B'),
-        new Person('Carmelia', 275, 'C'),
-        new Person('Carlton', 295, 'C'),
-      );
+    it('creates p values for cohort pairs', done => {
+      cohortSubject.next({
+        'A': [220, 275, 300],
+        'B': [200, 220],
+        'C': [230, 275, 295],
+      });
 
-      let comparisonPairs = component.createPairComparisons(people);
-
-      let pValues = comparisonPairs.map(p => p.p);
-      expect(pValues[0]).toEqual(0.6604);
-      expect(pValues[1]).toEqual(0.9963);
-      expect(pValues[2]).toEqual(0.1813);
+      component.pairComparisons$.subscribe(comparisonPairs => {
+        let pValues = comparisonPairs.map(p => p.p);
+        expect(pValues[0]).toBeCloseTo(0.6604, 3);
+        expect(pValues[1]).toBeCloseTo(0.9963, 3);
+        expect(pValues[2]).toBeCloseTo(0.1813, 3);
+        done();
+      });
     });
 
-    it('shows significance for cohort pairs', () => {
-      let people = commonPeople.concat(
-        new Person('Bert', 220, 'B'),
-        new Person('Bart', 210, 'B'),
-        new Person('Borg', 200, 'B'),
-        new Person('Carmelia', 275, 'C'),
-        new Person('Carlton', 295, 'C'),
-        new Person('Cornelius', 20520, 'C'),
-      );
+    it('shows significance for cohort pairs', done => {
+      cohortSubject.next({
+        'A': [275, 300],
+        'B': [200, 200, 210, 220],
+        'C': [230, 275, 295, 20520],
+      });
 
-      let comparisonPairs = component.createPairComparisons(people);
-
-      let isSameDistribution = comparisonPairs.map(p => p.sameDistribution);
-      expect(isSameDistribution[0]).toBe(true);
-      expect(isSameDistribution[1]).toBe(true);
-      expect(isSameDistribution[2]).toBe(false);
+      component.pairComparisons$.subscribe(comparisonPairs => {
+        let isSameDistribution = comparisonPairs.map(p => p.sameDistribution);
+        expect(isSameDistribution[0]).toBe(true);
+        expect(isSameDistribution[1]).toBe(true);
+        expect(isSameDistribution[2]).toBe(false);
+        done();
+      });
     });
-
   });
-
 });

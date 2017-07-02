@@ -5,7 +5,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
 
 import { PersonService } from './person.service';
-import { CohortService } from './cohort.service';
 
 import { SharedModule } from './shared/shared.module';
 import { AppComponent } from './app.component';
@@ -31,7 +30,6 @@ import { InMemoryPersonService } from './in-memory-person.service';
   ],
   providers: [
     PersonService,
-    CohortService
   ],
   bootstrap: [AppComponent]
 })

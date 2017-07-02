@@ -80,4 +80,29 @@ describe('PersonService', () => {
 
     service.deletePerson(new Person(name, 12453, 'A', 4));
   });
+
+  it('should expose an observable of sorted cohorts', done => {
+    let people = [
+      new Person('Anna', 300, 'A'),
+      new Person('Bert', 200, 'B'),
+      new Person('Clara', 250, 'B'),
+      new Person('Bob', 275, 'A')
+    ];
+
+    backend.connections.subscribe((connection: MockConnection) => {
+      connection.mockRespond(new Response(new ResponseOptions({
+        status: 200,
+        body: { data: people },
+      })));
+    });
+
+    service.fetch();
+
+    service.cohorts$.subscribe(cohorts => {
+      expect(Object.keys(cohorts)).toEqual(['A', 'B']);
+      expect(cohorts.A).toEqual([275, 300]);
+      expect(cohorts.B).toEqual([200, 250]);
+      done();
+    });
+  });
 });
