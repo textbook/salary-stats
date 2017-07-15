@@ -57,6 +57,10 @@ available:
 Both sets of tests are configured to run using the Chrome browser headlessly,
 so you won't see anything pop up on your screen.
 
+## Style Guide
+
+A living style guide is generated using [KSS][13]. See it online [here][14].
+
   [1]: https://travis-ci.org/textbook/salary-stats.svg?branch=master
   [2]: https://travis-ci.org/textbook/salary-stats
   [3]: https://coveralls.io/repos/github/textbook/salary-stats/badge.svg?branch=master
@@ -69,3 +73,5 @@ so you won't see anything pop up on your screen.
   [10]: https://www.codacy.com/app/j-r-sharpe-github/salary-stats?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=textbook/salary-stats&amp;utm_campaign=Badge_Grade
   [11]: https://help.github.com/articles/cloning-a-repository/
   [12]: https://cli.angular.io/
+  [13]: http://warpspire.com/kss/
+  [14]: http://salary-stats-style-shirtless-albertype.cfapps.pez.pivotal.io/
