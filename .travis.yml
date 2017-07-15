@@ -30,6 +30,7 @@ after_success:
 
 before_deploy:
   - ng build --prod
+  - npm run styleguide
 
 deploy:
     edge: true

@@ -15,6 +15,9 @@
     "autoe2e": "cross-env PORT=$(node port.js) concurrently -k -s first -p name -n ngs,e2e \"ng serve\" \"npm run safee2e\"",
     "safee2e": "node wait.js && npm run e2e",
     "e2e": "protractor",
+    "prestyleguide": "ng build --extract-css true --output-path dist-style",
+    "styleguide": "rimraf styleguide/ && kss --config kss/config.json",
+    "poststyleguide": "cp dist-style/styles.bundle.css styleguide/",
     "reinstall": "rm -rf ./node_modules && npm install"
   },
   "private": true,
@@ -57,6 +60,7 @@
     "karma-jasmine": "~1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
     "karma-mocha-reporter": "^2.2.3",
+    "kss": "^3.0.0-beta.18",
     "protractor": "~5.1.0",
     "ts-node": "~2.0.0",
     "tslint": "~4.5.0",

@@ -1,0 +1,9 @@
+{
+  "source": "../src",
+  "title": "Salary Stats Style Guide",
+  "css": [
+    "styles.bundle.css"
+  ],
+  "homepage": "../kss/homepage.md",
+  "destination": "../styleguide"
+}
