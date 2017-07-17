@@ -1,9 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-
-import { Observable } from 'rxjs';
+import { Component, Input } from '@angular/core';
 
 import { CohortMap, Person } from '@lib/models';
-import { PersonService } from '../person.service';
 import { Statistics } from '@lib/statistics';
 
 const BASE_BOX_PLOT_OPTIONS = {
@@ -19,21 +16,17 @@ const BASE_BOX_PLOT_OPTIONS = {
   templateUrl: './box-plot.component.html',
   styleUrls: ['./box-plot.component.scss']
 })
-export class BoxPlotComponent implements OnInit {
+export class BoxPlotComponent {
+  @Input() cohorts: CohortMap;
+  @Input() people: Person[];
 
-  boxPlotOptions$: Observable<any>;
+  constructor() { }
 
-  constructor(private personService: PersonService) { }
-
-  ngOnInit() {
-    this.boxPlotOptions$ = Observable.zip(
-        this.personService.people$,
-        this.personService.cohorts$,
-        (people: Person[], cohorts: CohortMap) => this.createChartOptions(people, cohorts)
-    );
+  get chartOptions() {
+    return this.createChartOptions(this.people, this.cohorts);
   }
 
-  createChartOptions(people: Person[], cohorts: CohortMap): any {
+  private createChartOptions(people: Person[], cohorts: CohortMap): any {
     let { categories, data, outliers } = this.calculateCohortStatistics(people, cohorts);
 
     let xAxis = { categories, title: { text: 'Cohort' } };
@@ -42,7 +35,7 @@ export class BoxPlotComponent implements OnInit {
     return Object.assign({}, BASE_BOX_PLOT_OPTIONS, { series, xAxis });
   }
 
-  calculateCohortStatistics(people: Person[], cohortMap: CohortMap) {
+  private calculateCohortStatistics(people: Person[], cohortMap: CohortMap) {
     console.log('calculating statistics for', cohortMap);
     let cohorts = Array.from(Object.keys(cohortMap));
     let data = cohorts.map(key => Statistics.calculateBoxPlotData(cohortMap[key]));

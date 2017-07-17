@@ -9,7 +9,9 @@
 
 <sst-table></sst-table>
 
-<sst-box-plot></sst-box-plot>
+<sst-box-plot [people]="people$ | async"
+              [cohorts]="cohorts$ | async"
+></sst-box-plot>
 
 <sst-cohort-comparison></sst-cohort-comparison>
 

@@ -1,35 +1,27 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { Observable } from 'rxjs/Observable';
+import { By } from '@angular/platform-browser';
 
 import { BoxPlotComponent, formatChartPoint } from './box-plot.component';
 import { Statistics } from '@lib/statistics';
-import { PersonService } from '../person.service';
-import { SharedModule } from '../shared/shared.module';
 import { Person } from '@lib/models';
 
 describe('BoxPlotComponent', () => {
   let component: BoxPlotComponent;
   let fixture: ComponentFixture<BoxPlotComponent>;
-  let personServiceSpy: PersonService;
 
   beforeEach(async(() => {
-    personServiceSpy = jasmine.createSpyObj('PersonServiceSpy', ['addPerson']);
-    personServiceSpy.people$ = Observable.of([]);
-    personServiceSpy.cohorts$ = Observable.of({});
-
     TestBed.configureTestingModule({
       declarations: [BoxPlotComponent],
-      imports: [SharedModule],
-      providers: [
-        { provide: PersonService, useValue: personServiceSpy },
-      ],
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(BoxPlotComponent);
     component = fixture.componentInstance;
+    component.people = [];
+    component.cohorts = {};
     fixture.detectChanges();
   });
 
@@ -39,7 +31,7 @@ describe('BoxPlotComponent', () => {
 
   describe('createChartOptions method', () => {
     it('should provide appropriate chart options', () => {
-      let options = component.createChartOptions([], {});
+      let options = getChartOptions();
       expect(options.title.text).toBe('Salary Comparison');
       expect(options.chart.type).toBe('boxplot');
       expect(options.yAxis.title.text).toBe('Salary (£)');
@@ -50,39 +42,41 @@ describe('BoxPlotComponent', () => {
       spyOn(Statistics, 'calculateBoxPlotData').and.returnValue(plotValues);
       let salary = 1234;
 
-      let options = component.createChartOptions(
-          [new Person('Baz', salary, 'A')],
-          { 'A': [salary] }
-      );
+      component.people = [new Person('Baz', salary, 'A')];
+      component.cohorts = { 'A': [salary] };
+      fixture.detectChanges();
 
+      expect(getChartOptions().series[0].data[0]).toEqual(plotValues);
       expect(Statistics.calculateBoxPlotData).toHaveBeenCalledWith([salary]);
-      expect(options.series[0].data[0]).toEqual(plotValues);
     });
 
     it('should provide a point per cohort', () => {
-      let options = component.createChartOptions(
-        [new Person('Foo', 10, 'A'), new Person('Bar', 20, 'B')],
-        { 'A': [10], 'B': [20] }
-      );
+      component.people = [new Person('Foo', 10, 'A'), new Person('Bar', 20, 'B')];
+      component.cohorts = { 'A': [10], 'B': [20] };
+      fixture.detectChanges();
 
-      expect(options.series[0].data.length).toBe(2);
+
+      expect(getChartOptions().series[0].data.length).toBe(2);
     });
 
     it('should provide an outliers series', () => {
-      let options = component.createChartOptions(
-          [
-            new Person('Foo', 10, 'A'),
-            new Person('Foo', 10, 'A'),
-            new Person('Foo', 10, 'A'),
-            new Person('Foo', 10, 'A'),
-            new Person('Foo', 10, 'A'),
-            new Person('Bar', 100, 'A'),
-          ],
-          { 'A' : [10, 10, 10, 10, 10, 100] }
-      );
+      component.people = [
+        new Person('Foo', 10, 'A'),
+        new Person('Foo', 10, 'A'),
+        new Person('Foo', 10, 'A'),
+        new Person('Foo', 10, 'A'),
+        new Person('Foo', 10, 'A'),
+        new Person('Bar', 100, 'A'),
+      ];
+      component.cohorts = { 'A' : [10, 10, 10, 10, 10, 100] };
+      fixture.detectChanges();
 
-      expect(options.series[1].data.length).toBe(1);
+      expect(getChartOptions().series[1].data.length).toBe(1);
     });
+
+    function getChartOptions(): any {
+      return fixture.debugElement.query(By.css('chart')).properties['options'];
+    }
   });
 
   describe('formatChartPoint function', () => {
