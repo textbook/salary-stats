@@ -1,7 +1,14 @@
 {
   "name": "salary-stats",
   "description": "Analyse and compare salaries by cohort.",
-  "keywords": ["salary", "statistics", "comparison", "angular", "highcharts", "bulma"],
+  "keywords": [
+    "salary",
+    "statistics",
+    "comparison",
+    "angular",
+    "highcharts",
+    "bulma"
+  ],
   "version": "0.0.1",
   "license": "ISC",
   "angular-cli": {},
@@ -44,7 +51,7 @@
     "@angular/router": "^4.0.0",
     "angular-in-memory-web-api": "^0.3.2",
     "angular2-highcharts": "^0.5.5",
-    "bulma": "^0.4.0",
+    "bulma": "^0.5.0",
     "core-js": "^2.4.1",
     "intl": "^1.2.5",
     "jerzy": "^0.2.1",
