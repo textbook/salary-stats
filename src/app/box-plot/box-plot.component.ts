@@ -1,4 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
+
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 import { CohortMap, Person } from '@lib/models';
 import { Statistics } from '@lib/statistics';
@@ -16,17 +18,28 @@ const BASE_BOX_PLOT_OPTIONS = {
   templateUrl: './box-plot.component.html',
   styleUrls: ['./box-plot.component.scss']
 })
-export class BoxPlotComponent {
+export class BoxPlotComponent implements OnChanges {
   @Input() cohorts: CohortMap;
   @Input() people: Person[];
 
-  constructor() { }
+  chartOptions$: Observable<any>;
 
-  get chartOptions() {
-    return this.createChartOptions(this.people, this.cohorts);
+  private chartOptionSubject: Subject<any>;
+
+  constructor() {
+    this.chartOptionSubject = new BehaviorSubject<any>(BASE_BOX_PLOT_OPTIONS);
+    this.chartOptions$ = this.chartOptionSubject.asObservable();
+  }
+
+  ngOnChanges() {
+    this.chartOptionSubject.next(this.createChartOptions(this.people, this.cohorts));
   }
 
   private createChartOptions(people: Person[], cohorts: CohortMap): any {
+    if (!people || !cohorts) {
+      return BASE_BOX_PLOT_OPTIONS;
+    }
+
     let { categories, data, outliers } = this.calculateCohortStatistics(people, cohorts);
 
     let xAxis = { categories, title: { text: 'Cohort' } };
