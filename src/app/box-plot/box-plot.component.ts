@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 import { CohortMap, Person } from '@lib/models';
 import { Statistics } from '@lib/statistics';
+import { formatChartPoint } from './tooltip-formatter';
 
 const BASE_BOX_PLOT_OPTIONS = {
   chart: { type: 'boxplot' },
@@ -59,29 +60,4 @@ export class BoxPlotComponent implements OnChanges {
       outliers: Statistics.identifyOutliers(people, data, cohorts),
     };
   }
-}
-
-export function formatChartPoint() {
-  if (this.point.options.hasOwnProperty('median')) {
-    return formatBoxPlotPoint.call(this);
-  }
-  return formatOutlierPoint.call(this);
-}
-
-function formatBoxPlotPoint() {
-  let { low, q1, median, q3, high } = this.point.options;
-  let cohort = this.key;
-
-  return `<strong>Cohort ${cohort}</strong><br>
-          Upper fence: £${high.toLocaleString()}<br>
-          Upper quartile: £${q3.toLocaleString()}<br>
-          Median: £${median.toLocaleString()}<br>
-          Lower quartile: £${q1.toLocaleString()}<br>
-          Lower fence: £${low.toLocaleString()}`;
-}
-
-function formatOutlierPoint() {
-  let { y, name } = this.point.options;
-  return `<strong>${name}</strong><br>
-          Salary: £${y.toLocaleString()}`;
 }
