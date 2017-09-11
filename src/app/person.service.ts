@@ -1,9 +1,10 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
 
 import { Observable, ReplaySubject } from 'rxjs';
 
-import { Person, CohortMap } from '@lib/models';
+import { CohortMap, Person } from '@lib/models';
+import { RawPerson } from '@lib/transport';
 
 @Injectable()
 export class PersonService {
@@ -13,7 +14,7 @@ export class PersonService {
   private personSubject = new ReplaySubject<Person[]>(1);
   private personRoute = '/app/people';
 
-  constructor(private http: Http) {
+  constructor(private http: HttpClient) {
     this.people$ = this.personSubject.asObservable();
     this.cohorts$ = this.people$.map(people => this.createCohorts(people));
   }
@@ -31,13 +32,13 @@ export class PersonService {
 
   fetch() {
     this.http
-        .get(this.personRoute)
-        .subscribe(response => {
-          this.personSubject.next(this.deserialise(response.json().data));
+        .get<{ data: RawPerson[] }>(this.personRoute)
+        .subscribe(json => {
+          this.personSubject.next(this.deserialise(json.data));
         });
   }
 
-  private deserialise(people: any[]): Person[] {
+  private deserialise(people: RawPerson[]): Person[] {
     return people.map(person => new Person(person.name, person.salary, person.cohort, person.id));
   }
 

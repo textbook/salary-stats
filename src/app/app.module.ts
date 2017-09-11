@@ -1,5 +1,5 @@
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { HttpModule } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
@@ -24,7 +24,7 @@ import { InMemoryPersonService } from './in-memory-person.service';
   ],
   imports: [
     BrowserModule,
-    HttpModule,
+    HttpClientModule,
     InMemoryWebApiModule.forRoot(InMemoryPersonService),
     SharedModule,
   ],

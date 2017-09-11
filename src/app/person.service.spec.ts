@@ -1,52 +1,42 @@
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import {
-  BaseRequestOptions, ConnectionBackend, Http, RequestMethod,
-  RequestOptions, ResponseOptions, Response,
-} from '@angular/http';
-import { MockBackend, MockConnection } from '@angular/http/testing';
 
 import { PersonService } from './person.service';
 import { Person } from '@lib/models';
 
 describe('PersonService', () => {
   let service: PersonService;
-  let backend: MockBackend;
+  let httpMock: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        { provide: ConnectionBackend, useClass: MockBackend },
-        { provide: RequestOptions, useClass: BaseRequestOptions },
-        Http,
-        PersonService,
-      ]
+      imports: [HttpClientTestingModule],
+      providers: [PersonService],
     });
 
     service = TestBed.get(PersonService);
-    backend = TestBed.get(ConnectionBackend);
+    httpMock = TestBed.get(HttpTestingController);
   });
 
-  it('should get the people from the API', done => {
-    backend.connections.subscribe((connection: MockConnection) => {
-      expect(connection.request.url).toMatch(/\/people$/);
-      expect(connection.request.method).toBe(RequestMethod.Get, 'expected GET request');
-      done();
-    });
+  afterEach(() => {
+    httpMock.verify();
+  });
 
+  it('should get the people from the API', () => {
     service.fetch();
+
+    const req = httpMock.expectOne({ method: 'GET' });
+    expect(req.request.url).toMatch(/\/people$/);
   });
 
   it('should expose the people as an observable', done => {
-    let people = [{ name: 'Alice', salary: 12345, cohort: 'A' }];
-
-    backend.connections.subscribe((connection: MockConnection) => {
-      connection.mockRespond(new Response(new ResponseOptions({
-        status: 200,
-        body: { data: people },
-      })));
-    });
+    const people = [{ name: 'Alice', salary: 12345, cohort: 'A' }];
 
     service.fetch();
+
+    const req = httpMock.expectOne({ method: 'GET' });
+    expect(req.request.url).toMatch(/\/people$/);
+    req.flush({ data: people });
 
     service.people$.subscribe(received => {
       expect(received).toEqual([new Person(people[0].name, people[0].salary, people[0].cohort)]);
@@ -54,31 +44,29 @@ describe('PersonService', () => {
     });
   });
 
-  it('should post a new person to the API', done => {
+  it('should post a new person to the API', () => {
     let name = 'Lynn';
     let salary = 123;
     let cohort = 'Q';
 
-    backend.connections.subscribe((connection: MockConnection) => {
-      expect(connection.request.url).toMatch(/\/people$/);
-      expect(connection.request.method).toBe(RequestMethod.Post, 'expected POST request');
-      expect(connection.request.json()).toEqual({ name, salary, cohort });
-      done();
-    });
+    service
+        .addPerson(new Person(name, salary, cohort))
+        .subscribe(() => {});
 
-    service.addPerson(new Person(name, salary, cohort));
+    const req = httpMock.expectOne({ method: 'POST' });
+    expect(req.request.url).toMatch(/\/people$/);
+    expect(req.request.body).toEqual({ name, salary, cohort });
   });
 
-  it('should delete a single person from the API', done => {
+  it('should delete a single person from the API', () => {
     let name = 'Davina';
 
-    backend.connections.subscribe((connection: MockConnection) => {
-      expect(connection.request.url).toMatch(/\/people\/4$/);
-      expect(connection.request.method).toBe(RequestMethod.Delete, 'expected DELETE request');
-      done();
-    });
+    service
+        .deletePerson(new Person(name, 12453, 'A', 4))
+        .subscribe(() => {});
 
-    service.deletePerson(new Person(name, 12453, 'A', 4));
+    const req = httpMock.expectOne({ method: 'DELETE' });
+    expect(req.request.url).toMatch(/\/people\/4$/);
   });
 
   it('should expose an observable of sorted cohorts', done => {
@@ -89,14 +77,11 @@ describe('PersonService', () => {
       new Person('Bob', 275, 'A')
     ];
 
-    backend.connections.subscribe((connection: MockConnection) => {
-      connection.mockRespond(new Response(new ResponseOptions({
-        status: 200,
-        body: { data: people },
-      })));
-    });
-
     service.fetch();
+
+    httpMock
+        .expectOne({ method: 'GET' })
+        .flush({ data: people });
 
     service.cohorts$.subscribe(cohorts => {
       expect(Object.keys(cohorts)).toEqual(['A', 'B']);
