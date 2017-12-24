@@ -1,6 +1,8 @@
 import { Component, Input, OnChanges } from '@angular/core';
 
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 
 import { CohortMap, Person } from '@lib/models';
 import { Statistics } from '@lib/statistics';
@@ -41,18 +43,17 @@ export class BoxPlotComponent implements OnChanges {
       return BASE_BOX_PLOT_OPTIONS;
     }
 
-    let { categories, data, outliers } = this.calculateCohortStatistics(people, cohorts);
+    const { categories, data, outliers } = this.calculateCohortStatistics(people, cohorts);
 
-    let xAxis = { categories, title: { text: 'Cohort' } };
-    let series = [{ data }, { type: 'scatter', data: outliers }];
+    const xAxis = { categories, title: { text: 'Cohort' } };
+    const series = [{ data }, { type: 'scatter', data: outliers }];
 
     return Object.assign({}, BASE_BOX_PLOT_OPTIONS, { series, xAxis });
   }
 
   private calculateCohortStatistics(people: Person[], cohortMap: CohortMap) {
-    console.log('calculating statistics for', cohortMap);
-    let cohorts = Array.from(Object.keys(cohortMap));
-    let data = cohorts.map(key => Statistics.calculateBoxPlotData(cohortMap[key]));
+    const cohorts = Array.from(Object.keys(cohortMap));
+    const data = cohorts.map(key => Statistics.calculateBoxPlotData(cohortMap[key]));
 
     return {
       categories: cohorts,

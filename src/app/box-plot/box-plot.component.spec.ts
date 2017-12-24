@@ -25,16 +25,16 @@ describe('BoxPlotComponent', () => {
 
   describe('chart options', () => {
     it('should provide appropriate chart options', () => {
-      let options = getChartOptions();
+      const options = getChartOptions();
       expect(options.title.text).toBe('Salary Comparison');
       expect(options.chart.type).toBe('boxplot');
       expect(options.yAxis.title.text).toBe('Salary (£)');
     });
 
     it('should use salaries in the points', () => {
-      let plotValues = [1, 2, 3, 4, 5];
+      const plotValues = [1, 2, 3, 4, 5];
       spyOn(Statistics, 'calculateBoxPlotData').and.returnValue(plotValues);
-      let salary = 1234;
+      const salary = 1234;
 
       setInputData([new Person('Baz', salary, 'A')], { 'A': [salary] });
 
@@ -75,21 +75,21 @@ describe('BoxPlotComponent', () => {
       });
 
       it('should return name and y value for outlier points', () => {
-        let context = { point: { options: { y: 1234, name: 'Foo' } } };
+        const context = { point: { options: { y: 1234, name: 'Foo' } } };
 
-        let result = formatter.call(context);
+        const result = formatter.call(context);
 
         expect(result).toContain('<strong>Foo</strong>');
         expect(result).toContain('Salary: £1,234');
       });
 
       it('should return descriptive values for boxplot points', () => {
-        let context = {
+        const context = {
           key: 'A',
           point: { options: { low: 123, q1: 123, median: 1234, q3: 123, high: 123 } },
         };
 
-        let result = formatter.call(context);
+        const result = formatter.call(context);
 
         expect(result).toContain('<strong>Cohort A</strong>');
         expect(result).toContain('Median: £1,234');

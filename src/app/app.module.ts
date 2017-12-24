@@ -2,7 +2,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 
 import { PersonService } from './person.service';
 
@@ -25,7 +25,7 @@ import { InMemoryPersonService } from './in-memory-person.service';
   imports: [
     BrowserModule,
     HttpClientModule,
-    InMemoryWebApiModule.forRoot(InMemoryPersonService),
+    HttpClientInMemoryWebApiModule.forRoot(InMemoryPersonService, { delay: 0 }),
     SharedModule,
   ],
   providers: [

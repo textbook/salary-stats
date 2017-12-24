@@ -1,9 +1,7 @@
 // Protractor configuration file, see link for more information
 // https://github.com/angular/protractor/blob/master/lib/config.ts
 
-/*global jasmine */
-var SpecReporter = require('jasmine-spec-reporter').SpecReporter;
-var testPort = parseInt(process.env.PORT || '4200', 10);
+const { SpecReporter } = require('jasmine-spec-reporter');
 
 exports.config = {
   allScriptsTimeout: 11000,
@@ -17,7 +15,7 @@ exports.config = {
     }
   },
   directConnect: true,
-  baseUrl: 'http://localhost:' + testPort + '/',
+  baseUrl: 'http://localhost:4200/',
   framework: 'jasmine',
   jasmineNodeOpts: {
     showColors: true,
@@ -25,12 +23,10 @@ exports.config = {
     print: function() {}
   },
   useAllAngular2AppRoots: true,
-  beforeLaunch: function() {
+  onPrepare: function() {
     require('ts-node').register({
       project: 'e2e/tsconfig.e2e.json'
     });
-  },
-  onPrepare: function() {
     jasmine.getEnv().addReporter(new SpecReporter({ spec: { displayStacktrace: true } }));
   }
 };

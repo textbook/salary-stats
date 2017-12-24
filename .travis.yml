@@ -21,8 +21,8 @@ before_script:
 
 script:
   - ng lint
-  - npm run test-cover
-  - npm run autoe2e
+  - npm run test:cover
+  - npm run e2e
 
 after_success:
   - npm run coveralls
@@ -30,14 +30,3 @@ after_success:
 
 before_deploy:
   - ng build --prod
-  - npm run styleguide
-
-deploy:
-    edge: true
-    provider: cloudfoundry
-    api: https://api.run.pez.pivotal.io
-    username: $CF_USERNAME
-    password: $CF_PASSWORD
-    organization: pivot-jsharpe
-    space: development
-    manifest: manifest.yml

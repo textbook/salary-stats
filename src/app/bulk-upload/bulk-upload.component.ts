@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/forkJoin';
 
 import { PersonService } from '../person.service';
 import { Person } from '@lib/models';

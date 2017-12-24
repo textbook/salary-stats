@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { Observable, ReplaySubject } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 import { CohortMap, Person } from '@lib/models';
 import { RawPerson } from '@lib/transport';
@@ -32,9 +33,9 @@ export class PersonService {
 
   fetch() {
     this.http
-        .get<{ data: RawPerson[] }>(this.personRoute)
+        .get<RawPerson[]>(this.personRoute)
         .subscribe(json => {
-          this.personSubject.next(this.deserialise(json.data));
+          this.personSubject.next(this.deserialise(json));
         });
   }
 
@@ -43,13 +44,13 @@ export class PersonService {
   }
 
   private createCohorts(people: Person[]): CohortMap {
-    let cohorts = this.generateInitialCohorts(people);
+    const cohorts = this.generateInitialCohorts(people);
     this.sortCohortValues(cohorts);
     return cohorts;
   }
 
   private generateInitialCohorts(people: Person[]): CohortMap {
-    let cohorts = {};
+    const cohorts = {};
     people.map(({ cohort, salary }) => {
       if (!cohorts.hasOwnProperty(cohort)) {
         cohorts[cohort] = [];
@@ -60,7 +61,7 @@ export class PersonService {
   }
 
   private sortCohortValues(cohorts: CohortMap) {
-    for (let cohort of Object.keys(cohorts)) {
+    for (const cohort of Object.keys(cohorts)) {
       cohorts[cohort].sort();
     }
   }

@@ -6,7 +6,7 @@ import { Statistics } from './statistics';
 
 describe('Statistics', () => {
   describe('calculateBoxPlotData method', () => {
-    let testSample = [1, 2, 3, 4, 5];
+    const testSample = [1, 2, 3, 4, 5];
 
     beforeEach(() => {
       spyOn(_ss, 'quantileSorted').and.callFake((sample, p) => Math.round(100 * p));
@@ -35,16 +35,16 @@ describe('Statistics', () => {
 
   describe('identifyOutliers method', () => {
     it('should return values outside the calculated bounds, indexed by cohort', () => {
-      let cohorts = ['X', 'A', 'B'];
-      let boxPlotData = [[], [1, 2, 3, 4, 5], [3, 5, 7, 9, 11]];
-      let people: Person[] = [
+      const cohorts = ['X', 'A', 'B'];
+      const boxPlotData = [[], [1, 2, 3, 4, 5], [3, 5, 7, 9, 11]];
+      const people: Person[] = [
         new Person('Foo', 0, 'A'),
         new Person('', 3, 'A'),
         new Person('Bar', 6, 'A'),
         new Person('', 6, 'B'),
         new Person('Baz', 15, 'B'),
       ];
-      let result = Statistics.identifyOutliers(people, boxPlotData, cohorts);
+      const result = Statistics.identifyOutliers(people, boxPlotData, cohorts);
 
       expect(result.length).toBe(3);
       expect(result[0]).toEqual({ x: 1, y: 0, name: 'Foo' });
@@ -55,15 +55,15 @@ describe('Statistics', () => {
 
   describe('compareSamples method', () => {
     it('returns a p-value and whether the samples are significantly different', () => {
-      let sampleA = [50, 25, 10, 4, 3, 2, 1];
+      const sampleA = [50, 25, 10, 4, 3, 2, 1];
 
-      let aComparedToA = Statistics.compareSamples(sampleA, sampleA.concat(2));
+      const aComparedToA = Statistics.compareSamples(sampleA, sampleA.concat(2));
       expect(aComparedToA.pValue).toBeCloseTo(0.99999, 4);
       expect(aComparedToA.sameDistribution).toBe(true);
 
-      let sampleB = [100, 45, 35, 25, 100, 50, 65, 30];
+      const sampleB = [100, 45, 35, 25, 100, 50, 65, 30];
 
-      let aComparedToB = Statistics.compareSamples(sampleA, sampleB);
+      const aComparedToB = Statistics.compareSamples(sampleA, sampleB);
       expect(aComparedToB.pValue).toBeCloseTo(0.03654, 4);
       expect(aComparedToB.sameDistribution).toBe(false);
     });

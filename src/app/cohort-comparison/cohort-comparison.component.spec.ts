@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ReplaySubject, Subject } from 'rxjs';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { Subject } from 'rxjs/Subject';
 
 import { CohortComparisonComponent } from './cohort-comparison.component';
 import { PersonService } from '../person.service';
@@ -68,7 +69,7 @@ describe('CohortComparisonComponent', () => {
       });
 
       component.pairComparisons$.subscribe(comparisonPairs => {
-        let pValues = comparisonPairs.map(p => p.p);
+        const pValues = comparisonPairs.map(p => p.p);
         expect(pValues[0]).toBeCloseTo(0.6604, 3);
         expect(pValues[1]).toBeCloseTo(0.9963, 3);
         expect(pValues[2]).toBeCloseTo(0.1813, 3);
@@ -84,7 +85,7 @@ describe('CohortComparisonComponent', () => {
       });
 
       component.pairComparisons$.subscribe(comparisonPairs => {
-        let isSameDistribution = comparisonPairs.map(p => p.sameDistribution);
+        const isSameDistribution = comparisonPairs.map(p => p.sameDistribution);
         expect(isSameDistribution[0]).toBe(true);
         expect(isSameDistribution[1]).toBe(true);
         expect(isSameDistribution[2]).toBe(false);

@@ -6,7 +6,7 @@ export class Person {
 
   static fromString(personString): Person {
     // e.g. 'Alice,123,A' -> Person('Alice', 123, 'A')
-    let [name, salaryString, cohort] = personString.split(',', 3).map(item => item.trim());
+    const [name, salaryString, cohort] = personString.split(',', 3).map(item => item.trim());
     let salary = Number.parseInt(salaryString);
     if (isNaN(salary)) {
       salary = 0;
@@ -22,9 +22,11 @@ export class Person {
   }
 
   equals(other: Person): boolean {
-    let keys = Object.keys(this);
+    const keys = Object.keys(this);
     return keys.filter(key => this[key] === other[key]).length === keys.length;
   }
 }
 
-export type CohortMap = { [name: string]: number[] };
+export interface CohortMap {
+  [name: string]: number[];
+}

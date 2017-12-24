@@ -2,11 +2,11 @@ import { Person } from './models';
 
 describe('Person model', () => {
   it('should provide a constructor', () => {
-    let name = 'Zoe';
-    let salary = 235711;
-    let cohort = 'A';
+    const name = 'Zoe';
+    const salary = 235711;
+    const cohort = 'A';
 
-    let person = new Person(name, salary, cohort);
+    const person = new Person(name, salary, cohort);
 
     expect(person.name).toBe(name);
     expect(person.salary).toBe(salary);
@@ -15,12 +15,12 @@ describe('Person model', () => {
 
   describe('equals method', () => {
     it('should compare two people', () => {
-      let person = new Person('A', 0, 'A');
-      let samePerson = new Person('A', 0, 'A');
+      const person = new Person('A', 0, 'A');
+      const samePerson = new Person('A', 0, 'A');
 
-      let sameName = new Person('A', 1, 'B');
-      let sameSalary = new Person('B', 0, 'B');
-      let sameCohort = new Person('B', 1, 'A');
+      const sameName = new Person('A', 1, 'B');
+      const sameSalary = new Person('B', 0, 'B');
+      const sameCohort = new Person('B', 1, 'A');
 
       expect(person.equals(samePerson)).toBe(true);
 

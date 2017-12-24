@@ -72,7 +72,7 @@ export class SalaryStatsPage {
 
   bulkUploadPeople(...people: string[]) {
     this.alwaysConfirm();
-    let uploadBox = element(by.id('bulkUpload'));
+    const uploadBox = element(by.id('bulkUpload'));
     people.forEach(person => {
       uploadBox.sendKeys(person, protractor.Key.ENTER);
     });

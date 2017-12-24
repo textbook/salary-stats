@@ -3,6 +3,7 @@ import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
 
 import { AppComponent } from './app.component';
 import { PersonService } from './person.service';
@@ -42,7 +43,7 @@ describe('AppComponent', () => {
   });
 
   it('should expose the people and cohorts to the box plot component', () => {
-    let boxPlot = fixture.debugElement.query(By.directive(BoxPlotComponent)).componentInstance;
+    const boxPlot = fixture.debugElement.query(By.directive(BoxPlotComponent)).componentInstance;
 
     expect(boxPlot.people).toEqual(people);
     expect(boxPlot.cohorts).toEqual(cohorts);

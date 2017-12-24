@@ -2,8 +2,6 @@
 
 # compiled output
 /dist
-/dist-style
-/styleguide
 /tmp
 
 # dependencies

@@ -14,7 +14,7 @@
       <tbody>
       <tr *ngFor="let person of people$ | async">
         <td class="name">{{ person.name }}</td>
-        <td class="salary">{{ person.salary | currency:'GBP':true:'1.0-0' }}</td>
+        <td class="salary">{{ person.salary | currency:'GBP':'symbol':'1.0-0' }}</td>
         <td class="cohort">{{ person.cohort }}</td>
         <td class="has-text-right">
           <button class="button is-danger is-outlined is-small"

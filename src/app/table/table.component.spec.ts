@@ -3,7 +3,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import Spy = jasmine.Spy;
-import { Observable, ReplaySubject } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 import { TableComponent } from './table.component';
 import { Person } from '@lib/models';
@@ -13,9 +14,9 @@ describe('TableComponent', () => {
   let component: TableComponent;
   let fixture: ComponentFixture<TableComponent>;
   let personServiceSpy: PersonService;
-  let peopleSubject = new ReplaySubject<Person[]>(1);
+  const peopleSubject = new ReplaySubject<Person[]>(1);
 
-  let people = [new Person('Foo', 1, 'A', 1), new Person('Bar', 1, 'B', 2)];
+  const people = [new Person('Foo', 1, 'A', 1), new Person('Bar', 1, 'B', 2)];
 
   beforeEach(async(() => {
     personServiceSpy = jasmine.createSpyObj('PersonService', ['addPerson', 'deletePerson', 'fetch']);
@@ -44,10 +45,10 @@ describe('TableComponent', () => {
     });
 
     it('should show name, salary and cohort', () => {
-      let names = fixture.nativeElement.querySelectorAll('tbody td.name');
-      let salaries = fixture.nativeElement.querySelectorAll('tbody td.salary');
-      let cohorts = fixture.nativeElement.querySelectorAll('tbody td.cohort');
-      let firstPerson = people[0];
+      const names = fixture.nativeElement.querySelectorAll('tbody td.name');
+      const salaries = fixture.nativeElement.querySelectorAll('tbody td.salary');
+      const cohorts = fixture.nativeElement.querySelectorAll('tbody td.cohort');
+      const firstPerson = people[0];
 
       expect(names.length).toBe(people.length);
       expect(names[0].textContent).toContain(firstPerson.name);
@@ -58,7 +59,7 @@ describe('TableComponent', () => {
     });
 
     it('should provide a delete button for each person', () => {
-      let deleteButtons = fixture.nativeElement.querySelectorAll('tbody button.is-danger');
+      const deleteButtons = fixture.nativeElement.querySelectorAll('tbody button.is-danger');
       expect(deleteButtons.length).toBe(people.length);
       expect(deleteButtons[0].textContent).toContain('Delete');
 
@@ -69,7 +70,7 @@ describe('TableComponent', () => {
     });
 
     it('should provide a delete all button for all people', () => {
-      let deleteAllButton = fixture.nativeElement.querySelector('thead button.is-danger');
+      const deleteAllButton = fixture.nativeElement.querySelector('thead button.is-danger');
       expect(deleteAllButton.textContent).toContain('Delete All');
       spyOn(window, 'confirm').and.returnValue(true);
 
@@ -81,7 +82,7 @@ describe('TableComponent', () => {
     });
 
     it('should allow the user to cancel deleting all', () => {
-      let deleteAllButton = fixture.nativeElement.querySelector('thead button.is-danger');
+      const deleteAllButton = fixture.nativeElement.querySelector('thead button.is-danger');
       expect(deleteAllButton.textContent).toContain('Delete All');
       spyOn(window, 'confirm').and.returnValue(false);
 
@@ -93,7 +94,7 @@ describe('TableComponent', () => {
     });
 
     it('should provide inputs for a new person', () => {
-      let name = 'Keira', salary = 12345, cohort = 'C';
+      const name = 'Keira', salary = 12345, cohort = 'C';
       expect(fixture.nativeElement.querySelectorAll('tfoot td input').length).toBe(3);
 
       setInputValue('tfoot td.name input', name);
@@ -107,7 +108,7 @@ describe('TableComponent', () => {
     });
 
     it('should allow a person to be added by hitting enter', () => {
-      let name = 'Keira', salary = 12345, cohort = 'C';
+      const name = 'Keira', salary = 12345, cohort = 'C';
 
       setInputValue('tfoot td.name input', name);
       setInputValue('tfoot td.salary input', salary.toString());
@@ -122,8 +123,8 @@ describe('TableComponent', () => {
     });
 
     it('should provide a button to clear inputs', () => {
-      let name = 'Keira', salary = 12345, cohort = 'C';
-      let form = fixture.componentInstance.newPersonForm;
+      const name = 'Keira', salary = 12345, cohort = 'C';
+      const form = fixture.componentInstance.newPersonForm;
 
       setInputValue('tfoot td.name input', name);
       setInputValue('tfoot td.salary input', salary.toString());
@@ -138,15 +139,15 @@ describe('TableComponent', () => {
     });
 
     function setInputValue(selector: string, value: string) {
-      let el: HTMLInputElement = fixture.nativeElement.querySelector(selector);
+      const el: HTMLInputElement = fixture.nativeElement.querySelector(selector);
       el.value = value;
       el.dispatchEvent(new Event('input'));
     }
   });
 
   describe('addPerson method', () => {
-    let validInput = { name: 'Foo', salary: 123, cohort: 'A' };
-    let invalidInput = { name: '', salary: 123, cohort: '' };
+    const validInput = { name: 'Foo', salary: 123, cohort: 'A' };
+    const invalidInput = { name: '', salary: 123, cohort: '' };
 
     describe('with valid inputs', () => {
       beforeEach(() => {
@@ -154,7 +155,7 @@ describe('TableComponent', () => {
       });
 
       it('should call the service', () => {
-        let { name, salary, cohort } = validInput;
+        const { name, salary, cohort } = validInput;
 
         fixture.componentInstance.addPerson();
 
@@ -162,7 +163,7 @@ describe('TableComponent', () => {
       });
 
       it('should clear the inputs', () => {
-        let form = fixture.componentInstance.newPersonForm;
+        const form = fixture.componentInstance.newPersonForm;
 
         fixture.componentInstance.addPerson();
 
@@ -171,7 +172,7 @@ describe('TableComponent', () => {
       });
 
       it('should clear any highlighted inputs', () => {
-        let form = fixture.componentInstance.newPersonForm;
+        const form = fixture.componentInstance.newPersonForm;
         form.setValue(invalidInput);
         fixture.componentInstance.addPerson();
         fixture.detectChanges();
@@ -188,7 +189,7 @@ describe('TableComponent', () => {
       });
 
       it('should focus the name input', () => {
-        let element: HTMLInputElement = fixture.nativeElement.querySelector('tfoot td.name input');
+        const element: HTMLInputElement = fixture.nativeElement.querySelector('tfoot td.name input');
         spyOn(element, 'focus');
 
         fixture.componentInstance.addPerson();
@@ -223,17 +224,17 @@ describe('TableComponent', () => {
 
   describe('deletePerson method', () => {
     it('should fill the form with the deleted data if empty', () => {
-      let oldFirstPerson = getFirstPerson();
+      const oldFirstPerson = getFirstPerson();
 
       fixture.componentInstance.deletePerson(oldFirstPerson);
 
-      let { name, salary, cohort } = fixture.componentInstance.newPersonForm.value;
+      const { name, salary, cohort } = fixture.componentInstance.newPersonForm.value;
       expect(new Person(name, salary, cohort)).toEqual(oldFirstPerson);
     });
 
     it('should not overwrite the form data if not empty', () => {
-      let form = fixture.componentInstance.newPersonForm;
-      let inputs = { name: 'Foo', salary: '', cohort: '' };
+      const form = fixture.componentInstance.newPersonForm;
+      const inputs = { name: 'Foo', salary: '', cohort: '' };
       form.setValue(inputs);
 
       fixture.componentInstance.deletePerson(getFirstPerson());
@@ -242,10 +243,10 @@ describe('TableComponent', () => {
     });
 
     function getFirstPerson(): Person {
-      let name = fixture.nativeElement.querySelector('tbody tr td.name').textContent;
-      let salary = Number.parseInt(fixture.nativeElement.querySelector('tbody tr td.salary').textContent);
-      let cohort = fixture.nativeElement.querySelector('tbody tr td.cohort').textContent;
-      return new Person(name, salary, cohort);
+      const name = fixture.nativeElement.querySelector('tbody tr td.name').textContent;
+      const salary = fixture.nativeElement.querySelector('tbody tr td.salary').textContent;
+      const cohort = fixture.nativeElement.querySelector('tbody tr td.cohort').textContent;
+      return new Person(name, Number.parseInt(salary), cohort);
     }
   });
 });

@@ -1,7 +1,14 @@
+import { browser } from 'protractor';
+
 import { SalaryStatsPage } from './app.po';
 
 describe('salary-stats App', function() {
-  let page = new SalaryStatsPage();
+  const page = new SalaryStatsPage();
+
+  beforeAll(() => {
+    // Until https://github.com/angular/protractor/issues/4584 is resolved
+    browser.waitForAngularEnabled(false);
+  });
 
   beforeEach(() => {
     page.navigateTo();

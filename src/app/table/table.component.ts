@@ -1,7 +1,9 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/forkJoin';
+import 'rxjs/add/operator/mergeMap';
 
 import { Person } from '@lib/models';
 import { PersonService } from '../person.service';
@@ -65,13 +67,13 @@ export class TableComponent implements OnInit {
   }
 
   private getPersonFromForm(): Person {
-    let { name, salary, cohort } = this.newPersonForm.value;
+    const { name, salary, cohort } = this.newPersonForm.value;
     return new Person(name, salary, cohort);
   }
 
   private overwriteFormIfEmpty(person: Person) {
-    let formData = this.newPersonForm.value;
-    let keys = Object.keys(formData);
+    const formData = this.newPersonForm.value;
+    const keys = Object.keys(formData);
     if (keys.filter(key => formData[key] === EMPTY_FORM[key]).length === keys.length) {
       this.resetForm(person);
     }
