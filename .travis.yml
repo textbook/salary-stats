@@ -32,11 +32,9 @@ before_deploy:
   - ng build --prod
 
 deploy:
-    edge: true
-    provider: cloudfoundry
-    api: https://api.run.pcfbeta.io
-    username: $CF_USERNAME
-    password: $CF_PASSWORD
-    organization: pivot-jsharpe
-    space: development
-    manifest: manifest.yml
+  provider: cloudfoundry
+  api: https://api.run.pcfbeta.io
+  username: $CF_USERNAME
+  password: $CF_PASSWORD
+  organization: pivot-jsharpe
+  space: development
