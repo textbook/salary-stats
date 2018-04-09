@@ -4,8 +4,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
-import { CohortMap, Person } from '@lib/models';
-import { Statistics } from '@lib/statistics';
+import { CohortMap, Person, Statistics } from '../../lib';
 import { formatChartPoint } from './tooltip-formatter';
 
 const BASE_BOX_PLOT_OPTIONS = {

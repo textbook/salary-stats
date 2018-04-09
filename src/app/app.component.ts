@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { PersonService } from './person.service';
-import { CohortMap, Person } from '@lib/models';
+import { CohortMap, Person } from '../lib';
 
 @Component({
   selector: 'sst-root',

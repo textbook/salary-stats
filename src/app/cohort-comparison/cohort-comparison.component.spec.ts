@@ -5,7 +5,7 @@ import { Subject } from 'rxjs/Subject';
 
 import { CohortComparisonComponent } from './cohort-comparison.component';
 import { PersonService } from '../person.service';
-import { CohortMap } from '@lib/models';
+import { CohortMap } from '../../lib';
 
 describe('CohortComparisonComponent', () => {
   let fixture: ComponentFixture<CohortComparisonComponent>;

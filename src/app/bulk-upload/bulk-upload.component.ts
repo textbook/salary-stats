@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/forkJoin';
 
 import { PersonService } from '../person.service';
-import { Person } from '@lib/models';
+import { Person } from '../../lib';
 
 const MESSAGE = 'Are you sure you want to upload people? This cannot be undone.';
 

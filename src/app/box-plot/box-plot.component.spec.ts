@@ -3,8 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { BoxPlotComponent } from './box-plot.component';
-import { Statistics } from '@lib/statistics';
-import { CohortMap, Person } from '@lib/models';
+import { CohortMap, Person, Statistics } from '../../lib';
 
 describe('BoxPlotComponent', () => {
   let component: BoxPlotComponent;

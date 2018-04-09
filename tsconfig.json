@@ -9,8 +9,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "paths": {
-      "highcharts": ["../node_modules/highcharts/js/highcharts.js"],
-      "@lib/*": ["lib/*"]
+      "highcharts": ["../node_modules/highcharts/js/highcharts.js"]
     },
     "target": "es5",
     "typeRoots": [

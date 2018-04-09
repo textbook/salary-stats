@@ -8,7 +8,7 @@ import 'rxjs/add/observable/of';
 import { AppComponent } from './app.component';
 import { PersonService } from './person.service';
 import { BoxPlotComponent } from './box-plot/box-plot.component';
-import { Person } from '@lib/models';
+import { Person } from '../lib';
 
 describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;

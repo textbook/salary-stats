@@ -7,7 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 import { TableComponent } from './table.component';
-import { Person } from '@lib/models';
+import { Person } from '../../lib';
 import { PersonService } from '../person.service';
 
 describe('TableComponent', () => {

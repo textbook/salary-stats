@@ -4,8 +4,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 
-import { CohortMap, Person } from '@lib/models';
-import { RawPerson } from '@lib/transport';
+import { CohortMap, Person, RawPerson } from '../lib';
 
 @Injectable()
 export class PersonService {

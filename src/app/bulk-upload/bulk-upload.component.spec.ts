@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/empty';
 
 import { BulkUploadComponent } from './bulk-upload.component';
-import { Person } from '@lib/models';
+import { Person } from '../../lib';
 import { PersonService } from '../person.service';
 
 describe('BulkUploadComponent', () => {

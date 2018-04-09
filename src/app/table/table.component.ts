@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/operator/mergeMap';
 
-import { Person } from '@lib/models';
+import { Person } from '../../lib';
 import { PersonService } from '../person.service';
 
 const EMPTY_FORM = { name: '', salary: '', cohort: '' };

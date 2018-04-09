@@ -4,8 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
 import { PersonService } from '../person.service';
-import { CohortMap } from '@lib/models';
-import { Statistics } from '@lib/statistics';
+import { CohortMap, Statistics } from '../../lib';
 
 @Component({
   selector: 'sst-cohort-comparison',
