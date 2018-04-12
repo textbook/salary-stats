@@ -23,7 +23,8 @@
     "test:watch": "ng test",
     "pree2e": "webdriver-manager update --gecko false",
     "e2e": "ng e2e",
-    "reinstall": "rm -rf ./node_modules && npm install"
+    "reinstall": "rm -rf ./node_modules && npm install",
+    "build": "ng build --prod"
   },
   "private": true,
   "author": "Jonathan Sharpe",

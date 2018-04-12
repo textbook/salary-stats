@@ -6,7 +6,7 @@ addons:
 language: node_js
 
 node_js:
-  - "6"
+  - "8"
 
 install:
   - npm install -g @angular/cli
@@ -20,7 +20,7 @@ before_script:
   - ng -v
 
 script:
-  - ng lint
+  - npm run lint
   - npm run test:cover
   - npm run e2e
 
@@ -29,7 +29,7 @@ after_success:
   - npm run codacy
 
 before_deploy:
-  - ng build --prod
+  - npm run build
 
 deploy:
   provider: cloudfoundry
