@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/forkJoin';
+import { forkJoin } from 'rxjs';
 
 import { PersonService } from '../person.service';
 import { Person } from '../../lib';
@@ -36,11 +35,8 @@ export class BulkUploadComponent implements OnInit {
   }
 
   private bulkAdd(people: Person[]) {
-    Observable
-        .forkJoin(...people.map(person => this.service.addPerson(person)))
-        .subscribe(() => {
-          this.service.fetch();
-        });
+    forkJoin(...people.map(person => this.service.addPerson(person)))
+        .subscribe(() => this.service.fetch());
   }
 
   private parseBulkData(): Person[] {

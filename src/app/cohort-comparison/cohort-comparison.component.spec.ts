@@ -1,7 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ReplaySubject } from 'rxjs/ReplaySubject';
-import { Subject } from 'rxjs/Subject';
+import { ReplaySubject, Subject } from 'rxjs';
 
 import { CohortComparisonComponent } from './cohort-comparison.component';
 import { PersonService } from '../person.service';

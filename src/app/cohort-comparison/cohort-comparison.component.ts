@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { PersonService } from '../person.service';
 import { CohortMap, Statistics } from '../../lib';
@@ -18,7 +18,7 @@ export class CohortComparisonComponent implements OnInit {
 
   ngOnInit() {
     this.pairComparisons$ = this.personService.cohorts$
-        .map(cohorts => this.createPairComparisons(cohorts));
+        .pipe(map(cohorts => this.createPairComparisons(cohorts)));
   }
 
   private createPairComparisons(cohorts: CohortMap) {

@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { Observable } from 'rxjs/Observable';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { Observable, ReplaySubject } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { CohortMap, Person, RawPerson } from '../lib';
 
@@ -16,7 +16,7 @@ export class PersonService {
 
   constructor(private http: HttpClient) {
     this.people$ = this.personSubject.asObservable();
-    this.cohorts$ = this.people$.map(people => this.createCohorts(people));
+    this.cohorts$ = this.people$.pipe(map(people => this.createCohorts(people)));
   }
 
 

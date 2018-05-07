@@ -1,8 +1,6 @@
 import { Component, Input, OnChanges } from '@angular/core';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 import { CohortMap, Person, Statistics } from '../../lib';
 import { formatChartPoint } from './tooltip-formatter';

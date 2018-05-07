@@ -3,8 +3,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import Spy = jasmine.Spy;
-import { Observable } from 'rxjs/Observable';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { of, ReplaySubject } from 'rxjs';
 
 import { TableComponent } from './table.component';
 import { Person } from '../../lib';
@@ -20,8 +19,8 @@ describe('TableComponent', () => {
 
   beforeEach(async(() => {
     personServiceSpy = jasmine.createSpyObj('PersonService', ['addPerson', 'deletePerson', 'fetch']);
-    (personServiceSpy.deletePerson as Spy).and.returnValue(Observable.of(null));
-    (personServiceSpy.addPerson as Spy).and.returnValue(Observable.of(null));
+    (personServiceSpy.deletePerson as Spy).and.returnValue(of(null));
+    (personServiceSpy.addPerson as Spy).and.returnValue(of(null));
     personServiceSpy.people$ = peopleSubject.asObservable();
 
     TestBed.configureTestingModule({

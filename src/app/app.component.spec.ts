@@ -2,8 +2,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
+import { of } from 'rxjs';
 
 import { AppComponent } from './app.component';
 import { PersonService } from './person.service';
@@ -19,8 +18,8 @@ describe('AppComponent', () => {
 
   beforeEach(async(() => {
     personServiceSpy = jasmine.createSpyObj('PersonServiceSpy', ['fetch']);
-    personServiceSpy.people$ = Observable.of(people);
-    personServiceSpy.cohorts$ = Observable.of(cohorts);
+    personServiceSpy.people$ = of(people);
+    personServiceSpy.cohorts$ = of(cohorts);
 
     TestBed.configureTestingModule({
       declarations: [AppComponent, BoxPlotComponent],

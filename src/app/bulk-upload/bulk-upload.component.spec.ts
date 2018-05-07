@@ -2,8 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import Spy = jasmine.Spy;
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/empty';
+import { EMPTY } from 'rxjs';
 
 import { BulkUploadComponent } from './bulk-upload.component';
 import { Person } from '../../lib';
@@ -16,7 +15,7 @@ describe('BulkUploadComponent', () => {
 
   beforeEach(async(() => {
     personServiceSpy = jasmine.createSpyObj('PersonService', ['addPerson']);
-    (personServiceSpy.addPerson as Spy).and.returnValue(Observable.empty());
+    (personServiceSpy.addPerson as Spy).and.returnValue(EMPTY);
 
     TestBed.configureTestingModule({
       declarations: [BulkUploadComponent],

@@ -1,9 +1,8 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/forkJoin';
-import 'rxjs/add/operator/mergeMap';
+import { Observable, forkJoin } from 'rxjs';
+import { flatMap } from 'rxjs/operators';
 
 import { Person } from '../../lib';
 import { PersonService } from '../person.service';
@@ -57,7 +56,7 @@ export class TableComponent implements OnInit {
   deleteAllPeople() {
     if (confirm(MESSAGE)) {
       this.people$
-          .flatMap(people => Observable.forkJoin(...people.map(person => this.service.deletePerson(person))))
+          .pipe(flatMap(people => forkJoin(...people.map(person => this.service.deletePerson(person)))))
           .subscribe(() => this.service.fetch());
     }
   }
