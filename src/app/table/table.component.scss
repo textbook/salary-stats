@@ -5,6 +5,10 @@ table.table {
     text-align: right;
   }
 
+  tfoot button.button:not(:first-child) {
+    margin-left: 5px;
+  }
+
   td, th {
     vertical-align: middle;
   }
