@@ -33,7 +33,7 @@ before_deploy:
 
 deploy:
   provider: cloudfoundry
-  api: https://api.run.pcfbeta.io
+  api: https://api.run.pcfone.io
   username: $CF_USERNAME
   password: $CF_PASSWORD
   organization: pivot-jsharpe
