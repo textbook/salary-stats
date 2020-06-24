@@ -36,3 +36,5 @@ deploy:
   password: $CF_PASSWORD
   organization: pivot-jsharpe
   space: development
+  on:
+    branch: main
