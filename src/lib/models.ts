@@ -7,7 +7,7 @@ export class Person {
   static fromString(personString): Person {
     // e.g. 'Alice,123,A' -> Person('Alice', 123, 'A')
     const [name, salaryString, cohort] = personString.split(',', 3).map(item => item.trim());
-    let salary = Number.parseInt(salaryString);
+    let salary = Number.parseInt(salaryString, 10);
     if (isNaN(salary)) {
       salary = 0;
     }

@@ -245,7 +245,7 @@ describe('TableComponent', () => {
       const name = fixture.nativeElement.querySelector('tbody tr td.name').textContent;
       const salary = fixture.nativeElement.querySelector('tbody tr td.salary').textContent;
       const cohort = fixture.nativeElement.querySelector('tbody tr td.cohort').textContent;
-      return new Person(name, Number.parseInt(salary), cohort);
+      return new Person(name, Number.parseInt(salary, 10), cohort);
     }
   });
 });
