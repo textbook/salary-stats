@@ -57,14 +57,14 @@ available:
 Both sets of tests are configured to run using the Chrome browser headlessly,
 so you won't see anything pop up on your screen.
 
-  [1]: https://travis-ci.org/textbook/salary-stats.svg?branch=master
+  [1]: https://travis-ci.org/textbook/salary-stats.svg?branch=main
   [2]: https://travis-ci.org/textbook/salary-stats
-  [3]: https://coveralls.io/repos/github/textbook/salary-stats/badge.svg?branch=master
-  [4]: https://coveralls.io/github/textbook/salary-stats?branch=master
+  [3]: https://coveralls.io/repos/github/textbook/salary-stats/badge.svg?branch=main
+  [4]: https://coveralls.io/github/textbook/salary-stats?branch=main
   [5]: https://david-dm.org/textbook/salary-stats/status.svg
   [6]: https://david-dm.org/textbook/salary-stats
   [7]: https://img.shields.io/badge/license-ISC-blue.svg
-  [8]: https://github.com/textbook/salary-stats/blob/master/LICENSE
+  [8]: https://github.com/textbook/salary-stats/blob/main/LICENSE
   [9]: https://api.codacy.com/project/badge/Grade/ec6f1694d6c04b0e82645375719422f2
   [10]: https://www.codacy.com/app/j-r-sharpe-github/salary-stats?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=textbook/salary-stats&amp;utm_campaign=Badge_Grade
   [11]: https://help.github.com/articles/cloning-a-repository/
