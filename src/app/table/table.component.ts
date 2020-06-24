@@ -16,7 +16,7 @@ const MESSAGE = 'Are you sure you want to delete all people? This cannot be undo
   styleUrls: ['./table.component.scss']
 })
 export class TableComponent implements OnInit {
-  @ViewChild('nameInput') nameInput;
+  @ViewChild('nameInput', { static: true }) nameInput;
 
   formSubmitted: boolean;
   newPersonForm: FormGroup;
