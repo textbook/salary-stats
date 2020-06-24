@@ -50,6 +50,7 @@
     "highcharts": "^8.1.2",
     "highcharts-angular": "^2.4.0",
     "jerzy": "^0.2.1",
+    "request": "^2.88.2",
     "rxjs": "^6.5.5",
     "simple-statistics": "^7.1.0",
     "tslib": "^1.10.0",
