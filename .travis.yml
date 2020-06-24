@@ -1,23 +1,21 @@
-dist: trusty
+os: linux
+dist: bionic
 
 addons:
-  chrome: stable
+  apt:
+    sources:
+      - sourceline: 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main'
+        key_url: 'https://dl.google.com/linux/linux_signing_key.pub'
+    packages:
+      - google-chrome-stable
+
+services:
+  - xvfb
 
 language: node_js
 
 node_js:
   - "10"
-
-install:
-  - npm install -g @angular/cli
-  - npm install -g karma
-  - npm install
-
-before_script:
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
-  - sleep 3 # give xvfb some time to start
-  - ng -v
 
 script:
   - npm run lint
