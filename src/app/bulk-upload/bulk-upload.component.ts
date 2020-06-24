@@ -35,7 +35,7 @@ export class BulkUploadComponent implements OnInit {
   }
 
   private bulkAdd(people: Person[]) {
-    forkJoin(...people.map(person => this.service.addPerson(person)))
+    forkJoin(people.map(person => this.service.addPerson(person)))
         .subscribe(() => this.service.fetch());
   }
 

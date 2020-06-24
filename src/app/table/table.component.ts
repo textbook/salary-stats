@@ -56,7 +56,7 @@ export class TableComponent implements OnInit {
   deleteAllPeople() {
     if (confirm(MESSAGE)) {
       this.people$
-          .pipe(flatMap(people => forkJoin(...people.map(person => this.service.deletePerson(person)))))
+          .pipe(flatMap(people => forkJoin(people.map(person => this.service.deletePerson(person)))))
           .subscribe(() => this.service.fetch());
     }
   }
