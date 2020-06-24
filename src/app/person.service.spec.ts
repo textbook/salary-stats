@@ -14,8 +14,8 @@ describe('PersonService', () => {
       providers: [PersonService],
     });
 
-    service = TestBed.get(PersonService);
-    httpMock = TestBed.get(HttpTestingController);
+    service = TestBed.inject(PersonService);
+    httpMock = TestBed.inject(HttpTestingController);
   });
 
   afterEach(() => {
