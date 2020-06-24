@@ -1,5 +1,8 @@
 <section class="section">
   <div class="container">
-    <chart [options]="chartOptions$ | async"></chart>
+    <highcharts-chart
+      [Highcharts]="Highcharts"
+      [options]="chartOptions$ | async"
+    ></highcharts-chart>
   </div>
 </section>

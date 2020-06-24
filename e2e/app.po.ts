@@ -80,15 +80,15 @@ export class SalaryStatsPage {
   }
 
   getChart() {
-    return element(by.css('chart'));
+    return element(by.css('highcharts-chart'));
   }
 
   getCohortBoxPlots() {
-    return element.all(by.css('chart .highcharts-boxplot-series .highcharts-point'));
+    return element.all(by.css('highcharts-chart .highcharts-boxplot-series .highcharts-point'));
   }
 
   getOutlierPoints() {
-    return element.all(by.css('chart .highcharts-scatter-series .highcharts-point'));
+    return element.all(by.css('highcharts-chart .highcharts-scatter-series .highcharts-point'));
   }
 
   getCohortComparison() {

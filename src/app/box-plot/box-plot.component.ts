@@ -1,5 +1,6 @@
 import { Component, Input, OnChanges } from '@angular/core';
 
+import * as Highcharts from 'highcharts';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 import { CohortMap, Person, Statistics } from '../../lib';
@@ -22,6 +23,7 @@ export class BoxPlotComponent implements OnChanges {
   @Input() cohorts: CohortMap;
   @Input() people: Person[];
 
+  Highcharts: typeof Highcharts = Highcharts;
   chartOptions$: Observable<any>;
 
   private chartOptionSubject: Subject<any>;

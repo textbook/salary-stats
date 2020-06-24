@@ -97,7 +97,7 @@ describe('BoxPlotComponent', () => {
   });
 
   function getChartOptions(): any {
-    return fixture.debugElement.query(By.css('chart')).properties['options'];
+    return fixture.debugElement.query(By.css('highcharts-chart')).properties['options'];
   }
 
   function setInputData(people: Person[], cohorts: CohortMap) {
