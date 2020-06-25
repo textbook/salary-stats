@@ -1,8 +1,9 @@
 ---
 applications:
 - name: salary-stats
-  buildpack: staticfile_buildpack
+  buildpacks:
+  - staticfile_buildpack
   disk_quota: 64M
-  memory: 128M
+  memory: 64M
   path: dist
   random-route: true
