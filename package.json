@@ -21,7 +21,7 @@
     "lint": "ng lint",
     "ng": "ng",
     "reinstall": "rm -rf ./node_modules && npm install",
-    "ship": "npm run lint && npm run test && npm run e2e",
+    "ship": "npm run lint && npm run test && npm run e2e && npm run build",
     "start": "ng serve",
     "test": "ng test --no-watch",
     "test:cover": "rm -rf ./coverage && ng test --no-watch --code-coverage",
