@@ -1,9 +1,9 @@
 @import '~highcharts/css/highcharts';
 
-$blue: hsl(217, 71%,  53%) !default
-$family-sans-serif: BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif !default
-$red: hsl(348, 100%, 61%) !default
-$size-6: 1rem !default
+$blue: hsl(217, 71%,  53%) !default;
+$family-sans-serif: BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif !default;
+$red: hsl(348, 100%, 61%) !default;
+$size-6: 1rem !default;
 
 .highcharts-container {
   font-family: $family-sans-serif;
