@@ -23,7 +23,7 @@ export class BoxPlotComponent implements OnChanges {
   @Input() cohorts: CohortMap;
   @Input() people: Person[];
 
-  Highcharts: typeof Highcharts = Highcharts;
+  Highcharts = Highcharts;
   chartOptions$: Observable<any>;
 
   private chartOptionSubject: Subject<any>;
