@@ -1,7 +1,5 @@
-declare const require: any;
-
 import { Nonparametric, Vector } from 'jerzy';
-const _ss = require('simple-statistics');
+import * as _ss from 'simple-statistics';
 
 import { Person } from './models';
 

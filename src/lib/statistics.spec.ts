@@ -1,5 +1,4 @@
-declare const require: any;
-const _ss = require('simple-statistics');
+import * as _ss from 'simple-statistics';
 
 import { Person } from './models';
 import { Statistics } from './statistics';
@@ -26,7 +25,7 @@ describe('Statistics', () => {
     });
 
     it('should round the values calculated by simple-statistics', () => {
-      _ss.quantileSorted.and.returnValue(1.23);
+      (_ss.quantileSorted as jasmine.Spy).and.returnValue(1.23);
 
       expect(Statistics.calculateBoxPlotData(testSample))
           .toEqual([1, 1, 1, 1, 1]);
