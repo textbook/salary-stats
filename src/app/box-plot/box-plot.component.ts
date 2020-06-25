@@ -6,13 +6,19 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { CohortMap, Person, Statistics } from '../../lib';
 import { formatChartPoint } from './tooltip-formatter';
 
-const BASE_BOX_PLOT_OPTIONS = {
+const BASE_BOX_PLOT_OPTIONS: Highcharts.Options = {
   chart: { type: 'boxplot' },
   legend: { enabled: false },
   title: { text: 'Salary Comparison' },
   tooltip: { formatter: formatChartPoint },
   yAxis: { title: { text: 'Salary (£)' } },
 };
+
+interface CohortStatistics {
+  categories: string[];
+  data: number[][];
+  outliers: Partial<Highcharts.Point>[];
+}
 
 @Component({
   selector: 'sst-box-plot',
@@ -24,12 +30,12 @@ export class BoxPlotComponent implements OnChanges {
   @Input() people: Person[];
 
   Highcharts = Highcharts;
-  chartOptions$: Observable<any>;
+  chartOptions$: Observable<Highcharts.Options>;
 
-  private chartOptionSubject: Subject<any>;
+  private chartOptionSubject: Subject<Highcharts.Options>;
 
   constructor() {
-    this.chartOptionSubject = new BehaviorSubject<any>(BASE_BOX_PLOT_OPTIONS);
+    this.chartOptionSubject = new BehaviorSubject<Highcharts.Options>(BASE_BOX_PLOT_OPTIONS);
     this.chartOptions$ = this.chartOptionSubject.asObservable();
   }
 
@@ -37,20 +43,23 @@ export class BoxPlotComponent implements OnChanges {
     this.chartOptionSubject.next(this.createChartOptions(this.people, this.cohorts));
   }
 
-  private createChartOptions(people: Person[], cohorts: CohortMap): any {
+  private createChartOptions(people: Person[], cohorts: CohortMap): Highcharts.Options {
     if (!people || !cohorts) {
       return BASE_BOX_PLOT_OPTIONS;
     }
 
     const { categories, data, outliers } = this.calculateCohortStatistics(people, cohorts);
 
-    const xAxis = { categories, title: { text: 'Cohort' } };
-    const series = [{ data }, { type: 'scatter', data: outliers }];
+    const xAxis: Highcharts.XAxisOptions = { categories, title: { text: 'Cohort' } };
+    const series: [Highcharts.SeriesBoxplotOptions, Highcharts.SeriesScatterOptions] = [
+      { data, type: 'boxplot' },
+      { type: 'scatter', data: outliers }
+    ];
 
-    return Object.assign({}, BASE_BOX_PLOT_OPTIONS, { series, xAxis });
+    return { ...BASE_BOX_PLOT_OPTIONS, series, xAxis };
   }
 
-  private calculateCohortStatistics(people: Person[], cohortMap: CohortMap) {
+  private calculateCohortStatistics(people: Person[], cohortMap: CohortMap): CohortStatistics {
     const cohorts = Array.from(Object.keys(cohortMap));
     const data = cohorts.map(key => Statistics.calculateBoxPlotData(cohortMap[key]));
 

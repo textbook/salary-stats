@@ -1,11 +1,13 @@
-export function formatChartPoint() {
+import * as Highcharts from 'highcharts';
+
+export function formatChartPoint(this: Highcharts.TooltipFormatterContextObject): string {
   if (this.point.options.hasOwnProperty('median')) {
     return formatBoxPlotPoint(this.point.options, this.key);
   }
   return formatOutlierPoint(this.point.options || {});
 }
 
-function formatBoxPlotPoint({ low, q1, median, q3, high }, key) {
+function formatBoxPlotPoint({ low, q1, median, q3, high }: Highcharts.PointOptionsObject, key: number): string {
   return `<strong>Cohort ${key}</strong><br>
           Upper fence: £${high.toLocaleString()}<br>
           Upper quartile: £${q3.toLocaleString()}<br>
@@ -14,7 +16,7 @@ function formatBoxPlotPoint({ low, q1, median, q3, high }, key) {
           Lower fence: £${low.toLocaleString()}`;
 }
 
-function formatOutlierPoint({ y, name }) {
+function formatOutlierPoint({ y, name }: Highcharts.PointOptionsObject): string {
   return `<strong>${name}</strong><br>
           Salary: £${y.toLocaleString()}`;
 }

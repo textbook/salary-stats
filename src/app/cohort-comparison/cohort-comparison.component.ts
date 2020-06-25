@@ -1,10 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 
-import { PersonService } from '../person.service';
-import { CohortMap, Statistics } from '../../lib';
+import {PersonService} from '../person.service';
+import {CohortMap, SampleComparison, Statistics} from '../../lib';
+
+interface PairComparison {
+  p: number;
+  sameDistribution: boolean;
+  title: string;
+}
 
 @Component({
   selector: 'sst-cohort-comparison',
@@ -21,20 +27,18 @@ export class CohortComparisonComponent implements OnInit {
         .pipe(map(cohorts => this.createPairComparisons(cohorts)));
   }
 
-  private createPairComparisons(cohorts: CohortMap) {
-    const cohortPairs = this.pairs(Object.keys(cohorts));
-    return cohortPairs.map(pair => {
-      const pairComparison = { p: null, sameDistribution: false, title: pair.join(' to ') };
-      const comparisonStats = Statistics.compareSamples(cohorts[pair[0]], cohorts[pair[1]]);
-
-      pairComparison.p = Math.round(comparisonStats.pValue * 10000) / 10000;
-      pairComparison.sameDistribution = comparisonStats.sameDistribution;
-
-      return pairComparison;
+  private createPairComparisons(cohorts: CohortMap): PairComparison[] {
+    return this.pairs(Object.keys(cohorts)).map(([first, second]) => {
+      const { pValue, sameDistribution } = Statistics.compareSamples(cohorts[first], cohorts[second]);
+      return {
+        p: Math.round(pValue * 10000) / 10000,
+        sameDistribution,
+        title: `${first} to ${second}`
+      };
     });
   }
 
-  private pairs(set: string[]) {
+  private pairs(set: string[]): [string, string][] {
     const pairs = [];
     for (let i = 0; i < set.length; i++) {
       for (let j = i + 1; j < set.length; j++) {

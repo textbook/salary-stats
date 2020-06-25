@@ -1,3 +1,4 @@
+import * as Highcharts from 'highcharts';
 import { Nonparametric, Vector } from 'jerzy';
 import * as _ss from 'simple-statistics';
 
@@ -5,6 +6,11 @@ import { Person } from './models';
 
 const FENCE_FACTOR = 1.5;
 const QUARTILES = [0.25, 0.5, 0.75];
+
+export interface SampleComparison {
+  pValue: number;
+  sameDistribution: boolean;
+}
 
 export class Statistics {
   private static SIGNIFICANCE_LEVEL = 0.05;
@@ -20,7 +26,7 @@ export class Statistics {
     return [lowerInnerFence, lowerQuartile, median, upperQuartile, upperInnerFence];
   }
 
-  static identifyOutliers(people: Person[], boxPlotData: number[][], cohorts: string[]): any[] {
+  static identifyOutliers(people: Person[], boxPlotData: number[][], cohorts: string[]): Partial<Highcharts.Point>[] {
       return people
           .filter(({ salary, cohort }) => {
             const index = cohorts.indexOf(cohort);
@@ -30,7 +36,7 @@ export class Statistics {
           .map(({ salary, cohort, name }) => ({ x: cohorts.indexOf(cohort), y: salary, name }));
   }
 
-  static compareSamples(sampleA: number[], sampleB: number[]) {
+  static compareSamples(sampleA: number[], sampleB: number[]): SampleComparison {
       const ks = Nonparametric.kolmogorovSmirnov(new Vector(sampleA), new Vector(sampleB));
       return {
           pValue: ks.p,
