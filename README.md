@@ -37,22 +37,22 @@ repository][11]. It uses the [Angular CLI][12], so start off by running:
 ```bash
 npm install -g @angular/cli
 cd [repo directory]
-npm install
+npm install  # or npm ci
 ```
 
 From there you can run it for local testing/development with:
 
 ```bash
-ng serve
+npm run start
 ```
 
 and visit the site at http://localhost:4200. The following commands are also
 available:
 
- - `ng lint` - run TSLint on the `*.ts` files in `src/`
- - `ng test` - run the Karma unit tests, and re-run every time something
-   changes (add `--no-watch` to run only once)
- - `ng e2e` - run the Protractor end-to-end tests
+ - `npm run lint` - run TSLint on the `*.ts` files in `src/`
+ - `npm run test` - run the Karma unit tests (use `test:watch` to re-run every time something
+   changes)
+ - `npm run e2e` - run the Protractor end-to-end tests
 
 Both sets of tests are configured to run using the Chrome browser headlessly,
 so you won't see anything pop up on your screen.
