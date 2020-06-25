@@ -14,7 +14,6 @@
   "angular-cli": {},
   "scripts": {
     "build": "ng build --prod",
-    "codacy": "cat ./coverage/lcov.info | ./node_modules/.bin/codacy-coverage -p .",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "pree2e": "webdriver-manager update --gecko false",
     "e2e": "ng e2e",
@@ -65,7 +64,6 @@
     "@types/jasmine": "^3.5.11",
     "@types/jasminewd2": "^2.0.8",
     "@types/node": "^12.11.1",
-    "codacy-coverage": "^3.4.0",
     "codelyzer": "^5.1.2",
     "coveralls": "^3.1.0",
     "jasmine-core": "~3.5.0",
