@@ -12,5 +12,5 @@
   "repository": "https://github.com/textbook/salary-stats",
   "stack": "heroku-18",
   "success_url": "/",
-  "website": "https://salary-stats-anxious-panda-pl.apps.pcfone.io/",
+  "website": "https://salary-stats-anxious-panda-pl.apps.pcfone.io/"
 }
