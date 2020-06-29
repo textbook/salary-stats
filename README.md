@@ -104,5 +104,5 @@ so you won't see anything pop up on your screen.
   [13]: https://www.cloudfoundry.org/
   [14]: https://www.herokucdn.com/deploy/button.svg
   [15]: https://heroku.com/deploy
-  [16]: releases/latest
+  [16]: https://github.com/textbook/salary-stats/releases/latest
   [17]: #Development
