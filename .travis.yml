@@ -30,6 +30,7 @@ before_deploy: ./bin/prepare-deploy.sh
 
 deploy:
   - provider: cloudfoundry
+    skip_cleanup: true
     api: https://api.run.pcfone.io
     username: $CF_USERNAME
     password: $CF_PASSWORD
@@ -38,6 +39,7 @@ deploy:
     on:
       tags: true
   - provider: releases
+    skip_cleanup: true
     api_key: $GITHUB_TOKEN
     name: ${TRAVIS_TAG}
     file: dist-${TRAVIS_TAG}.tar.gz
