@@ -27,14 +27,21 @@ after_success:
   - bash <(curl -Ls https://coverage.codacy.com/get.sh) report -l Javascript -r ./coverage/lcov.info
 
 before_deploy:
-  - npm run build
+  - '[ ! -d dist/ ] && npm run build'
+  - '[ ! -f dist-${TRAVIS_TAG}.tar.gz ] && tar -zcf dist-${TRAVIS_TAG}.tar.gz dist/'
 
 deploy:
-  provider: cloudfoundry
-  api: https://api.run.pcfone.io
-  username: $CF_USERNAME
-  password: $CF_PASSWORD
-  organization: pivot-jsharpe
-  space: development
-  on:
-    branch: main
+  - provider: cloudfoundry
+    api: https://api.run.pcfone.io
+    username: $CF_USERNAME
+    password: $CF_PASSWORD
+    organization: pivot-jsharpe
+    space: development
+    on:
+      tags: true
+  - provider: releases
+    api_key: $GITHUB_TOKEN
+    name: ${TRAVIS_TAG}
+    file: dist-${TRAVIS_TAG}.tar.gz
+    on:
+      tags: true
