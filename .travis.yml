@@ -26,9 +26,7 @@ after_success:
   - npm run coveralls
   - bash <(curl -Ls https://coverage.codacy.com/get.sh) report -l Javascript -r ./coverage/lcov.info
 
-before_deploy:
-  - '[ ! -d dist/ ] && npm run build'
-  - '[ ! -f dist-${TRAVIS_TAG}.tar.gz ] && tar -zcf dist-${TRAVIS_TAG}.tar.gz dist/'
+before_deploy: ./bin/prepare-deploy.sh
 
 deploy:
   - provider: cloudfoundry
