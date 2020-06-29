@@ -103,6 +103,6 @@ so you won't see anything pop up on your screen.
   [12]: https://cli.angular.io/
   [13]: https://www.cloudfoundry.org/
   [14]: https://www.herokucdn.com/deploy/button.svg
-  [15]: https://heroku.com/deploy
+  [15]: https://heroku.com/deploy?template=https%3A%2F%2Fgithub.com%2Ftextbook%2Fsalary-stats%2Ftree%2Fmain
   [16]: https://github.com/textbook/salary-stats/releases/latest
   [17]: #Development
