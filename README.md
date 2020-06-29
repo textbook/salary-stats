@@ -57,8 +57,8 @@ available:
 Both sets of tests are configured to run using the Chrome browser headlessly,
 so you won't see anything pop up on your screen.
 
-  [1]: https://travis-ci.org/textbook/salary-stats.svg?branch=main
-  [2]: https://travis-ci.org/textbook/salary-stats
+  [1]: https://travis-ci.com/textbook/salary-stats.svg?branch=main
+  [2]: https://travis-ci.com/textbook/salary-stats
   [3]: https://coveralls.io/repos/github/textbook/salary-stats/badge.svg?branch=main
   [4]: https://coveralls.io/github/textbook/salary-stats?branch=main
   [5]: https://david-dm.org/textbook/salary-stats/status.svg
