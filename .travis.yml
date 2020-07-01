@@ -24,7 +24,7 @@ script:
 
 after_success:
   - npm run coveralls
-  - bash <(curl -Ls https://coverage.codacy.com/get.sh) report -l Javascript -r ./coverage/lcov.info
+  - bash <(curl -Ls https://coverage.codacy.com/get.sh) report -l TypeScript -r ./coverage/lcov.info
 
 before_deploy: ./bin/prepare-deploy.sh
 
