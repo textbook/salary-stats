@@ -109,5 +109,5 @@ so you won't see anything pop up on your screen.
   [15]: https://heroku.com/deploy?template=https%3A%2F%2Fgithub.com%2Ftextbook%2Fsalary-stats%2Ftree%2Fmain
   [16]: https://github.com/textbook/salary-stats/releases/latest
   [17]: #Development
-  [18]: https://img.shields.io/microbadger/image-size/textbook/salary-stats/latest.svg
+  [18]: https://img.shields.io/docker/image-size/textbook/salary-stats
   [19]: https://hub.docker.com/r/textbook/salary-stats/
