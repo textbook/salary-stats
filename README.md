@@ -7,6 +7,7 @@ Analyse and compare salaries by cohort.
 [![Dependencies][5]][6]
 [![License][7]][8]
 [![Codacy Grade][9]][10]
+[![Docker Image][18]][19]
 
 ## Usage
 
@@ -44,6 +45,8 @@ so either:
 
      - Any web server - download the build output from the [latest
         release][16] and serve it
+
+     - Docker - deploy the image `textbook/salary-stats`
 
  2. By downloading the code (e.g. clone the repository) you can deploy to:
 
@@ -106,3 +109,5 @@ so you won't see anything pop up on your screen.
   [15]: https://heroku.com/deploy?template=https%3A%2F%2Fgithub.com%2Ftextbook%2Fsalary-stats%2Ftree%2Fmain
   [16]: https://github.com/textbook/salary-stats/releases/latest
   [17]: #Development
+  [18]: https://img.shields.io/microbadger/image-size/textbook/salary-stats/latest.svg
+  [19]: https://hub.docker.com/r/textbook/salary-stats/
