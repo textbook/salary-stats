@@ -52,7 +52,7 @@
     "highcharts-angular": "^2.4.0",
     "jerzy": "^0.2.1",
     "request": "^2.88.2",
-    "rxjs": "^6.5.5",
+    "rxjs": "^6.6.0",
     "simple-statistics": "^7.1.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
