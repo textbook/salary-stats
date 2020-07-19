@@ -2,6 +2,7 @@
 
 # compiled output
 /dist
+/dist-ghp
 /tmp
 dist-*.tar.gz
 

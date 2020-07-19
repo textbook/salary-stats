@@ -52,3 +52,11 @@ deploy:
     script: ./bin/deploy-docker.sh
     on:
       tags: true
+  - provider: pages
+    skip_cleanup: true
+    github_token: $GITHUB_TOKEN
+    keep_history: true
+    target_branch: master
+    local_dir: dist-ghp/
+    on:
+      tags: true
