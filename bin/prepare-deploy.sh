@@ -2,6 +2,8 @@
 
 set -euo pipefail
 
+TRAVIS_TAG="${TRAVIS_TAG:-dev}"
+
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 ARCHIVE="dist-${TRAVIS_TAG}.tar.gz"
@@ -18,6 +20,7 @@ pushd "$HERE/.."
   if [ ! -d dist-ghp/ ]; then
     npm run build -- \
       --baseHref='https://blog.jonrshar.pe/salary-stats' \
+      --deployUrl='/salary-stats/' \
       --outputPath=dist-ghp/
   fi
 
