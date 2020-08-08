@@ -52,7 +52,7 @@ so either:
 
      - [Cloud Foundry][13] - install the CF CLI and run `cf push`
 
-     - Heroku - install the Heroku CLI and `git push heroku master`, but you
+     - Heroku - install the Heroku CLI and `git push heroku main`, but you
         will need to manually set up the buildpacks on the app:
 
         ```shell script
