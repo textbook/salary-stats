@@ -14,12 +14,12 @@ export class AppComponent implements OnInit {
   people$: Observable<Person[]>;
   cohorts$: Observable<CohortMap>;
 
-  constructor(private personService: PersonService) { }
-
-  ngOnInit() {
+  constructor(private personService: PersonService) {
     this.people$ = this.personService.people$;
     this.cohorts$ = this.personService.cohorts$;
+  }
 
+  ngOnInit() {
     this.personService.fetch();
   }
 }

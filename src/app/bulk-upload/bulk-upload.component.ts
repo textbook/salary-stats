@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { forkJoin } from 'rxjs';
 
 import { PersonService } from '../person.service';
-import { Person } from '../../lib';
+import { fromString, Person } from '../../lib';
 
 const MESSAGE = 'Are you sure you want to upload people? This cannot be undone.';
 
@@ -13,12 +13,10 @@ const MESSAGE = 'Are you sure you want to upload people? This cannot be undone.'
   templateUrl: './bulk-upload.component.html',
   styleUrls: ['./bulk-upload.component.scss']
 })
-export class BulkUploadComponent implements OnInit {
+export class BulkUploadComponent {
   bulkDataForm: FormGroup;
 
-  constructor(private service: PersonService, private builder: FormBuilder) { }
-
-  ngOnInit(): void {
+  constructor(private service: PersonService, private builder: FormBuilder) {
     this.bulkDataForm = this.builder.group({
       data: ['', Validators.required],
     });
@@ -42,7 +40,7 @@ export class BulkUploadComponent implements OnInit {
   private parseBulkData(): Person[] {
     return this
         .getRows(this.bulkDataForm.value.data)
-        .map(row => Person.fromString(row));
+        .map(fromString);
   }
 
   private getRows(lines: string): string[] {

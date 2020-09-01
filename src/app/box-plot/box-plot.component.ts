@@ -26,8 +26,8 @@ interface CohortStatistics {
   styleUrls: ['./box-plot.component.scss']
 })
 export class BoxPlotComponent implements OnChanges {
-  @Input() cohorts: CohortMap;
-  @Input() people: Person[];
+  @Input() cohorts?: CohortMap;
+  @Input() people?: Person[];
 
   Highcharts = Highcharts;
   chartOptions$: Observable<Highcharts.Options>;
@@ -43,7 +43,7 @@ export class BoxPlotComponent implements OnChanges {
     this.chartOptionSubject.next(this.createChartOptions(this.people, this.cohorts));
   }
 
-  private createChartOptions(people: Person[], cohorts: CohortMap): Highcharts.Options {
+  private createChartOptions(people?: Person[], cohorts?: CohortMap): Highcharts.Options {
     if (!people || !cohorts) {
       return BASE_BOX_PLOT_OPTIONS;
     }

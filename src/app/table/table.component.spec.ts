@@ -15,7 +15,10 @@ describe('TableComponent', () => {
   let personServiceSpy: PersonService;
   const peopleSubject = new ReplaySubject<Person[]>(1);
 
-  const people = [new Person('Foo', 1, 'A', 1), new Person('Bar', 1, 'B', 2)];
+  const people = [
+    { name: 'Foo', salary: 1, cohort: 'A', id: 1 },
+    { name: 'Bar', salary: 1, cohort: 'B', id: 2 }
+  ];
 
   beforeEach(async(() => {
     personServiceSpy = jasmine.createSpyObj('PersonService', ['addPerson', 'deletePerson', 'fetch']);
@@ -102,7 +105,7 @@ describe('TableComponent', () => {
 
       fixture.nativeElement.querySelector('tfoot button.is-success').click();
 
-      expect(personServiceSpy.addPerson).toHaveBeenCalledWith(new Person(name, salary, cohort));
+      expect(personServiceSpy.addPerson).toHaveBeenCalledWith({ name, salary, cohort });
       expect(personServiceSpy.fetch).toHaveBeenCalled();
     });
 
@@ -117,7 +120,7 @@ describe('TableComponent', () => {
           .query(By.css('tfoot td.cohort input'))
           .triggerEventHandler('keyup.enter', null);
 
-      expect(personServiceSpy.addPerson).toHaveBeenCalledWith(new Person(name, salary, cohort));
+      expect(personServiceSpy.addPerson).toHaveBeenCalledWith({ name, salary, cohort });
       expect(personServiceSpy.fetch).toHaveBeenCalled();
     });
 
@@ -158,7 +161,7 @@ describe('TableComponent', () => {
 
         fixture.componentInstance.addPerson();
 
-        expect(personServiceSpy.addPerson).toHaveBeenCalledWith(new Person(name, salary, cohort));
+        expect(personServiceSpy.addPerson).toHaveBeenCalledWith({ name, salary, cohort });
       });
 
       it('should clear the inputs', () => {
@@ -228,7 +231,10 @@ describe('TableComponent', () => {
       fixture.componentInstance.deletePerson(oldFirstPerson);
 
       const { name, salary, cohort } = fixture.componentInstance.newPersonForm.value;
-      expect(new Person(name, salary, cohort)).toEqual(oldFirstPerson);
+      expect({ name, salary, cohort }).toEqual({
+        ...oldFirstPerson,
+        salary: oldFirstPerson.salary.toFixed(0)
+      });
     });
 
     it('should not overwrite the form data if not empty', () => {
@@ -242,10 +248,10 @@ describe('TableComponent', () => {
     });
 
     function getFirstPerson(): Person {
-      const name = fixture.nativeElement.querySelector('tbody tr td.name').textContent;
-      const salary = fixture.nativeElement.querySelector('tbody tr td.salary').textContent;
-      const cohort = fixture.nativeElement.querySelector('tbody tr td.cohort').textContent;
-      return new Person(name, Number.parseInt(salary, 10), cohort);
+      const name: string = fixture.nativeElement.querySelector('tbody tr td.name').textContent;
+      const salary: string = fixture.nativeElement.querySelector('tbody tr td.salary').textContent;
+      const cohort: string = fixture.nativeElement.querySelector('tbody tr td.cohort').textContent;
+      return { name, salary: parseInt(salary, 10), cohort };
     }
   });
 });

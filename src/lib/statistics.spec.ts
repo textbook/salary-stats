@@ -37,11 +37,11 @@ describe('Statistics', () => {
       const cohorts = ['X', 'A', 'B'];
       const boxPlotData = [[], [1, 2, 3, 4, 5], [3, 5, 7, 9, 11]];
       const people: Person[] = [
-        new Person('Foo', 0, 'A'),
-        new Person('', 3, 'A'),
-        new Person('Bar', 6, 'A'),
-        new Person('', 6, 'B'),
-        new Person('Baz', 15, 'B'),
+        { name: 'Foo', salary: 0, cohort: 'A' },
+        { name: '', salary: 3, cohort: 'A' },
+        { name: 'Bar', salary: 6, cohort: 'A' },
+        { name: '', salary: 6, cohort: 'B' },
+        { name: 'Baz', salary: 15, cohort: 'B' },
       ];
       const result = Statistics.identifyOutliers(people, boxPlotData, cohorts);
 

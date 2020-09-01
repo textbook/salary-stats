@@ -39,7 +39,7 @@ describe('PersonService', () => {
     req.flush(people);
 
     service.people$.subscribe(received => {
-      expect(received).toEqual([new Person(people[0].name, people[0].salary, people[0].cohort)]);
+      expect(received).toEqual(people);
       done();
     });
   });
@@ -50,7 +50,7 @@ describe('PersonService', () => {
     const cohort = 'Q';
 
     service
-        .addPerson(new Person(name, salary, cohort))
+        .addPerson({ name, salary, cohort })
         .subscribe(() => {});
 
     const req = httpMock.expectOne({ method: 'POST' });
@@ -62,7 +62,7 @@ describe('PersonService', () => {
     const name = 'Davina';
 
     service
-        .deletePerson(new Person(name, 12453, 'A', 4))
+        .deletePerson({ name: name, salary: 12453, cohort: 'A', id: 4 })
         .subscribe(() => {});
 
     const req = httpMock.expectOne({ method: 'DELETE' });
@@ -71,10 +71,10 @@ describe('PersonService', () => {
 
   it('should expose an observable of sorted cohorts', done => {
     const people = [
-      new Person('Anna', 300, 'A'),
-      new Person('Bert', 200, 'B'),
-      new Person('Clara', 250, 'B'),
-      new Person('Bob', 275, 'A')
+      { name: 'Anna', salary: 300, cohort: 'A' },
+      { name: 'Bert', salary: 200, cohort: 'B' },
+      { name: 'Clara', salary: 250, cohort: 'B' },
+      { name: 'Bob', salary: 275, cohort: 'A' }
     ];
 
     service.fetch();

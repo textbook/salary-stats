@@ -1,10 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 
 import {PersonService} from '../person.service';
-import {CohortMap, SampleComparison, Statistics} from '../../lib';
+import {CohortMap, Statistics} from '../../lib';
 
 interface PairComparison {
   p: number;
@@ -17,12 +17,10 @@ interface PairComparison {
   templateUrl: './cohort-comparison.component.html',
   styleUrls: ['./cohort-comparison.component.scss']
 })
-export class CohortComparisonComponent implements OnInit {
-  pairComparisons$: Observable<any>;
+export class CohortComparisonComponent {
+  pairComparisons$: Observable<PairComparison[]>;
 
-  constructor(private personService: PersonService) { }
-
-  ngOnInit() {
+  constructor(private personService: PersonService) {
     this.pairComparisons$ = this.personService.cohorts$
         .pipe(map(cohorts => this.createPairComparisons(cohorts)));
   }
@@ -39,7 +37,7 @@ export class CohortComparisonComponent implements OnInit {
   }
 
   private pairs(set: string[]): [string, string][] {
-    const pairs = [];
+    const pairs: [string, string][] = [];
     for (let i = 0; i < set.length; i++) {
       for (let j = i + 1; j < set.length; j++) {
         pairs.push([set[i], set[j]]);

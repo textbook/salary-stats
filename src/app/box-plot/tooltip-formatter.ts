@@ -9,14 +9,14 @@ export function formatChartPoint(this: Highcharts.TooltipFormatterContextObject)
 
 function formatBoxPlotPoint({ low, q1, median, q3, high }: Highcharts.PointOptionsObject, key: number): string {
   return `<strong>Cohort ${key}</strong><br>
-          Upper fence: £${high.toLocaleString()}<br>
-          Upper quartile: £${q3.toLocaleString()}<br>
-          Median: £${median.toLocaleString()}<br>
-          Lower quartile: £${q1.toLocaleString()}<br>
-          Lower fence: £${low.toLocaleString()}`;
+          Upper fence: £${high?.toLocaleString()}<br>
+          Upper quartile: £${q3?.toLocaleString()}<br>
+          Median: £${median?.toLocaleString()}<br>
+          Lower quartile: £${q1?.toLocaleString()}<br>
+          Lower fence: £${low?.toLocaleString()}`;
 }
 
 function formatOutlierPoint({ y, name }: Highcharts.PointOptionsObject): string {
   return `<strong>${name}</strong><br>
-          Salary: £${y.toLocaleString()}`;
+          Salary: £${y?.toLocaleString()}`;
 }

@@ -34,7 +34,7 @@ export class SalaryStatsPage {
   }
 
   getCurrentInputs() {
-    return element.all(by.css('tfoot input')).map(el => el.getAttribute('value'));
+    return element.all(by.css('tfoot input')).map(el => el?.getAttribute('value'));
   }
 
   addNewRow(name: string, salary: number, cohort: string) {
@@ -104,7 +104,7 @@ export class SalaryStatsPage {
   }
 
   private getTextFromAllElements(selector: string) {
-    return element.all(by.css(selector)).map(el => el.getText());
+    return element.all(by.css(selector)).map(el => el?.getText());
   }
 
   private alwaysConfirm() {

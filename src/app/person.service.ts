@@ -34,12 +34,8 @@ export class PersonService {
     this.http
         .get<RawPerson[]>(this.personRoute)
         .subscribe(json => {
-          this.personSubject.next(this.deserialise(json));
+          this.personSubject.next(json);
         });
-  }
-
-  private deserialise(people: RawPerson[]): Person[] {
-    return people.map(person => new Person(person.name, person.salary, person.cohort, person.id));
   }
 
   private createCohorts(people: Person[]): CohortMap {
@@ -49,7 +45,7 @@ export class PersonService {
   }
 
   private generateInitialCohorts(people: Person[]): CohortMap {
-    const cohorts = {};
+    const cohorts: CohortMap = {};
     people.map(({ cohort, salary }) => {
       if (!cohorts.hasOwnProperty(cohort)) {
         cohorts[cohort] = [];

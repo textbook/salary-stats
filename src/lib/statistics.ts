@@ -1,4 +1,5 @@
 import * as Highcharts from 'highcharts';
+// @ts-ignore
 import { Nonparametric, Vector } from 'jerzy';
 import * as _ss from 'simple-statistics';
 

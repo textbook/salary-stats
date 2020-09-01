@@ -14,7 +14,7 @@ describe('AppComponent', () => {
   let personServiceSpy: PersonService;
 
   const cohorts = { A: [10] };
-  const people = [new Person('Alex', 10, 'A')];
+  const people = [{ name: 'Alex', salary: 10, cohort: 'A' }];
 
   beforeEach(async(() => {
     personServiceSpy = jasmine.createSpyObj('PersonServiceSpy', ['fetch']);

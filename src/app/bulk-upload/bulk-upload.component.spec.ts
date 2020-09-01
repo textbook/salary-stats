@@ -38,7 +38,8 @@ describe('BulkUploadComponent', () => {
       clickUploadButton();
 
       expect(window.confirm).toHaveBeenCalled();
-      expect(personServiceSpy.addPerson).toHaveBeenCalledWith(new Person('Charlie', 123, 'C'));
+      expect(personServiceSpy.addPerson)
+          .toHaveBeenCalledWith({ name: 'Charlie', salary: 123, cohort: 'C' });
     });
 
     it('should not call the service with bulk upload data if not confirmed', () => {

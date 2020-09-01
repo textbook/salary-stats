@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { Observable, forkJoin } from 'rxjs';
@@ -7,7 +7,9 @@ import { mergeMap } from 'rxjs/operators';
 import { Person } from '../../lib';
 import { PersonService } from '../person.service';
 
-const EMPTY_FORM = { name: '', salary: '', cohort: '' };
+type PersonForm = { [P in keyof Person]: string };
+
+const EMPTY_FORM: PersonForm = { name: '', salary: '', cohort: '' };
 const MESSAGE = 'Are you sure you want to delete all people? This cannot be undone.';
 
 @Component({
@@ -15,16 +17,14 @@ const MESSAGE = 'Are you sure you want to delete all people? This cannot be undo
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss']
 })
-export class TableComponent implements OnInit {
-  @ViewChild('nameInput', { static: true }) nameInput;
+export class TableComponent {
+  @ViewChild('nameInput', { static: true }) nameInput?: ElementRef;
 
   formSubmitted: boolean;
   newPersonForm: FormGroup;
   people$: Observable<Person[]>;
 
-  constructor(private builder: FormBuilder, private service: PersonService) { }
-
-  ngOnInit(): void {
+  constructor(private builder: FormBuilder, private service: PersonService) {
     this.people$ = this.service.people$;
 
     this.newPersonForm = this.builder.group({
@@ -32,7 +32,9 @@ export class TableComponent implements OnInit {
       salary: ['', Validators.required],
       cohort: ['', Validators.required],
     });
-  }
+
+    this.formSubmitted = false;
+   }
 
   addPerson() {
     this.formSubmitted = true;
@@ -66,15 +68,15 @@ export class TableComponent implements OnInit {
   }
 
   private getPersonFromForm(): Person {
-    const { name, salary, cohort } = this.newPersonForm.value;
-    return new Person(name, salary, cohort);
+    const { name, salary, cohort } = this.newPersonForm.value as PersonForm;
+    return { name, salary: parseInt(salary, 10), cohort };
   }
 
   private overwriteFormIfEmpty(person: Person) {
-    const formData = this.newPersonForm.value;
-    const keys = Object.keys(formData);
+    const formData: PersonForm = this.newPersonForm.value;
+    const keys = Object.keys(formData) as (keyof PersonForm)[];
     if (keys.filter(key => formData[key] === EMPTY_FORM[key]).length === keys.length) {
-      this.resetForm(person);
+      this.resetForm({ name: person.name, cohort: person.cohort, salary: person.salary.toFixed(0) });
     }
   }
 
@@ -82,9 +84,9 @@ export class TableComponent implements OnInit {
     return this.newPersonForm.valid;
   }
 
-  private resetForm(person: any) {
+  private resetForm(person: PersonForm) {
     this.formSubmitted = false;
     this.newPersonForm.setValue({ name: person.name, salary: person.salary, cohort: person.cohort });
-    this.nameInput.nativeElement.focus();
+    this.nameInput?.nativeElement.focus();
   }
 }

@@ -2,7 +2,7 @@
   <div class="container">
     <highcharts-chart
       [Highcharts]="Highcharts"
-      [options]="chartOptions$ | async"
+      [options]="(chartOptions$ | async)!"
     ></highcharts-chart>
   </div>
 </section>
