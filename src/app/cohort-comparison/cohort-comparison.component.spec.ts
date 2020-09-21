@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ReplaySubject, Subject } from 'rxjs';
 
@@ -12,7 +12,7 @@ describe('CohortComparisonComponent', () => {
   let personServiceSpy: PersonService;
   let cohortSubject: Subject<CohortMap>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     cohortSubject = new ReplaySubject<CohortMap>(1);
     personServiceSpy = jasmine.createSpyObj('PersonServiceSpy', ['addPerson']);
     personServiceSpy.cohorts$ = cohortSubject.asObservable();

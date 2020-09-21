@@ -1,5 +1,5 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
+import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { of } from 'rxjs';
@@ -7,7 +7,6 @@ import { of } from 'rxjs';
 import { AppComponent } from './app.component';
 import { PersonService } from './person.service';
 import { BoxPlotComponent } from './box-plot/box-plot.component';
-import { Person } from '../lib';
 
 describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
@@ -16,7 +15,7 @@ describe('AppComponent', () => {
   const cohorts = { A: [10] };
   const people = [{ name: 'Alex', salary: 10, cohort: 'A' }];
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     personServiceSpy = jasmine.createSpyObj('PersonServiceSpy', ['fetch']);
     personServiceSpy.people$ = of(people);
     personServiceSpy.cohorts$ = of(cohorts);

@@ -1,11 +1,10 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import Spy = jasmine.Spy;
 import { EMPTY } from 'rxjs';
 
 import { BulkUploadComponent } from './bulk-upload.component';
-import { Person } from '../../lib';
 import { PersonService } from '../person.service';
 
 describe('BulkUploadComponent', () => {
@@ -13,7 +12,7 @@ describe('BulkUploadComponent', () => {
   let fixture: ComponentFixture<BulkUploadComponent>;
   let personServiceSpy: PersonService;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     personServiceSpy = jasmine.createSpyObj('PersonService', ['addPerson']);
     (personServiceSpy.addPerson as Spy).and.returnValue(EMPTY);
 

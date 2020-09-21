@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
@@ -20,7 +20,7 @@ describe('TableComponent', () => {
     { name: 'Bar', salary: 1, cohort: 'B', id: 2 }
   ];
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     personServiceSpy = jasmine.createSpyObj('PersonService', ['addPerson', 'deletePerson', 'fetch']);
     (personServiceSpy.deletePerson as Spy).and.returnValue(of(null));
     (personServiceSpy.addPerson as Spy).and.returnValue(of(null));
