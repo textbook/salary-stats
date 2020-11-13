@@ -83,7 +83,7 @@ npm run start
 and visit the site at http://localhost:4200. The following commands are also
 available:
 
- - `npm run lint` - run TSLint on the `*.ts` files
+ - `npm run lint` - run ESLint on the `*.ts` files
  - `npm run test` - run the Karma unit tests (use `test:watch` to re-run every time something
     changes)
  - `npm run e2e` - run the Protractor end-to-end tests

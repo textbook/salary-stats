@@ -36,7 +36,7 @@ describe('BoxPlotComponent', () => {
       spyOn(Statistics, 'calculateBoxPlotData').and.returnValue(plotValues);
       const salary = 1234;
 
-      setInputData([{ name: 'Baz', salary, cohort: 'A' }], { 'A': [salary] });
+      setInputData([{ name: 'Baz', salary, cohort: 'A' }], { A: [salary] });
 
       const boxplot = getChartOptions().series?.[0] as Highcharts.SeriesBoxplotOptions;
       expect(boxplot?.data?.[0]).toEqual(plotValues);
@@ -46,7 +46,7 @@ describe('BoxPlotComponent', () => {
     it('should provide a point per cohort', () => {
       setInputData(
           [{ name: 'Foo', salary: 10, cohort: 'A' }, { name: 'Bar', salary: 20, cohort: 'B' }],
-          { 'A': [10], 'B': [20] },
+          { A: [10], B: [20] },
       );
 
       const boxplot = getChartOptions().series?.[0] as Highcharts.SeriesBoxplotOptions;
@@ -63,7 +63,7 @@ describe('BoxPlotComponent', () => {
             { name: 'Foo', salary: 10, cohort: 'A' },
             { name: 'Bar', salary: 100, cohort: 'A' },
           ],
-          { 'A' : [10, 10, 10, 10, 10, 100] },
+          { A : [10, 10, 10, 10, 10, 100] },
       );
 
       const scatter = getChartOptions().series?.[1] as Highcharts.SeriesScatterOptions;

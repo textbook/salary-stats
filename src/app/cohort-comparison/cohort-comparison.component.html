@@ -6,8 +6,12 @@
         <li *ngFor="let pair of pairComparisons$ | async">
           <h4 class="pair-title">{{ pair.title }}</h4>
           <ul>
-            <li *ngIf="pair.sameDistribution" class="pair-analysis">The difference between these cohorts is <strong>statistically insignificant</strong>  since P: {{ pair.p }} >= 0.05.</li>
-            <li *ngIf="!pair.sameDistribution" class="pair-analysis">The difference between these cohorts is <strong>statistically significant</strong> since P: {{ pair.p }} < 0.05.</li>
+            <li *ngIf="pair.sameDistribution" class="pair-analysis">
+              The difference between these cohorts is <strong>statistically insignificant</strong>  since P: {{ pair.p }} &gt;= 0.05.
+            </li>
+            <li *ngIf="!pair.sameDistribution" class="pair-analysis">
+              The difference between these cohorts is <strong>statistically significant</strong> since P: {{ pair.p }} &lt; 0.05.
+            </li>
           </ul>
         </li>
       </ol>

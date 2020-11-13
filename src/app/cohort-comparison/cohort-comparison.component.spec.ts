@@ -35,10 +35,10 @@ describe('CohortComparisonComponent', () => {
   describe('comparisons', () => {
     it('creates titles for cohort pairs', done => {
       cohortSubject.next({
-        'A': [275, 300],
-        'B': [200],
-        'C': [230],
-        'D': [240],
+        A: [275, 300],
+        B: [200],
+        C: [230],
+        D: [240],
       });
 
       component.pairComparisons$.subscribe(comparisonPairs => {
@@ -52,7 +52,7 @@ describe('CohortComparisonComponent', () => {
     });
 
     it('creates no pairs for only one cohort', done => {
-      cohortSubject.next({ 'H': [10] });
+      cohortSubject.next({ H: [10] });
 
       component.pairComparisons$.subscribe(comparisonPairs => {
         expect(comparisonPairs).toEqual([]);
@@ -62,9 +62,9 @@ describe('CohortComparisonComponent', () => {
 
     it('creates p values for cohort pairs', done => {
       cohortSubject.next({
-        'A': [220, 275, 300],
-        'B': [200, 220],
-        'C': [230, 275, 295],
+        A: [220, 275, 300],
+        B: [200, 220],
+        C: [230, 275, 295],
       });
 
       component.pairComparisons$.subscribe(comparisonPairs => {
@@ -78,9 +78,9 @@ describe('CohortComparisonComponent', () => {
 
     it('shows significance for cohort pairs', done => {
       cohortSubject.next({
-        'A': [275, 300],
-        'B': [200, 200, 210, 220],
-        'C': [230, 275, 295, 20520],
+        A: [275, 300],
+        B: [200, 200, 210, 220],
+        C: [230, 275, 295, 20520],
       });
 
       component.pairComparisons$.subscribe(comparisonPairs => {
