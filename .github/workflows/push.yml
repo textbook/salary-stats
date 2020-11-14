@@ -1,0 +1,26 @@
+name: Node.js CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    if: github.event_name != 'push' || !contains(github.event.head_commit.message, '[skip ci]')
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '10'
+      - uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: salary-stats-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            salary-stats-${{ hashFiles('**/package-lock.json') }}
+            salary-stats-
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run test:cover
+      - run: npm run coveralls
+      - uses: docker/setup-buildx-action@v1
+      - run: npm run build:docker
