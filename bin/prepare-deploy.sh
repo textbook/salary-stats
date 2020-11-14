@@ -2,11 +2,11 @@
 
 set -euo pipefail
 
-TRAVIS_TAG="${TRAVIS_TAG:-dev}"
+TAG="${TAG:-dev}"
 
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-ARCHIVE="dist-${TRAVIS_TAG}.tar.gz"
+ARCHIVE="dist-${TAG}.tar.gz"
 
 pushd "$HERE/.."
   if [ ! -d node_modules/ ]; then

@@ -1,0 +1,110 @@
+name: Node.js CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    if: github.event_name != 'push' || !contains(github.event.head_commit.message, '[skip ci]')
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '10'
+      - uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: salary-stats-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            salary-stats-${{ hashFiles('**/package-lock.json') }}
+            salary-stats-
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run test:cover
+      - uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker/setup-buildx-action@v1
+      - run: npm run build:docker
+      - run: npm run e2e
+  deploy:
+    runs-on: ubuntu-18.04
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    steps:
+      - uses: actions/checkout@v2
+      - name: Get full tag
+        id: full_tag
+        run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
+      - name: Get major and minor versions
+        id: versions
+        run: |
+          echo ::set-output name=MAJOR::$(echo $VERSION | cut -d. -f1)
+          echo ::set-output name=MINOR::$(echo $VERSION | cut -d. -f2)
+        env:
+          VERSION: ${{ steps.full_tag.outputs.VERSION }}
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '10'
+      - uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: salary-stats-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            salary-stats-${{ hashFiles('**/package-lock.json') }}
+            salary-stats-
+      - run: npm ci
+      - run: ./bin/prepare-deploy.sh
+        env:
+          TAG: ${{ steps.full_tag.outputs.VERSION }}
+      - uses: docker/setup-buildx-action@v1
+      - uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      - uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: |
+            textbook/salary-stats
+            textbook/salary-stats:${{ steps.full_tag.outputs.VERSION }}
+            textbook/salary-stats:${{ steps.versions.outputs.MAJOR }}
+            textbook/salary-stats:${{ steps.versions.outputs.MAJOR }}.${{ steps.versions.outputs.MINOR }}
+      - uses: peter-evans/dockerhub-description@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          repository: textbook/salary-stats
+      - uses: actions/create-release@v1
+        id: create_release
+        with:
+          tag_name: ${{ steps.full_tag.outputs.VERSION }}
+          release_name: ${{ steps.full_tag.outputs.VERSION }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./dist-${{ steps.full_tag.outputs.VERSION }}.tar.gz
+          asset_name: dist-${{ steps.full_tag.outputs.VERSION }}.tar.gz
+          asset_content_type: application/gzip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: d3sandoval/cloud-foundry-action@1.1.1
+        with:
+          args: push
+        env:
+          CF_API: https://api.run.pcfone.io
+          CF_PASSWORD: ${{ secrets.CF_PASSWORD }}
+          CF_TARGET_ORG: pivot-jsharpe
+          CF_TARGET_SPACE: development
+          CF_USERNAME: ${{ secrets.CF_USERNAME }}
+      - uses: crazy-max/ghaction-github-pages@v2
+        with:
+          build_dir: dist-ghp
+          keep_history: true
+          target_branch: gh-pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
