@@ -2,8 +2,7 @@ FROM node:dubnium-alpine AS build
 
 WORKDIR /home/node/app
 
-COPY package.json .
-COPY ./package-lock.json .
+COPY package*.json ./
 RUN npm ci
 
 COPY . .
