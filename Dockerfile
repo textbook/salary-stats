@@ -1,4 +1,4 @@
-FROM node:dubnium-alpine AS build
+FROM node:fermium-alpine AS build
 
 WORKDIR /home/node/app
 

@@ -11,7 +11,7 @@ assignees: ''
 A clear and concise description of what the bug is.
 
 ### Checklist
-- [ ] I am using a supported version of Node _(currently tested on 10.x)_ and NPM _(not Yarn)_.
+- [ ] I am using a supported version of Node _(currently tested on 14.16.1)_ and NPM _(not Yarn)_.
 - [ ] I have installed the correct dependencies _(run `npm ci` if you're unsure, this will clear `node_modules/` and install based on the `package-lock.json`)_.
 
 ### To reproduce
