@@ -1,34 +1,16 @@
-import * as _ss from 'simple-statistics';
-
 import { Person } from './models';
 import { Statistics } from './statistics';
 
 describe('Statistics', () => {
   describe('calculateBoxPlotData method', () => {
-    const testSample = [1, 2, 3, 4, 5];
-
-    beforeEach(() => {
-      spyOn(_ss, 'quantileSorted').and.callFake((sample, p) => Math.round(100 * p));
-    });
-
-    it('should get the median and quartiles from simple-statistics', () => {
-      Statistics.calculateBoxPlotData(testSample);
-
-      expect(_ss.quantileSorted).toHaveBeenCalledWith(testSample, 0.25);
-      expect(_ss.quantileSorted).toHaveBeenCalledWith(testSample, 0.5);
-      expect(_ss.quantileSorted).toHaveBeenCalledWith(testSample, 0.75);
-    });
-
-    it('should calculate the lower and upper bounds for outliers', () => {
-      expect(Statistics.calculateBoxPlotData(testSample))
-          .toEqual([-50, 25, 50, 75, 150]);
+    it('should calculate the quartiles plus lower and upper bounds for outliers', () => {
+      expect(Statistics.calculateBoxPlotData([1, 2, 3, 4, 5]))
+          .toEqual([-1, 2, 3, 4, 7]);
     });
 
     it('should round the values calculated by simple-statistics', () => {
-      (_ss.quantileSorted as jasmine.Spy).and.returnValue(1.23);
-
-      expect(Statistics.calculateBoxPlotData(testSample))
-          .toEqual([1, 1, 1, 1, 1]);
+      expect(Statistics.calculateBoxPlotData([0.1, 0.2, 0.3, 4, 5]))
+          .toEqual([-6, 0, 0, 4, 10]);
     });
   });
 
