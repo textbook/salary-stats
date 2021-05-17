@@ -22,7 +22,11 @@ jobs:
       - run: npm run lint
       - run: npm run test:cover
       - name: Send coverage to Codacy
-        run: bash <(curl -Ls https://coverage.codacy.com/get.sh) report -l TypeScript -r ./coverage/lcov.info
+        run: >
+          bash <(curl -Ls https://coverage.codacy.com/get.sh) report \
+            --coverage-reports ./coverage/lcov.info \
+            --language TypeScript \
+            --project-token $CODACY_PROJECT_TOKEN
         env:
           CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
       - uses: coverallsapp/github-action@master
