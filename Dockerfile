@@ -1,4 +1,7 @@
-FROM node:fermium-alpine AS build
+ARG ALPINE_RELEASE
+ARG NODE_RELEASE
+
+FROM node:${NODE_RELEASE}-alpine${ALPINE_RELEASE} AS build
 
 WORKDIR /home/node/app
 

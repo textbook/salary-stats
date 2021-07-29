@@ -14,7 +14,7 @@
   "angular-cli": {},
   "scripts": {
     "build": "ng build --configuration production",
-    "build:docker": "docker build . -t textbook/salary-stats",
+    "build:docker": "docker build . --build-arg \"NODE_RELEASE=$(cat .nvmrc)\" --build-arg ALPINE_RELEASE=3.13 -t textbook/salary-stats",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "pree2e": "webdriver-manager update --gecko false --versions.chrome=\"$(google-chrome --product-version || echo 'latest')\"",
     "e2e": "ng e2e --no-webdriver-update",
