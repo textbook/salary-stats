@@ -10,7 +10,7 @@
   "description": "Analyse and compare salaries by cohort.",
   "name": "salary-stats",
   "repository": "https://github.com/textbook/salary-stats",
-  "stack": "heroku-18",
+  "stack": "heroku-20",
   "success_url": "/",
   "website": "https://salary-stats-anxious-panda-pl.apps.pcfone.io/"
 }
