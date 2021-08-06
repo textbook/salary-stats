@@ -21,7 +21,7 @@ jobs:
         run: |
           if [ $CODACY_PROJECT_TOKEN ]; then
             bash <(curl -Ls https://coverage.codacy.com/get.sh) report \
-              --coverage-reports ./coverage/lcov.info \
+              --coverage-reports ./coverage/salary-stats/lcov.info \
               --language TypeScript \
               --project-token $CODACY_PROJECT_TOKEN
           fi
