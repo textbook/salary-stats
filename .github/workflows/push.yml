@@ -29,6 +29,7 @@ jobs:
       - uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: './coverage/salary-stats/lcov.info'
       - uses: docker/setup-buildx-action@v1
       - run: npm run build:docker
       - run: npm run e2e

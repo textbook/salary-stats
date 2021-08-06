@@ -14,7 +14,6 @@
   "scripts": {
     "build": "ng build --configuration production",
     "build:docker": "docker build . --build-arg \"NODE_RELEASE=$(cat .nvmrc)\" --build-arg ALPINE_RELEASE=3.13 -t textbook/salary-stats",
-    "coveralls": "cat ./coverage/salary-stats/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "e2e": "ng e2e",
     "postinstall": "ngcc --tsconfig ./src/tsconfig.app.json",
     "lint": "ng lint",
