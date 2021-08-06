@@ -1,34 +1,30 @@
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "src",
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "sourceMap": true,
     "declaration": false,
     "downlevelIteration": true,
-    "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "forceConsistentCasingInFileNames": true,
-    "importHelpers": true,
-    "lib": [
-      "es2017",
-      "dom"
-    ],
-    "module": "es2020",
     "moduleResolution": "node",
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitReturns": true,
-    "outDir": "./dist/out-tsc",
-    "sourceMap": true,
-    "strict": true,
-    "target": "es5",
-    "typeRoots": [
-      "node_modules/@types"
+    "importHelpers": true,
+    "target": "es2017",
+    "module": "es2020",
+    "lib": [
+      "es2018",
+      "dom"
     ]
   },
   "angularCompilerOptions": {
-    "enableIvy": true,
-    "fullTemplateTypeCheck": true,
-    "preserveWhitespaces": false,
+    "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
     "strictTemplates": true
   }
 }
