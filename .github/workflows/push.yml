@@ -67,7 +67,7 @@ jobs:
       - uses: docker/build-push-action@v2
         with:
           build-args: |
-            ALPINE_RELEASE=3.13
+            ALPINE_RELEASE=3.14
             NODE_RELEASE=${{ steps.nvmrc.outputs.NODE_VERSION }}
           push: true
           tags: |
