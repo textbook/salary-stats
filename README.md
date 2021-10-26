@@ -4,7 +4,6 @@ Analyse and compare salaries by cohort.
 
 [![Build Status][1]][2]
 [![Coverage Status][3]][4]
-[![Dependencies][5]][6]
 [![License][7]][8]
 [![Codacy Grade][9]][10]
 [![Docker Image][18]][19]
@@ -96,8 +95,6 @@ so you won't see anything pop up on your screen.
   [2]: https://github.com/textbook/salary-stats/actions
   [3]: https://coveralls.io/repos/github/textbook/salary-stats/badge.svg?branch=main
   [4]: https://coveralls.io/github/textbook/salary-stats?branch=main
-  [5]: https://david-dm.org/textbook/salary-stats/status.svg
-  [6]: https://david-dm.org/textbook/salary-stats
   [7]: https://img.shields.io/badge/license-ISC-blue.svg
   [8]: LICENSE
   [9]: https://api.codacy.com/project/badge/Grade/ec6f1694d6c04b0e82645375719422f2
