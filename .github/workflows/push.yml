@@ -97,19 +97,7 @@ jobs:
           asset_content_type: application/gzip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - uses: d3sandoval/cloud-foundry-action@1.1.1
+      - uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
-          args: push
-        env:
-          CF_API: https://api.run.pcfone.io
-          CF_PASSWORD: ${{ secrets.CF_PASSWORD }}
-          CF_TARGET_ORG: pivot-jsharpe
-          CF_TARGET_SPACE: development
-          CF_USERNAME: ${{ secrets.CF_USERNAME }}
-      - uses: crazy-max/ghaction-github-pages@v2
-        with:
-          build_dir: dist-ghp
-          keep_history: true
-          target_branch: gh-pages
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          branch: gh-pages
+          folder: dist-ghp
