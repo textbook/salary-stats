@@ -1,8 +1,7 @@
 import * as Highcharts from 'highcharts';
-// @ts-ignore
-import { Nonparametric, Vector } from 'jerzy';
 import * as _ss from 'simple-statistics';
 
+import { Nonparametric, Vector } from './jerzy';
 import { Person } from './models';
 
 const FENCE_FACTOR = 1.5;
