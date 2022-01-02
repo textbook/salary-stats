@@ -19,9 +19,8 @@ pushd "$HERE/.."
 
   if [ ! -d dist-ghp/ ]; then
     npm run build -- \
-      --baseHref='https://blog.jonrshar.pe/salary-stats' \
-      --deployUrl='/salary-stats/' \
-      --outputPath=dist-ghp/
+      --base-href='/salary-stats/' \
+      --output-path=dist-ghp/
   fi
 
   if [ ! -f "$ARCHIVE" ]; then
