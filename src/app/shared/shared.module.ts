@@ -6,8 +6,10 @@ import { HighchartsChartModule } from 'highcharts-angular';
 
 import * as Highcharts from 'highcharts';
 import HighchartsMore from 'highcharts/highcharts-more';
+import HighchartsA11y from 'highcharts/modules/accessibility';
 
 HighchartsMore(Highcharts);
+HighchartsA11y(Highcharts);
 
 @NgModule({
   imports: [

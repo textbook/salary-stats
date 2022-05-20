@@ -7,7 +7,7 @@ export function formatChartPoint(this: Highcharts.TooltipFormatterContextObject)
   return formatOutlierPoint(this.point.options || {});
 }
 
-function formatBoxPlotPoint({ low, q1, median, q3, high }: Highcharts.PointOptionsObject, key: number): string {
+function formatBoxPlotPoint({ low, q1, median, q3, high }: Highcharts.PointOptionsObject, key?: string): string {
   return `<strong>Cohort ${key}</strong><br>
           Upper fence: £${high?.toLocaleString()}<br>
           Upper quartile: £${q3?.toLocaleString()}<br>
