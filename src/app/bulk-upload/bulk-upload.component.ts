@@ -17,7 +17,7 @@ export class BulkUploadComponent {
   bulkDataForm: FormGroup;
 
   constructor(private service: PersonService, private builder: FormBuilder) {
-    this.bulkDataForm = this.builder.group({
+    this.bulkDataForm = this.builder.nonNullable.group({
       data: ['', Validators.required],
     });
   }

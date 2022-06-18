@@ -39,13 +39,13 @@
   "homepage": "https://github.com/textbook/salary-stats",
   "bugs": "https://github.com/textbook/salary-stats/issues",
   "dependencies": {
-    "@angular/common": "~13.3.11",
-    "@angular/compiler": "~13.3.11",
-    "@angular/core": "~13.3.11",
-    "@angular/forms": "~13.3.11",
-    "@angular/platform-browser": "~13.3.11",
-    "@angular/platform-browser-dynamic": "~13.3.11",
-    "@angular/router": "~13.3.11",
+    "@angular/common": "^14.0.2",
+    "@angular/compiler": "^14.0.2",
+    "@angular/core": "^14.0.2",
+    "@angular/forms": "^14.0.2",
+    "@angular/platform-browser": "^14.0.2",
+    "@angular/platform-browser-dynamic": "^14.0.2",
+    "@angular/router": "^14.0.2",
     "angular-in-memory-web-api": "^0.13.0",
     "highcharts": "^10.1.0",
     "highcharts-angular": "^3.0.0",
@@ -56,14 +56,14 @@
     "zone.js": "~0.11.6"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~13.3.8",
+    "@angular-devkit/build-angular": "^14.0.2",
     "@angular-eslint/builder": "13.5.0",
     "@angular-eslint/eslint-plugin": "13.5.0",
     "@angular-eslint/eslint-plugin-template": "13.5.0",
     "@angular-eslint/schematics": "13.5.0",
     "@angular-eslint/template-parser": "13.5.0",
-    "@angular/cli": "~13.3.8",
-    "@angular/compiler-cli": "~13.3.11",
+    "@angular/cli": "^14.0.2",
+    "@angular/compiler-cli": "^14.0.2",
     "@cypress/schematic": "2.0.0",
     "@testing-library/cypress": "^8.0.3",
     "@types/jasmine": "~3.8.0",
@@ -78,6 +78,6 @@
     "karma-coverage": "~2.0.3",
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "~1.7.0",
-    "typescript": "~4.5.4"
+    "typescript": "~4.7.4"
   }
 }

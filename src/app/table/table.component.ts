@@ -27,7 +27,7 @@ export class TableComponent {
   constructor(private builder: FormBuilder, private service: PersonService) {
     this.people$ = this.service.people$;
 
-    this.newPersonForm = this.builder.group({
+    this.newPersonForm = this.builder.nonNullable.group({
       name: ['', Validators.required],
       salary: ['', Validators.required],
       cohort: ['', Validators.required],
