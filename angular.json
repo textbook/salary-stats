@@ -33,7 +33,12 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "allowedCommonJsDependencies": [
+              "highcharts",
+              "highcharts/highcharts-more",
+              "highcharts/modules/accessibility"
+            ]
           },
           "configurations": {
             "production": {
