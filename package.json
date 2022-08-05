@@ -9,7 +9,7 @@
     "highcharts",
     "bulma"
   ],
-  "version": "0.5.1",
+  "version": "0.5.2",
   "license": "ISC",
   "scripts": {
     "build": "ng build --configuration production",
