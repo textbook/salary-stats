@@ -51,9 +51,9 @@
     "highcharts-angular": "^3.0.0",
     "jerzy": "^0.2.1",
     "rxjs": "~7.4.0",
-    "simple-statistics": "^7.7.5",
+    "simple-statistics": "^7.7.6",
     "tslib": "^2.4.0",
-    "zone.js": "~0.11.7"
+    "zone.js": "~0.11.8"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^14.1.2",
