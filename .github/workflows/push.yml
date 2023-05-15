@@ -80,10 +80,10 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
           repository: textbook/salary-stats
-      - run: >
-          gh release create
-            '${{ steps.full_tag.outputs.VERSION }}'
-            --title '${{ steps.full_tag.outputs.VERSION }}'
+      - run: |
+          gh release create \
+            '${{ steps.full_tag.outputs.VERSION }}' \
+            --title '${{ steps.full_tag.outputs.VERSION }}' \
             'dist-${{ steps.full_tag.outputs.VERSION }}.tar.gz'
         env:
           GH_TOKEN: ${{ github.token }}
